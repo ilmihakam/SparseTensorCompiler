@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        compiler: [gcc, clang]
+        exclude:
+          - os: macos-latest
+            compiler: gcc  # Use clang on macOS by default
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup build environment (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake build-essential
+        if [ "${{ matrix.compiler }}" = "clang" ]; then
+          sudo apt-get install -y clang
+        fi
+
+    - name: Setup build environment (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew install cmake
+
+    - name: Configure CMake
+      run: |
+        if [ "${{ matrix.compiler }}" = "clang" ]; then
+          export CC=clang
+          export CXX=clang++
+        fi
+        cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build
+      run: cmake --build build --config Release
+
+    - name: Run tests
+      run: |
+        cd build
+        ctest --output-on-failure
+
+  format-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install clang-format
+      run: sudo apt-get update && sudo apt-get install -y clang-format
+
+    - name: Check formatting
+      run: |
+        find . -name "*.cpp" -o -name "*.hpp" -o -name "*.c" -o -name "*.h" | \
+        xargs clang-format -style=file --dry-run --Werror
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake build-essential clang-tidy
+
+    - name: Configure CMake for linting
+      run: cmake -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+    - name: Run clang-tidy
+      run: |
+        if [ -f build/compile_commands.json ]; then
+          find . -name "*.cpp" -o -name "*.c" | \
+          xargs clang-tidy -p build --warnings-as-errors=*
+        else
+          echo "No compile_commands.json found, skipping clang-tidy"
+        fi
