@@ -1,0 +1,2171 @@
+Start testing: Feb 16 18:02 GMT
+----------------------------------------------------------
+1/45 Testing: BasicTokenTests
+1/45 Test: BasicTokenTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_basic_tokens"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"BasicTokenTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+[==========] Running 19 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 19 tests from BasicTokenTest
+[ RUN      ] BasicTokenTest.KeywordCompute
+[       OK ] BasicTokenTest.KeywordCompute (0 ms)
+[ RUN      ] BasicTokenTest.KeywordCall
+[       OK ] BasicTokenTest.KeywordCall (0 ms)
+[ RUN      ] BasicTokenTest.KeywordTensor
+[       OK ] BasicTokenTest.KeywordTensor (0 ms)
+[ RUN      ] BasicTokenTest.KeywordFor
+[       OK ] BasicTokenTest.KeywordFor (0 ms)
+[ RUN      ] BasicTokenTest.OperatorPlus
+[       OK ] BasicTokenTest.OperatorPlus (0 ms)
+[ RUN      ] BasicTokenTest.OperatorMult
+[       OK ] BasicTokenTest.OperatorMult (0 ms)
+[ RUN      ] BasicTokenTest.OperatorAssign
+[       OK ] BasicTokenTest.OperatorAssign (0 ms)
+[ RUN      ] BasicTokenTest.DelimiterLBracket
+[       OK ] BasicTokenTest.DelimiterLBracket (0 ms)
+[ RUN      ] BasicTokenTest.DelimiterRBracket
+[       OK ] BasicTokenTest.DelimiterRBracket (0 ms)
+[ RUN      ] BasicTokenTest.DelimiterLParen
+[       OK ] BasicTokenTest.DelimiterLParen (0 ms)
+[ RUN      ] BasicTokenTest.DelimiterRParen
+[       OK ] BasicTokenTest.DelimiterRParen (0 ms)
+[ RUN      ] BasicTokenTest.DelimiterLBrace
+[       OK ] BasicTokenTest.DelimiterLBrace (0 ms)
+[ RUN      ] BasicTokenTest.DelimiterRBrace
+[       OK ] BasicTokenTest.DelimiterRBrace (0 ms)
+[ RUN      ] BasicTokenTest.DelimiterComma
+[       OK ] BasicTokenTest.DelimiterComma (0 ms)
+[ RUN      ] BasicTokenTest.DelimiterSemicolon
+[       OK ] BasicTokenTest.DelimiterSemicolon (0 ms)
+[ RUN      ] BasicTokenTest.DelimiterColon
+[       OK ] BasicTokenTest.DelimiterColon (0 ms)
+[ RUN      ] BasicTokenTest.MultipleOperators
+[       OK ] BasicTokenTest.MultipleOperators (0 ms)
+[ RUN      ] BasicTokenTest.AllDelimiters
+[       OK ] BasicTokenTest.AllDelimiters (0 ms)
+[ RUN      ] BasicTokenTest.WhitespaceIgnored
+[       OK ] BasicTokenTest.WhitespaceIgnored (0 ms)
+[----------] 19 tests from BasicTokenTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 19 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 19 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"BasicTokenTests" end time: Feb 16 18:02 GMT
+"BasicTokenTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/45 Testing: LiteralsTests
+2/45 Test: LiteralsTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_literals"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"LiteralsTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+[==========] Running 10 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 10 tests from LiteralTest
+[ RUN      ] LiteralTest.SimpleIdentifiers
+[       OK ] LiteralTest.SimpleIdentifiers (0 ms)
+[ RUN      ] LiteralTest.IdentifiersWithUnderscore
+[       OK ] LiteralTest.IdentifiersWithUnderscore (0 ms)
+[ RUN      ] LiteralTest.IdentifiersWithNumbers
+[       OK ] LiteralTest.IdentifiersWithNumbers (0 ms)
+[ RUN      ] LiteralTest.MLFunctionNames
+[       OK ] LiteralTest.MLFunctionNames (0 ms)
+[ RUN      ] LiteralTest.IntegerNumbers
+[       OK ] LiteralTest.IntegerNumbers (0 ms)
+[ RUN      ] LiteralTest.DecimalNumbers
+[       OK ] LiteralTest.DecimalNumbers (0 ms)
+[ RUN      ] LiteralTest.IdentifierLexemeValues
+[       OK ] LiteralTest.IdentifierLexemeValues (0 ms)
+[ RUN      ] LiteralTest.NumberLexemeValues
+[       OK ] LiteralTest.NumberLexemeValues (0 ms)
+[ RUN      ] LiteralTest.MixedLiterals
+[       OK ] LiteralTest.MixedLiterals (0 ms)
+[ RUN      ] LiteralTest.KeywordsNotIdentifiers
+[       OK ] LiteralTest.KeywordsNotIdentifiers (0 ms)
+[----------] 10 tests from LiteralTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 10 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 10 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"LiteralsTests" end time: Feb 16 18:02 GMT
+"LiteralsTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/45 Testing: SequencesTests
+3/45 Test: SequencesTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_sequences"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"SequencesTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+[==========] Running 8 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 8 tests from SequenceTest
+[ RUN      ] SequenceTest.SimpleComputeStatement
+[       OK ] SequenceTest.SimpleComputeStatement (0 ms)
+[ RUN      ] SequenceTest.BinaryOperationStatement
+[       OK ] SequenceTest.BinaryOperationStatement (0 ms)
+[ RUN      ] SequenceTest.FunctionCallStatement
+[       OK ] SequenceTest.FunctionCallStatement (0 ms)
+[ RUN      ] SequenceTest.CallStatement
+[       OK ] SequenceTest.CallStatement (0 ms)
+[ RUN      ] SequenceTest.TensorDeclaration
+[       OK ] SequenceTest.TensorDeclaration (0 ms)
+[ RUN      ] SequenceTest.ForStatement
+[       OK ] SequenceTest.ForStatement (0 ms)
+[ RUN      ] SequenceTest.ComplexExpression
+[       OK ] SequenceTest.ComplexExpression (0 ms)
+[ RUN      ] SequenceTest.CompleteProgram
+[       OK ] SequenceTest.CompleteProgram (0 ms)
+[----------] 8 tests from SequenceTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 8 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SequencesTests" end time: Feb 16 18:02 GMT
+"SequencesTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/45 Testing: TensorTypeTests
+4/45 Test: TensorTypeTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_tensor_types"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"TensorTypeTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+[==========] Running 12 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 12 tests from TensorTypeTokenTest
+[ RUN      ] TensorTypeTokenTest.DenseKeyword
+[       OK ] TensorTypeTokenTest.DenseKeyword (0 ms)
+[ RUN      ] TensorTypeTokenTest.CSRKeyword
+[       OK ] TensorTypeTokenTest.CSRKeyword (0 ms)
+[ RUN      ] TensorTypeTokenTest.COOKeyword
+[       OK ] TensorTypeTokenTest.COOKeyword (0 ms)
+[ RUN      ] TensorTypeTokenTest.CSCKeyword
+[       OK ] TensorTypeTokenTest.CSCKeyword (0 ms)
+[ RUN      ] TensorTypeTokenTest.ELLPACKKeyword
+[       OK ] TensorTypeTokenTest.ELLPACKKeyword (0 ms)
+[ RUN      ] TensorTypeTokenTest.DIAKeyword
+[       OK ] TensorTypeTokenTest.DIAKeyword (0 ms)
+[ RUN      ] TensorTypeTokenTest.LeftAngleBracket
+[       OK ] TensorTypeTokenTest.LeftAngleBracket (0 ms)
+[ RUN      ] TensorTypeTokenTest.RightAngleBracket
+[       OK ] TensorTypeTokenTest.RightAngleBracket (0 ms)
+[ RUN      ] TensorTypeTokenTest.DenseDeclarationSequence
+[       OK ] TensorTypeTokenTest.DenseDeclarationSequence (0 ms)
+[ RUN      ] TensorTypeTokenTest.CSRWithShapeSequence
+[       OK ] TensorTypeTokenTest.CSRWithShapeSequence (0 ms)
+[ RUN      ] TensorTypeTokenTest.COODeclarationCompact
+[       OK ] TensorTypeTokenTest.COODeclarationCompact (0 ms)
+[ RUN      ] TensorTypeTokenTest.TypeKeywordsAreCaseSensitive
+[       OK ] TensorTypeTokenTest.TypeKeywordsAreCaseSensitive (0 ms)
+[----------] 12 tests from TensorTypeTokenTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 12 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 12 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"TensorTypeTests" end time: Feb 16 18:02 GMT
+"TensorTypeTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/45 Testing: ParserBasicTests
+5/45 Test: ParserBasicTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_parser_basic"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"ParserBasicTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+[==========] Running 37 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 37 tests from ParserBasicTest
+[ RUN      ] ParserBasicTest.SimpleTensorDeclaration
+[       OK ] ParserBasicTest.SimpleTensorDeclaration (0 ms)
+[ RUN      ] ParserBasicTest.TensorDeclarationWithShape1D
+[       OK ] ParserBasicTest.TensorDeclarationWithShape1D (0 ms)
+[ RUN      ] ParserBasicTest.TensorDeclarationWithShape2D
+[       OK ] ParserBasicTest.TensorDeclarationWithShape2D (0 ms)
+[ RUN      ] ParserBasicTest.TensorDeclarationWithShape3D
+[       OK ] ParserBasicTest.TensorDeclarationWithShape3D (0 ms)
+[ RUN      ] ParserBasicTest.SimpleComputeStatement
+[       OK ] ParserBasicTest.SimpleComputeStatement (0 ms)
+[ RUN      ] ParserBasicTest.ComputeWithAddition
+[       OK ] ParserBasicTest.ComputeWithAddition (0 ms)
+[ RUN      ] ParserBasicTest.ComputeWithMultiplication
+[       OK ] ParserBasicTest.ComputeWithMultiplication (0 ms)
+[ RUN      ] ParserBasicTest.ComputeWithMixedOperators
+[       OK ] ParserBasicTest.ComputeWithMixedOperators (0 ms)
+[ RUN      ] ParserBasicTest.ComputeWithNumber
+[       OK ] ParserBasicTest.ComputeWithNumber (0 ms)
+[ RUN      ] ParserBasicTest.ComputeWithDecimal
+[       OK ] ParserBasicTest.ComputeWithDecimal (0 ms)
+[ RUN      ] ParserBasicTest.ComputeWithFunctionCall
+[       OK ] ParserBasicTest.ComputeWithFunctionCall (0 ms)
+[ RUN      ] ParserBasicTest.ComputeWithFunctionCallMultipleArgs
+[       OK ] ParserBasicTest.ComputeWithFunctionCallMultipleArgs (0 ms)
+[ RUN      ] ParserBasicTest.ComputeWithFunctionCallAndNumber
+[       OK ] ParserBasicTest.ComputeWithFunctionCallAndNumber (0 ms)
+[ RUN      ] ParserBasicTest.SimpleCallStatement
+[       OK ] ParserBasicTest.SimpleCallStatement (0 ms)
+[ RUN      ] ParserBasicTest.CallStatementNoArguments
+[       OK ] ParserBasicTest.CallStatementNoArguments (0 ms)
+[ RUN      ] ParserBasicTest.CallStatementMultipleArguments
+[       OK ] ParserBasicTest.CallStatementMultipleArguments (0 ms)
+[ RUN      ] ParserBasicTest.CallStatementWithNumbers
+[       OK ] ParserBasicTest.CallStatementWithNumbers (0 ms)
+[ RUN      ] ParserBasicTest.SimpleForStatement
+[       OK ] ParserBasicTest.SimpleForStatement (0 ms)
+[ RUN      ] ParserBasicTest.ForStatementMultipleTensors
+[       OK ] ParserBasicTest.ForStatementMultipleTensors (0 ms)
+[ RUN      ] ParserBasicTest.ForStatementMultipleIndices
+[       OK ] ParserBasicTest.ForStatementMultipleIndices (0 ms)
+[ RUN      ] ParserBasicTest.ForStatementMultipleStatements
+[       OK ] ParserBasicTest.ForStatementMultipleStatements (0 ms)
+[ RUN      ] ParserBasicTest.ForStatementEmpty
+[       OK ] ParserBasicTest.ForStatementEmpty (0 ms)
+[ RUN      ] ParserBasicTest.ProgramWithDeclarationAndCompute
+[       OK ] ParserBasicTest.ProgramWithDeclarationAndCompute (0 ms)
+[ RUN      ] ParserBasicTest.ProgramWithMultipleDeclarations
+[       OK ] ParserBasicTest.ProgramWithMultipleDeclarations (0 ms)
+[ RUN      ] ParserBasicTest.ProgramComplete
+[       OK ] ParserBasicTest.ProgramComplete (0 ms)
+[ RUN      ] ParserBasicTest.ProgramMatrixMultiplication
+[       OK ] ParserBasicTest.ProgramMatrixMultiplication (0 ms)
+[ RUN      ] ParserBasicTest.EmptyProgram
+[       OK ] ParserBasicTest.EmptyProgram (0 ms)
+[ RUN      ] ParserBasicTest.MissingSemicolonInDeclaration
+[       OK ] ParserBasicTest.MissingSemicolonInDeclaration (0 ms)
+[ RUN      ] ParserBasicTest.MissingSemicolonInCompute
+[       OK ] ParserBasicTest.MissingSemicolonInCompute (0 ms)
+[ RUN      ] ParserBasicTest.MissingSemicolonInCall
+[       OK ] ParserBasicTest.MissingSemicolonInCall (0 ms)
+[ RUN      ] ParserBasicTest.MismatchedBracketsInTensorAccess
+[       OK ] ParserBasicTest.MismatchedBracketsInTensorAccess (0 ms)
+[ RUN      ] ParserBasicTest.MismatchedBracesInFor
+[       OK ] ParserBasicTest.MismatchedBracesInFor (0 ms)
+[ RUN      ] ParserBasicTest.InvalidComputeMissingAssign
+[       OK ] ParserBasicTest.InvalidComputeMissingAssign (0 ms)
+[ RUN      ] ParserBasicTest.InvalidForMissingTensorList
+[       OK ] ParserBasicTest.InvalidForMissingTensorList (0 ms)
+[ RUN      ] ParserBasicTest.InvalidExpressionMissingOperand
+[       OK ] ParserBasicTest.InvalidExpressionMissingOperand (0 ms)
+[ RUN      ] ParserBasicTest.InvalidCallMissingParenthesis
+[       OK ] ParserBasicTest.InvalidCallMissingParenthesis (0 ms)
+[ RUN      ] ParserBasicTest.InvalidDeclarationMissingColon
+[       OK ] ParserBasicTest.InvalidDeclarationMissingColon (0 ms)
+[----------] 37 tests from ParserBasicTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 37 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 37 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ParserBasicTests" end time: Feb 16 18:02 GMT
+"ParserBasicTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/45 Testing: ASTGenerationTests
+6/45 Test: ASTGenerationTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_ast_generation"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"ASTGenerationTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+[==========] Running 27 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 27 tests from ASTGenerationTest
+[ RUN      ] ASTGenerationTest.DeclarationNodeSimple
+[       OK ] ASTGenerationTest.DeclarationNodeSimple (0 ms)
+[ RUN      ] ASTGenerationTest.DeclarationNodeWithShape
+[       OK ] ASTGenerationTest.DeclarationNodeWithShape (0 ms)
+[ RUN      ] ASTGenerationTest.TensorAccessSimple
+[       OK ] ASTGenerationTest.TensorAccessSimple (0 ms)
+[ RUN      ] ASTGenerationTest.TensorAccessMultipleIndices
+[       OK ] ASTGenerationTest.TensorAccessMultipleIndices (0 ms)
+[ RUN      ] ASTGenerationTest.NumberNodeInteger
+[       OK ] ASTGenerationTest.NumberNodeInteger (0 ms)
+[ RUN      ] ASTGenerationTest.NumberNodeDecimal
+[       OK ] ASTGenerationTest.NumberNodeDecimal (0 ms)
+[ RUN      ] ASTGenerationTest.IdentifierNode
+[       OK ] ASTGenerationTest.IdentifierNode (0 ms)
+[ RUN      ] ASTGenerationTest.BinaryOpAddition
+[       OK ] ASTGenerationTest.BinaryOpAddition (0 ms)
+[ RUN      ] ASTGenerationTest.BinaryOpMultiplication
+[       OK ] ASTGenerationTest.BinaryOpMultiplication (0 ms)
+[ RUN      ] ASTGenerationTest.BinaryOpChained
+[       OK ] ASTGenerationTest.BinaryOpChained (0 ms)
+[ RUN      ] ASTGenerationTest.FunctionCallNoArguments
+[       OK ] ASTGenerationTest.FunctionCallNoArguments (0 ms)
+[ RUN      ] ASTGenerationTest.FunctionCallSingleArgument
+[       OK ] ASTGenerationTest.FunctionCallSingleArgument (0 ms)
+[ RUN      ] ASTGenerationTest.FunctionCallMultipleArguments
+[       OK ] ASTGenerationTest.FunctionCallMultipleArguments (0 ms)
+[ RUN      ] ASTGenerationTest.ComputationSimple
+[       OK ] ASTGenerationTest.ComputationSimple (0 ms)
+[ RUN      ] ASTGenerationTest.ComputationWithBinaryOp
+[       OK ] ASTGenerationTest.ComputationWithBinaryOp (0 ms)
+[ RUN      ] ASTGenerationTest.ComputationWithFunctionCall
+[       OK ] ASTGenerationTest.ComputationWithFunctionCall (0 ms)
+[ RUN      ] ASTGenerationTest.CallStatementNoArguments
+[       OK ] ASTGenerationTest.CallStatementNoArguments (0 ms)
+[ RUN      ] ASTGenerationTest.CallStatementSingleArgument
+[       OK ] ASTGenerationTest.CallStatementSingleArgument (0 ms)
+[ RUN      ] ASTGenerationTest.CallStatementMultipleArguments
+[       OK ] ASTGenerationTest.CallStatementMultipleArguments (0 ms)
+[ RUN      ] ASTGenerationTest.ForStatementEmpty
+[       OK ] ASTGenerationTest.ForStatementEmpty (0 ms)
+[ RUN      ] ASTGenerationTest.ForStatementMultipleTensorsAndIndices
+[       OK ] ASTGenerationTest.ForStatementMultipleTensorsAndIndices (0 ms)
+[ RUN      ] ASTGenerationTest.ForStatementWithBody
+[       OK ] ASTGenerationTest.ForStatementWithBody (0 ms)
+[ RUN      ] ASTGenerationTest.ProgramEmpty
+[       OK ] ASTGenerationTest.ProgramEmpty (0 ms)
+[ RUN      ] ASTGenerationTest.ProgramSingleStatement
+[       OK ] ASTGenerationTest.ProgramSingleStatement (0 ms)
+[ RUN      ] ASTGenerationTest.ProgramMultipleStatements
+[       OK ] ASTGenerationTest.ProgramMultipleStatements (0 ms)
+[ RUN      ] ASTGenerationTest.CompleteMatrixMultiplication
+[       OK ] ASTGenerationTest.CompleteMatrixMultiplication (0 ms)
+[ RUN      ] ASTGenerationTest.CompleteWithFunctionCall
+[       OK ] ASTGenerationTest.CompleteWithFunctionCall (0 ms)
+[----------] 27 tests from ASTGenerationTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 27 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 27 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ASTGenerationTests" end time: Feb 16 18:02 GMT
+"ASTGenerationTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/45 Testing: TypedDeclarationTests
+7/45 Test: TypedDeclarationTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_typed_declarations"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"TypedDeclarationTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+[==========] Running 15 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 15 tests from TypedDeclarationTest
+[ RUN      ] TypedDeclarationTest.DenseTypeNoShape
+[       OK ] TypedDeclarationTest.DenseTypeNoShape (0 ms)
+[ RUN      ] TypedDeclarationTest.CSRTypeNoShape
+[       OK ] TypedDeclarationTest.CSRTypeNoShape (0 ms)
+[ RUN      ] TypedDeclarationTest.COOTypeNoShape
+[       OK ] TypedDeclarationTest.COOTypeNoShape (0 ms)
+[ RUN      ] TypedDeclarationTest.CSCTypeNoShape
+[       OK ] TypedDeclarationTest.CSCTypeNoShape (0 ms)
+[ RUN      ] TypedDeclarationTest.ELLPACKTypeNoShape
+[       OK ] TypedDeclarationTest.ELLPACKTypeNoShape (0 ms)
+[ RUN      ] TypedDeclarationTest.DIATypeNoShape
+[       OK ] TypedDeclarationTest.DIATypeNoShape (0 ms)
+[ RUN      ] TypedDeclarationTest.DenseWithShape1D
+[       OK ] TypedDeclarationTest.DenseWithShape1D (0 ms)
+[ RUN      ] TypedDeclarationTest.DenseWithShape2D
+[       OK ] TypedDeclarationTest.DenseWithShape2D (0 ms)
+[ RUN      ] TypedDeclarationTest.CSRWithShape2D
+[       OK ] TypedDeclarationTest.CSRWithShape2D (0 ms)
+[ RUN      ] TypedDeclarationTest.COOWithShape3D
+[       OK ] TypedDeclarationTest.COOWithShape3D (0 ms)
+[ RUN      ] TypedDeclarationTest.CSCWithLargeShape
+[       OK ] TypedDeclarationTest.CSCWithLargeShape (0 ms)
+[ RUN      ] TypedDeclarationTest.ELLPACKWithShape
+[       OK ] TypedDeclarationTest.ELLPACKWithShape (0 ms)
+[ RUN      ] TypedDeclarationTest.DIAWithShape
+[       OK ] TypedDeclarationTest.DIAWithShape (0 ms)
+[ RUN      ] TypedDeclarationTest.ProgramWithVariousTensorTypes
+[       OK ] TypedDeclarationTest.ProgramWithVariousTensorTypes (0 ms)
+[ RUN      ] TypedDeclarationTest.CompleteTypedProgram
+[       OK ] TypedDeclarationTest.CompleteTypedProgram (0 ms)
+[----------] 15 tests from TypedDeclarationTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 15 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 15 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"TypedDeclarationTests" end time: Feb 16 18:02 GMT
+"TypedDeclarationTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/45 Testing: ParserASTIntegrationTests
+8/45 Test: ParserASTIntegrationTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_parser_ast_integration"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"ParserASTIntegrationTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+[==========] Running 17 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 17 tests from ParserASTIntegrationTest
+[ RUN      ] ParserASTIntegrationTest.SimpleDeclaration
+[       OK ] ParserASTIntegrationTest.SimpleDeclaration (0 ms)
+[ RUN      ] ParserASTIntegrationTest.DeclarationWithShape
+[       OK ] ParserASTIntegrationTest.DeclarationWithShape (0 ms)
+[ RUN      ] ParserASTIntegrationTest.ComputeSimple
+[       OK ] ParserASTIntegrationTest.ComputeSimple (0 ms)
+[ RUN      ] ParserASTIntegrationTest.ComputeWithAddition
+[       OK ] ParserASTIntegrationTest.ComputeWithAddition (0 ms)
+[ RUN      ] ParserASTIntegrationTest.ComputeWithMultiplication
+[       OK ] ParserASTIntegrationTest.ComputeWithMultiplication (0 ms)
+[ RUN      ] ParserASTIntegrationTest.ComputeWithNumber
+[       OK ] ParserASTIntegrationTest.ComputeWithNumber (0 ms)
+[ RUN      ] ParserASTIntegrationTest.ComputeWithFunctionCall
+[       OK ] ParserASTIntegrationTest.ComputeWithFunctionCall (0 ms)
+[ RUN      ] ParserASTIntegrationTest.CallStatementNoArguments
+[       OK ] ParserASTIntegrationTest.CallStatementNoArguments (0 ms)
+[ RUN      ] ParserASTIntegrationTest.CallStatementSingleArgument
+[       OK ] ParserASTIntegrationTest.CallStatementSingleArgument (0 ms)
+[ RUN      ] ParserASTIntegrationTest.CallStatementMultipleArguments
+[       OK ] ParserASTIntegrationTest.CallStatementMultipleArguments (0 ms)
+[ RUN      ] ParserASTIntegrationTest.ForStatementEmpty
+[       OK ] ParserASTIntegrationTest.ForStatementEmpty (0 ms)
+[ RUN      ] ParserASTIntegrationTest.ForStatementWithBody
+[       OK ] ParserASTIntegrationTest.ForStatementWithBody (0 ms)
+[ RUN      ] ParserASTIntegrationTest.ForStatementMultipleTensorsAndIndices
+[       OK ] ParserASTIntegrationTest.ForStatementMultipleTensorsAndIndices (0 ms)
+[ RUN      ] ParserASTIntegrationTest.CompleteMatrixMultiplication
+[       OK ] ParserASTIntegrationTest.CompleteMatrixMultiplication (0 ms)
+[ RUN      ] ParserASTIntegrationTest.CompleteWithFunctionCallAndOptimize
+[       OK ] ParserASTIntegrationTest.CompleteWithFunctionCallAndOptimize (0 ms)
+[ RUN      ] ParserASTIntegrationTest.MultipleDeclarations
+[       OK ] ParserASTIntegrationTest.MultipleDeclarations (0 ms)
+[ RUN      ] ParserASTIntegrationTest.EmptyProgram
+[       OK ] ParserASTIntegrationTest.EmptyProgram (0 ms)
+[----------] 17 tests from ParserASTIntegrationTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 17 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 17 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ParserASTIntegrationTests" end time: Feb 16 18:02 GMT
+"ParserASTIntegrationTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/45 Testing: TensorDeclarationTests
+9/45 Test: TensorDeclarationTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_tensor_declarations"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"TensorDeclarationTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+[==========] Running 28 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 28 tests from TensorDeclarationTest
+[ RUN      ] TensorDeclarationTest.DenseDeclaration
+[       OK ] TensorDeclarationTest.DenseDeclaration (0 ms)
+[ RUN      ] TensorDeclarationTest.CSRDeclaration
+[       OK ] TensorDeclarationTest.CSRDeclaration (0 ms)
+[ RUN      ] TensorDeclarationTest.COODeclaration
+[       OK ] TensorDeclarationTest.COODeclaration (0 ms)
+[ RUN      ] TensorDeclarationTest.CSCDeclaration
+[       OK ] TensorDeclarationTest.CSCDeclaration (0 ms)
+[ RUN      ] TensorDeclarationTest.ELLPACKDeclaration
+[       OK ] TensorDeclarationTest.ELLPACKDeclaration (0 ms)
+[ RUN      ] TensorDeclarationTest.DIADeclaration
+[       OK ] TensorDeclarationTest.DIADeclaration (0 ms)
+[ RUN      ] TensorDeclarationTest.DenseWithShape1D
+[       OK ] TensorDeclarationTest.DenseWithShape1D (0 ms)
+[ RUN      ] TensorDeclarationTest.DenseWithShape2D
+[       OK ] TensorDeclarationTest.DenseWithShape2D (0 ms)
+[ RUN      ] TensorDeclarationTest.CSRWithShape2D
+[       OK ] TensorDeclarationTest.CSRWithShape2D (0 ms)
+[ RUN      ] TensorDeclarationTest.COOWithShape3D
+[       OK ] TensorDeclarationTest.COOWithShape3D (0 ms)
+[ RUN      ] TensorDeclarationTest.CSCWithShape2D
+[       OK ] TensorDeclarationTest.CSCWithShape2D (0 ms)
+[ RUN      ] TensorDeclarationTest.ELLPACKWithShape
+[       OK ] TensorDeclarationTest.ELLPACKWithShape (0 ms)
+[ RUN      ] TensorDeclarationTest.DIAWithShape
+[       OK ] TensorDeclarationTest.DIAWithShape (0 ms)
+[ RUN      ] TensorDeclarationTest.NoWhitespace
+[       OK ] TensorDeclarationTest.NoWhitespace (0 ms)
+[ RUN      ] TensorDeclarationTest.ExtraWhitespace
+[       OK ] TensorDeclarationTest.ExtraWhitespace (0 ms)
+[ RUN      ] TensorDeclarationTest.MultipleDeclarations
+[       OK ] TensorDeclarationTest.MultipleDeclarations (0 ms)
+[ RUN      ] TensorDeclarationTest.DeclarationWithCompute
+[       OK ] TensorDeclarationTest.DeclarationWithCompute (0 ms)
+[ RUN      ] TensorDeclarationTest.CompleteProgram
+[       OK ] TensorDeclarationTest.CompleteProgram (0 ms)
+[ RUN      ] TensorDeclarationTest.MissingTensorKeyword
+[       OK ] TensorDeclarationTest.MissingTensorKeyword (0 ms)
+[ RUN      ] TensorDeclarationTest.MissingColon
+[       OK ] TensorDeclarationTest.MissingColon (0 ms)
+[ RUN      ] TensorDeclarationTest.MissingType
+[       OK ] TensorDeclarationTest.MissingType (0 ms)
+[ RUN      ] TensorDeclarationTest.InvalidTypeLowercase
+[       OK ] TensorDeclarationTest.InvalidTypeLowercase (0 ms)
+[ RUN      ] TensorDeclarationTest.MissingSemicolon
+[       OK ] TensorDeclarationTest.MissingSemicolon (0 ms)
+[ RUN      ] TensorDeclarationTest.MismatchedAngleBrackets
+[       OK ] TensorDeclarationTest.MismatchedAngleBrackets (0 ms)
+[ RUN      ] TensorDeclarationTest.MissingClosingAngleBracket
+[       OK ] TensorDeclarationTest.MissingClosingAngleBracket (0 ms)
+[ RUN      ] TensorDeclarationTest.EmptyShapeList
+[       OK ] TensorDeclarationTest.EmptyShapeList (0 ms)
+[ RUN      ] TensorDeclarationTest.TrailingCommaInShape
+[       OK ] TensorDeclarationTest.TrailingCommaInShape (0 ms)
+[ RUN      ] TensorDeclarationTest.MissingShapeDimension
+[       OK ] TensorDeclarationTest.MissingShapeDimension (0 ms)
+[----------] 28 tests from TensorDeclarationTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 28 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 28 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"TensorDeclarationTests" end time: Feb 16 18:02 GMT
+"TensorDeclarationTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/45 Testing: TypedIntegrationTests
+10/45 Test: TypedIntegrationTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_typed_integration"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"TypedIntegrationTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+[==========] Running 16 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 16 tests from TypedIntegrationTest
+[ RUN      ] TypedIntegrationTest.ParseDenseDeclaration
+[       OK ] TypedIntegrationTest.ParseDenseDeclaration (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseCSRDeclaration
+[       OK ] TypedIntegrationTest.ParseCSRDeclaration (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseCOODeclaration
+[       OK ] TypedIntegrationTest.ParseCOODeclaration (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseCSCDeclaration
+[       OK ] TypedIntegrationTest.ParseCSCDeclaration (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseELLPACKDeclaration
+[       OK ] TypedIntegrationTest.ParseELLPACKDeclaration (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseDIADeclaration
+[       OK ] TypedIntegrationTest.ParseDIADeclaration (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseDenseWithShape1D
+[       OK ] TypedIntegrationTest.ParseDenseWithShape1D (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseDenseWithShape2D
+[       OK ] TypedIntegrationTest.ParseDenseWithShape2D (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseCSRWithShape2D
+[       OK ] TypedIntegrationTest.ParseCSRWithShape2D (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseCOOWithShape3D
+[       OK ] TypedIntegrationTest.ParseCOOWithShape3D (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseNoWhitespace
+[       OK ] TypedIntegrationTest.ParseNoWhitespace (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseExtraWhitespace
+[       OK ] TypedIntegrationTest.ParseExtraWhitespace (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseMultipleTypedDeclarations
+[       OK ] TypedIntegrationTest.ParseMultipleTypedDeclarations (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseTypedProgramWithCompute
+[       OK ] TypedIntegrationTest.ParseTypedProgramWithCompute (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseTypedMatrixMultiplication
+[       OK ] TypedIntegrationTest.ParseTypedMatrixMultiplication (0 ms)
+[ RUN      ] TypedIntegrationTest.ParseTypedProgramWithCalls
+[       OK ] TypedIntegrationTest.ParseTypedProgramWithCalls (0 ms)
+[----------] 16 tests from TypedIntegrationTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 16 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 16 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"TypedIntegrationTests" end time: Feb 16 18:02 GMT
+"TypedIntegrationTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/45 Testing: SpMMParsingTests
+11/45 Test: SpMMParsingTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_spmm_parsing"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"SpMMParsingTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 5 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 5 tests from ParserSpMMTest
+[ RUN      ] ParserSpMMTest.BasicSpMMDeclaration
+[       OK ] ParserSpMMTest.BasicSpMMDeclaration (0 ms)
+[ RUN      ] ParserSpMMTest.SpMMWithCSCFormat
+[       OK ] ParserSpMMTest.SpMMWithCSCFormat (0 ms)
+[ RUN      ] ParserSpMMTest.SpMMWithDifferentIndexNames
+[       OK ] ParserSpMMTest.SpMMWithDifferentIndexNames (0 ms)
+[ RUN      ] ParserSpMMTest.ParsesThreeLoopIndices
+[       OK ] ParserSpMMTest.ParsesThreeLoopIndices (0 ms)
+[ RUN      ] ParserSpMMTest.RejectsMismatchedTensorDimensions
+[       OK ] ParserSpMMTest.RejectsMismatchedTensorDimensions (0 ms)
+[----------] 5 tests from ParserSpMMTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 5 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 5 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SpMMParsingTests" end time: Feb 16 18:02 GMT
+"SpMMParsingTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/45 Testing: IRDataStructuresTests
+12/45 Test: IRDataStructuresTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_ir_data_structures"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"IRDataStructuresTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 16 tests from 5 test suites.
+[----------] Global test environment set-up.
+[----------] 4 tests from IRTensorTest
+[ RUN      ] IRTensorTest.CreateCSRTensor
+[       OK ] IRTensorTest.CreateCSRTensor (0 ms)
+[ RUN      ] IRTensorTest.CreateCSCTensor
+[       OK ] IRTensorTest.CreateCSCTensor (0 ms)
+[ RUN      ] IRTensorTest.CreateDenseVector
+[       OK ] IRTensorTest.CreateDenseVector (0 ms)
+[ RUN      ] IRTensorTest.CreateDenseMatrix
+[       OK ] IRTensorTest.CreateDenseMatrix (0 ms)
+[----------] 4 tests from IRTensorTest (0 ms total)
+
+[----------] 2 tests from IRIndexVarTest
+[ RUN      ] IRIndexVarTest.CreateDenseIndex
+[       OK ] IRIndexVarTest.CreateDenseIndex (0 ms)
+[ RUN      ] IRIndexVarTest.CreateSparseIndex
+[       OK ] IRIndexVarTest.CreateSparseIndex (0 ms)
+[----------] 2 tests from IRIndexVarTest (0 ms total)
+
+[----------] 4 tests from IRLoopTest
+[ RUN      ] IRLoopTest.CreateDenseLoop
+[       OK ] IRLoopTest.CreateDenseLoop (0 ms)
+[ RUN      ] IRLoopTest.CreateSparseLoop
+[       OK ] IRLoopTest.CreateSparseLoop (0 ms)
+[ RUN      ] IRLoopTest.CreateNestedLoopsSpMV
+[       OK ] IRLoopTest.CreateNestedLoopsSpMV (0 ms)
+[ RUN      ] IRLoopTest.CreateNestedLoopsSpMM
+[       OK ] IRLoopTest.CreateNestedLoopsSpMM (0 ms)
+[----------] 4 tests from IRLoopTest (0 ms total)
+
+[----------] 3 tests from IRLoopOptimizationsTest
+[ RUN      ] IRLoopOptimizationsTest.DefaultState
+[       OK ] IRLoopOptimizationsTest.DefaultState (0 ms)
+[ RUN      ] IRLoopOptimizationsTest.ReorderingMetadata
+[       OK ] IRLoopOptimizationsTest.ReorderingMetadata (0 ms)
+[ RUN      ] IRLoopOptimizationsTest.BlockingMetadata
+[       OK ] IRLoopOptimizationsTest.BlockingMetadata (0 ms)
+[----------] 3 tests from IRLoopOptimizationsTest (0 ms total)
+
+[----------] 3 tests from IROperationTest
+[ RUN      ] IROperationTest.CreateSpMVOperation
+[       OK ] IROperationTest.CreateSpMVOperation (0 ms)
+[ RUN      ] IROperationTest.CreateSpMMOperation
+[       OK ] IROperationTest.CreateSpMMOperation (0 ms)
+[ RUN      ] IROperationTest.OperationWithLoopNest
+[       OK ] IROperationTest.OperationWithLoopNest (0 ms)
+[----------] 3 tests from IROperationTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 16 tests from 5 test suites ran. (0 ms total)
+[  PASSED  ] 16 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"IRDataStructuresTests" end time: Feb 16 18:02 GMT
+"IRDataStructuresTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/45 Testing: IRLoweringTests
+13/45 Test: IRLoweringTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_ir_lowering"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"IRLoweringTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 19 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 19 tests from IRLoweringTest
+[ RUN      ] IRLoweringTest.SpMV_Basic_CSR
+[       OK ] IRLoweringTest.SpMV_Basic_CSR (0 ms)
+[ RUN      ] IRLoweringTest.SpMV_CSC_Format
+[       OK ] IRLoweringTest.SpMV_CSC_Format (0 ms)
+[ RUN      ] IRLoweringTest.SpMV_ReversedIndexOrder
+[       OK ] IRLoweringTest.SpMV_ReversedIndexOrder (0 ms)
+[ RUN      ] IRLoweringTest.SpMM_Basic_CSR
+[       OK ] IRLoweringTest.SpMM_Basic_CSR (0 ms)
+[ RUN      ] IRLoweringTest.SpMM_CSC_Format
+[       OK ] IRLoweringTest.SpMM_CSC_Format (0 ms)
+[ RUN      ] IRLoweringTest.IndexClassification_FreeIndices
+[       OK ] IRLoweringTest.IndexClassification_FreeIndices (0 ms)
+[ RUN      ] IRLoweringTest.IndexClassification_BoundIndices_SpMM
+[       OK ] IRLoweringTest.IndexClassification_BoundIndices_SpMM (0 ms)
+[ RUN      ] IRLoweringTest.SparseVsDenseClassification_CSR
+[       OK ] IRLoweringTest.SparseVsDenseClassification_CSR (0 ms)
+[ RUN      ] IRLoweringTest.DimensionExtraction
+[       OK ] IRLoweringTest.DimensionExtraction (0 ms)
+[ RUN      ] IRLoweringTest.LoopBoundsFromDimensions
+[       OK ] IRLoweringTest.LoopBoundsFromDimensions (0 ms)
+[ RUN      ] IRLoweringTest.TensorWithoutShape
+[       OK ] IRLoweringTest.TensorWithoutShape (0 ms)
+[ RUN      ] IRLoweringTest.SingleComputeStatement
+[       OK ] IRLoweringTest.SingleComputeStatement (0 ms)
+[ RUN      ] IRLoweringTest.LowerToIRAll_MultipleTopLevelComputes_Success
+[       OK ] IRLoweringTest.LowerToIRAll_MultipleTopLevelComputes_Success (0 ms)
+[ RUN      ] IRLoweringTest.LowerToIRAll_NestedForComputes_Success
+[       OK ] IRLoweringTest.LowerToIRAll_NestedForComputes_Success (0 ms)
+[ RUN      ] IRLoweringTest.LowerToIRAll_FailsWholeCall_OnAnyInvalidCompute
+[       OK ] IRLoweringTest.LowerToIRAll_FailsWholeCall_OnAnyInvalidCompute (0 ms)
+[ RUN      ] IRLoweringTest.LowerToIR_BackwardCompatibility_FirstTopLevelOnly
+[       OK ] IRLoweringTest.LowerToIR_BackwardCompatibility_FirstTopLevelOnly (0 ms)
+[ RUN      ] IRLoweringTest.FormatMapping_Dense
+[       OK ] IRLoweringTest.FormatMapping_Dense (0 ms)
+[ RUN      ] IRLoweringTest.FormatMapping_CSR
+[       OK ] IRLoweringTest.FormatMapping_CSR (0 ms)
+[ RUN      ] IRLoweringTest.FormatMapping_CSC
+[       OK ] IRLoweringTest.FormatMapping_CSC (0 ms)
+[----------] 19 tests from IRLoweringTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 19 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 19 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"IRLoweringTests" end time: Feb 16 18:02 GMT
+"IRLoweringTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/45 Testing: IRPrinterTests
+14/45 Test: IRPrinterTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_ir_printer"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"IRPrinterTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 9 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 9 tests from IRPrinterTest
+[ RUN      ] IRPrinterTest.PrintTensor
+[       OK ] IRPrinterTest.PrintTensor (0 ms)
+[ RUN      ] IRPrinterTest.PrintDenseLoop
+[       OK ] IRPrinterTest.PrintDenseLoop (0 ms)
+[ RUN      ] IRPrinterTest.PrintSparseLoop
+[       OK ] IRPrinterTest.PrintSparseLoop (0 ms)
+[ RUN      ] IRPrinterTest.PrintNestedLoops
+[       OK ] IRPrinterTest.PrintNestedLoops (0 ms)
+[ RUN      ] IRPrinterTest.PrintOperation
+[       OK ] IRPrinterTest.PrintOperation (0 ms)
+[ RUN      ] IRPrinterTest.PrintOptimizationMetadata
+[       OK ] IRPrinterTest.PrintOptimizationMetadata (0 ms)
+[ RUN      ] IRPrinterTest.PrintSpMMOperation
+[       OK ] IRPrinterTest.PrintSpMMOperation (0 ms)
+[ RUN      ] IRPrinterTest.FormatToString
+[       OK ] IRPrinterTest.FormatToString (0 ms)
+[ RUN      ] IRPrinterTest.LoopKindToString
+[       OK ] IRPrinterTest.LoopKindToString (0 ms)
+[----------] 9 tests from IRPrinterTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 9 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 9 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"IRPrinterTests" end time: Feb 16 18:02 GMT
+"IRPrinterTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/45 Testing: IRVisitorTests
+15/45 Test: IRVisitorTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_ir_visitor"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"IRVisitorTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 10 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 10 tests from IRVisitorTest
+[ RUN      ] IRVisitorTest.TraverseSingleLoop
+[       OK ] IRVisitorTest.TraverseSingleLoop (0 ms)
+[ RUN      ] IRVisitorTest.TraverseNestedLoops_SpMV
+[       OK ] IRVisitorTest.TraverseNestedLoops_SpMV (0 ms)
+[ RUN      ] IRVisitorTest.TraverseNestedLoops_SpMM
+[       OK ] IRVisitorTest.TraverseNestedLoops_SpMM (0 ms)
+[ RUN      ] IRVisitorTest.TraverseOperation
+[       OK ] IRVisitorTest.TraverseOperation (0 ms)
+[ RUN      ] IRVisitorTest.CountLoopKinds_SpMV
+[       OK ] IRVisitorTest.CountLoopKinds_SpMV (0 ms)
+[ RUN      ] IRVisitorTest.CountLoopKinds_SpMM
+[       OK ] IRVisitorTest.CountLoopKinds_SpMM (0 ms)
+[ RUN      ] IRVisitorTest.MeasureLoopDepth_SpMV
+[       OK ] IRVisitorTest.MeasureLoopDepth_SpMV (0 ms)
+[ RUN      ] IRVisitorTest.MeasureLoopDepth_SpMM
+[       OK ] IRVisitorTest.MeasureLoopDepth_SpMM (0 ms)
+[ RUN      ] IRVisitorTest.HandleEmptyOperation
+[       OK ] IRVisitorTest.HandleEmptyOperation (0 ms)
+[ RUN      ] IRVisitorTest.HandleLeafLoop
+[       OK ] IRVisitorTest.HandleLeafLoop (0 ms)
+[----------] 10 tests from IRVisitorTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 10 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 10 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"IRVisitorTests" end time: Feb 16 18:02 GMT
+"IRVisitorTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/45 Testing: SpMMIRLoweringTests
+16/45 Test: SpMMIRLoweringTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_spmm_ir_lowering"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"SpMMIRLoweringTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 7 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 7 tests from IRSpMMTest
+[ RUN      ] IRSpMMTest.LowerSpMMToIR_CSR
+[       OK ] IRSpMMTest.LowerSpMMToIR_CSR (0 ms)
+[ RUN      ] IRSpMMTest.BuildSpMMLoopNest_CSR
+[       OK ] IRSpMMTest.BuildSpMMLoopNest_CSR (0 ms)
+[ RUN      ] IRSpMMTest.BuildSpMMLoopNest_CSC
+[       OK ] IRSpMMTest.BuildSpMMLoopNest_CSC (0 ms)
+[ RUN      ] IRSpMMTest.IdentifyFreeAndBoundIndices
+[       OK ] IRSpMMTest.IdentifyFreeAndBoundIndices (0 ms)
+[ RUN      ] IRSpMMTest.CorrectDimensionBounds
+[       OK ] IRSpMMTest.CorrectDimensionBounds (0 ms)
+[ RUN      ] IRSpMMTest.VerifyKernelType
+[       OK ] IRSpMMTest.VerifyKernelType (0 ms)
+[ RUN      ] IRSpMMTest.DifferentMatrixSizes
+[       OK ] IRSpMMTest.DifferentMatrixSizes (0 ms)
+[----------] 7 tests from IRSpMMTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 7 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 7 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SpMMIRLoweringTests" end time: Feb 16 18:02 GMT
+"SpMMIRLoweringTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+17/45 Testing: NewKernelDetectionTests
+17/45 Test: NewKernelDetectionTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_new_kernel_detection"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"NewKernelDetectionTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 9 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 9 tests from KernelDetectionTest
+[ RUN      ] KernelDetectionTest.DetectSpMV
+[       OK ] KernelDetectionTest.DetectSpMV (0 ms)
+[ RUN      ] KernelDetectionTest.DetectSpAdd
+[       OK ] KernelDetectionTest.DetectSpAdd (0 ms)
+[ RUN      ] KernelDetectionTest.DetectSpElMul
+[       OK ] KernelDetectionTest.DetectSpElMul (0 ms)
+[ RUN      ] KernelDetectionTest.DetectSpMM
+[       OK ] KernelDetectionTest.DetectSpMM (0 ms)
+[ RUN      ] KernelDetectionTest.DetectSpGEMM
+[       OK ] KernelDetectionTest.DetectSpGEMM (0 ms)
+[ RUN      ] KernelDetectionTest.DetectSDDMM
+[       OK ] KernelDetectionTest.DetectSDDMM (0 ms)
+[ RUN      ] KernelDetectionTest.SpGEMMvsSpMMDiscrimination
+[       OK ] KernelDetectionTest.SpGEMMvsSpMMDiscrimination (0 ms)
+[ RUN      ] KernelDetectionTest.SpAddvsSpElMulDiscrimination
+[       OK ] KernelDetectionTest.SpAddvsSpElMulDiscrimination (0 ms)
+[ RUN      ] KernelDetectionTest.FallbackToUnknown
+[       OK ] KernelDetectionTest.FallbackToUnknown (0 ms)
+[----------] 9 tests from KernelDetectionTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 9 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 9 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"NewKernelDetectionTests" end time: Feb 16 18:02 GMT
+"NewKernelDetectionTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+18/45 Testing: NewKernelLoweringTests
+18/45 Test: NewKernelLoweringTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_new_kernel_lowering"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"NewKernelLoweringTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 17 tests from 6 test suites.
+[----------] Global test environment set-up.
+[----------] 4 tests from SpAddLoweringTest
+[ RUN      ] SpAddLoweringTest.KernelDetectedAsSpadd
+[       OK ] SpAddLoweringTest.KernelDetectedAsSpadd (0 ms)
+[ RUN      ] SpAddLoweringTest.OuterDenseWithTwoSiblingChildren
+[       OK ] SpAddLoweringTest.OuterDenseWithTwoSiblingChildren (0 ms)
+[ RUN      ] SpAddLoweringTest.SiblingChildrenHaveCorrectTensorNames
+[       OK ] SpAddLoweringTest.SiblingChildrenHaveCorrectTensorNames (0 ms)
+[ RUN      ] SpAddLoweringTest.ExpressionInfoRootOpIsAdd
+[       OK ] SpAddLoweringTest.ExpressionInfoRootOpIsAdd (0 ms)
+[----------] 4 tests from SpAddLoweringTest (0 ms total)
+
+[----------] 3 tests from SpElMulLoweringTest
+[ RUN      ] SpElMulLoweringTest.KernelDetectedAsSpelmul
+[       OK ] SpElMulLoweringTest.KernelDetectedAsSpelmul (0 ms)
+[ RUN      ] SpElMulLoweringTest.InnerLoopHasIntersectionMerge
+[       OK ] SpElMulLoweringTest.InnerLoopHasIntersectionMerge (0 ms)
+[ RUN      ] SpElMulLoweringTest.MergeLoopTagsBothTensors
+[       OK ] SpElMulLoweringTest.MergeLoopTagsBothTensors (0 ms)
+[----------] 3 tests from SpElMulLoweringTest (0 ms total)
+
+[----------] 2 tests from SpGEMMLoweringTest
+[ RUN      ] SpGEMMLoweringTest.KernelDetectedAsSpgemm
+[       OK ] SpGEMMLoweringTest.KernelDetectedAsSpgemm (0 ms)
+[ RUN      ] SpGEMMLoweringTest.ThreeLevelNestDenseSparseASparseB
+[       OK ] SpGEMMLoweringTest.ThreeLevelNestDenseSparseASparseB (0 ms)
+[----------] 2 tests from SpGEMMLoweringTest (0 ms total)
+
+[----------] 3 tests from SDDMMLoweringTest
+[ RUN      ] SDDMMLoweringTest.KernelDetectedAsSddmm
+[       OK ] SDDMMLoweringTest.KernelDetectedAsSddmm (0 ms)
+[ RUN      ] SDDMMLoweringTest.ExprInfoHasThreeAccesses
+[       OK ] SDDMMLoweringTest.ExprInfoHasThreeAccesses (0 ms)
+[ RUN      ] SDDMMLoweringTest.SparseSamplingLoopWithDenseChild
+[       OK ] SDDMMLoweringTest.SparseSamplingLoopWithDenseChild (0 ms)
+[----------] 3 tests from SDDMMLoweringTest (0 ms total)
+
+[----------] 3 tests from FusedSpMVLoweringTest
+[ RUN      ] FusedSpMVLoweringTest.IsFusedWithReluFunction
+[       OK ] FusedSpMVLoweringTest.IsFusedWithReluFunction (0 ms)
+[ RUN      ] FusedSpMVLoweringTest.KernelStillDetectedAsSpMV
+[       OK ] FusedSpMVLoweringTest.KernelStillDetectedAsSpMV (0 ms)
+[ RUN      ] FusedSpMVLoweringTest.LoopNestIdenticalToNonFused
+[       OK ] FusedSpMVLoweringTest.LoopNestIdenticalToNonFused (0 ms)
+[----------] 3 tests from FusedSpMVLoweringTest (0 ms total)
+
+[----------] 2 tests from BackwardCompatTest
+[ RUN      ] BackwardCompatTest.SpMVStillDetectedCorrectly
+[       OK ] BackwardCompatTest.SpMVStillDetectedCorrectly (0 ms)
+[ RUN      ] BackwardCompatTest.SpMMStillDetectedCorrectly
+[       OK ] BackwardCompatTest.SpMMStillDetectedCorrectly (0 ms)
+[----------] 2 tests from BackwardCompatTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 17 tests from 6 test suites ran. (0 ms total)
+[  PASSED  ] 17 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"NewKernelLoweringTests" end time: Feb 16 18:02 GMT
+"NewKernelLoweringTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+19/45 Testing: OptConfigTests
+19/45 Test: OptConfigTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_opt_config"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"OptConfigTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 14 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 14 tests from OptConfigTest
+[ RUN      ] OptConfigTest.DefaultsToNoOptimizations
+[       OK ] OptConfigTest.DefaultsToNoOptimizations (0 ms)
+[ RUN      ] OptConfigTest.DefaultBlockSize
+[       OK ] OptConfigTest.DefaultBlockSize (0 ms)
+[ RUN      ] OptConfigTest.DefaultOutputFile
+[       OK ] OptConfigTest.DefaultOutputFile (0 ms)
+[ RUN      ] OptConfigTest.EnableInterchangeOnly
+[       OK ] OptConfigTest.EnableInterchangeOnly (0 ms)
+[ RUN      ] OptConfigTest.EnableBlockingOnly
+[       OK ] OptConfigTest.EnableBlockingOnly (0 ms)
+[ RUN      ] OptConfigTest.EnableBothOptimizations
+[       OK ] OptConfigTest.EnableBothOptimizations (0 ms)
+[ RUN      ] OptConfigTest.CustomBlockSize
+[       OK ] OptConfigTest.CustomBlockSize (0 ms)
+[ RUN      ] OptConfigTest.CustomOutputFile
+[       OK ] OptConfigTest.CustomOutputFile (0 ms)
+[ RUN      ] OptConfigTest.BaselineConfiguration
+[       OK ] OptConfigTest.BaselineConfiguration (0 ms)
+[ RUN      ] OptConfigTest.BlockingOnlyConfiguration
+[       OK ] OptConfigTest.BlockingOnlyConfiguration (0 ms)
+[ RUN      ] OptConfigTest.InterchangeOnlyConfiguration
+[       OK ] OptConfigTest.InterchangeOnlyConfiguration (0 ms)
+[ RUN      ] OptConfigTest.FullOptimizationConfiguration
+[       OK ] OptConfigTest.FullOptimizationConfiguration (0 ms)
+[ RUN      ] OptConfigTest.ConfigurationCopy
+[       OK ] OptConfigTest.ConfigurationCopy (0 ms)
+[ RUN      ] OptConfigTest.AllDefaultsTogether
+[       OK ] OptConfigTest.AllDefaultsTogether (0 ms)
+[----------] 14 tests from OptConfigTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 14 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 14 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"OptConfigTests" end time: Feb 16 18:02 GMT
+"OptConfigTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+20/45 Testing: FormatAnalyzerTests
+20/45 Test: FormatAnalyzerTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_format_analyzer"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"FormatAnalyzerTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 11 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 11 tests from FormatAnalyzerTest
+[ RUN      ] FormatAnalyzerTest.CSR_NaturalOrder_RowOuter
+[       OK ] FormatAnalyzerTest.CSR_NaturalOrder_RowOuter (0 ms)
+[ RUN      ] FormatAnalyzerTest.CSC_NaturalOrder_ColOuter
+[       OK ] FormatAnalyzerTest.CSC_NaturalOrder_ColOuter (0 ms)
+[ RUN      ] FormatAnalyzerTest.Dense_NaturalOrder_RowMajor
+[       OK ] FormatAnalyzerTest.Dense_NaturalOrder_RowMajor (0 ms)
+[ RUN      ] FormatAnalyzerTest.CSR_OuterIndexIsDense
+[       OK ] FormatAnalyzerTest.CSR_OuterIndexIsDense (0 ms)
+[ RUN      ] FormatAnalyzerTest.CSR_InnerIndexIsSparse
+[       OK ] FormatAnalyzerTest.CSR_InnerIndexIsSparse (0 ms)
+[ RUN      ] FormatAnalyzerTest.CSC_OuterIndexIsDense
+[       OK ] FormatAnalyzerTest.CSC_OuterIndexIsDense (0 ms)
+[ RUN      ] FormatAnalyzerTest.CSR_MatchingOrder_NoReorderNeeded
+[       OK ] FormatAnalyzerTest.CSR_MatchingOrder_NoReorderNeeded (0 ms)
+[ RUN      ] FormatAnalyzerTest.CSR_MismatchedOrder_ReorderNeeded
+[       OK ] FormatAnalyzerTest.CSR_MismatchedOrder_ReorderNeeded (0 ms)
+[ RUN      ] FormatAnalyzerTest.CSC_MatchingOrder_NoReorderNeeded
+[       OK ] FormatAnalyzerTest.CSC_MatchingOrder_NoReorderNeeded (0 ms)
+[ RUN      ] FormatAnalyzerTest.CSC_MismatchedOrder_ReorderNeeded
+[       OK ] FormatAnalyzerTest.CSC_MismatchedOrder_ReorderNeeded (0 ms)
+[ RUN      ] FormatAnalyzerTest.Dense_NeverNeedsReordering
+[       OK ] FormatAnalyzerTest.Dense_NeverNeedsReordering (0 ms)
+[----------] 11 tests from FormatAnalyzerTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 11 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 11 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"FormatAnalyzerTests" end time: Feb 16 18:02 GMT
+"FormatAnalyzerTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+21/45 Testing: ReorderingPassTests
+21/45 Test: ReorderingPassTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_reordering_pass"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"ReorderingPassTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 15 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 15 tests from ReorderingPassTest
+[ RUN      ] ReorderingPassTest.SpMV_CSR_NaturalOrder_NoChange
+[       OK ] ReorderingPassTest.SpMV_CSR_NaturalOrder_NoChange (0 ms)
+[ RUN      ] ReorderingPassTest.SpMV_CSR_ReversedOrder_Reorders
+[       OK ] ReorderingPassTest.SpMV_CSR_ReversedOrder_Reorders (0 ms)
+[ RUN      ] ReorderingPassTest.SpMV_CSC_NaturalOrder_NoChange
+[       OK ] ReorderingPassTest.SpMV_CSC_NaturalOrder_NoChange (0 ms)
+[ RUN      ] ReorderingPassTest.SpMV_CSC_ReversedOrder_Reorders
+[       OK ] ReorderingPassTest.SpMV_CSC_ReversedOrder_Reorders (0 ms)
+[ RUN      ] ReorderingPassTest.SpMV_Dense_NoReordering
+[       OK ] ReorderingPassTest.SpMV_Dense_NoReordering (0 ms)
+[ RUN      ] ReorderingPassTest.SpMV_ReorderingMetadataTracked
+[       OK ] ReorderingPassTest.SpMV_ReorderingMetadataTracked (0 ms)
+[ RUN      ] ReorderingPassTest.SpMM_CSR_NaturalOrder_NoChange
+[       OK ] ReorderingPassTest.SpMM_CSR_NaturalOrder_NoChange (0 ms)
+[ RUN      ] ReorderingPassTest.SpMM_CSR_ReversedOrder_Reorders
+[       OK ] ReorderingPassTest.SpMM_CSR_ReversedOrder_Reorders (0 ms)
+[ RUN      ] ReorderingPassTest.SpMM_CSC_NaturalOrder_NoChange
+[       OK ] ReorderingPassTest.SpMM_CSC_NaturalOrder_NoChange (0 ms)
+[ RUN      ] ReorderingPassTest.SpMM_CSC_ReversedOrder_Reorders
+[       OK ] ReorderingPassTest.SpMM_CSC_ReversedOrder_Reorders (0 ms)
+[ RUN      ] ReorderingPassTest.SpMM_ReorderingMetadataTracked
+[       OK ] ReorderingPassTest.SpMM_ReorderingMetadataTracked (0 ms)
+[ RUN      ] ReorderingPassTest.SpMM_InnerLoopPreserved
+[       OK ] ReorderingPassTest.SpMM_InnerLoopPreserved (0 ms)
+[ RUN      ] ReorderingPassTest.AlreadyOptimalOrder_NoChange
+[       OK ] ReorderingPassTest.AlreadyOptimalOrder_NoChange (0 ms)
+[ RUN      ] ReorderingPassTest.LoopKindsUpdated
+[       OK ] ReorderingPassTest.LoopKindsUpdated (0 ms)
+[ RUN      ] ReorderingPassTest.ReorderingIdempotent
+[       OK ] ReorderingPassTest.ReorderingIdempotent (0 ms)
+[----------] 15 tests from ReorderingPassTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 15 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 15 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ReorderingPassTests" end time: Feb 16 18:02 GMT
+"ReorderingPassTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+22/45 Testing: BlockingPassTests
+22/45 Test: BlockingPassTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_blocking_pass"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"BlockingPassTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 14 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 14 tests from BlockingPassTest
+[ RUN      ] BlockingPassTest.SpMV_BlocksOuterDenseLoop
+[       OK ] BlockingPassTest.SpMV_BlocksOuterDenseLoop (0 ms)
+[ RUN      ] BlockingPassTest.SpMV_BlockSize32
+[       OK ] BlockingPassTest.SpMV_BlockSize32 (0 ms)
+[ RUN      ] BlockingPassTest.SpMV_BlockSize64
+[       OK ] BlockingPassTest.SpMV_BlockSize64 (0 ms)
+[ RUN      ] BlockingPassTest.SpMV_InnerLoopUnchanged
+[       OK ] BlockingPassTest.SpMV_InnerLoopUnchanged (0 ms)
+[ RUN      ] BlockingPassTest.SpMV_BlockingMetadataTracked
+[       OK ] BlockingPassTest.SpMV_BlockingMetadataTracked (0 ms)
+[ RUN      ] BlockingPassTest.SpMM_AnnotationOnly_LoopTreeUnchanged
+[       OK ] BlockingPassTest.SpMM_AnnotationOnly_LoopTreeUnchanged (0 ms)
+[ RUN      ] BlockingPassTest.SpMM_AllLoopsUnchanged
+[       OK ] BlockingPassTest.SpMM_AllLoopsUnchanged (0 ms)
+[ RUN      ] BlockingPassTest.SpMM_BlockSize32
+[       OK ] BlockingPassTest.SpMM_BlockSize32 (0 ms)
+[ RUN      ] BlockingPassTest.SpMM_CustomBlockSize
+[       OK ] BlockingPassTest.SpMM_CustomBlockSize (0 ms)
+[ RUN      ] BlockingPassTest.SpMM_BlockingMetadataTracked
+[       OK ] BlockingPassTest.SpMM_BlockingMetadataTracked (0 ms)
+[ RUN      ] BlockingPassTest.BlockLoopHasCorrectBounds
+[       OK ] BlockingPassTest.BlockLoopHasCorrectBounds (0 ms)
+[ RUN      ] BlockingPassTest.InnerLoopHasBoundedRange
+[       OK ] BlockingPassTest.InnerLoopHasBoundedRange (0 ms)
+[ RUN      ] BlockingPassTest.BlockingDisabled_NoChange
+[       OK ] BlockingPassTest.BlockingDisabled_NoChange (0 ms)
+[ RUN      ] BlockingPassTest.BlockingIdempotent
+[       OK ] BlockingPassTest.BlockingIdempotent (0 ms)
+[----------] 14 tests from BlockingPassTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 14 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 14 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"BlockingPassTests" end time: Feb 16 18:02 GMT
+"BlockingPassTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+23/45 Testing: PassIntegrationTests
+23/45 Test: PassIntegrationTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_pass_integration"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"PassIntegrationTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 16 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 16 tests from PassIntegrationTest
+[ RUN      ] PassIntegrationTest.SpMV_Baseline_NoOpts
+[       OK ] PassIntegrationTest.SpMV_Baseline_NoOpts (0 ms)
+[ RUN      ] PassIntegrationTest.SpMV_FormatCorrectnessReordering
+[       OK ] PassIntegrationTest.SpMV_FormatCorrectnessReordering (0 ms)
+[ RUN      ] PassIntegrationTest.SpMV_BlockingOnly
+[       OK ] PassIntegrationTest.SpMV_BlockingOnly (0 ms)
+[ RUN      ] PassIntegrationTest.SpMV_BothOptimizations
+[       OK ] PassIntegrationTest.SpMV_BothOptimizations (0 ms)
+[ RUN      ] PassIntegrationTest.SpMM_Baseline_NoOpts
+[       OK ] PassIntegrationTest.SpMM_Baseline_NoOpts (0 ms)
+[ RUN      ] PassIntegrationTest.SpMM_FormatCorrectnessReordering
+[       OK ] PassIntegrationTest.SpMM_FormatCorrectnessReordering (0 ms)
+[ RUN      ] PassIntegrationTest.SpMM_BlockingOnly
+[       OK ] PassIntegrationTest.SpMM_BlockingOnly (0 ms)
+[ RUN      ] PassIntegrationTest.SpMM_BothOptimizations
+[       OK ] PassIntegrationTest.SpMM_BothOptimizations (0 ms)
+[ RUN      ] PassIntegrationTest.ReorderingBeforeBlocking
+[       OK ] PassIntegrationTest.ReorderingBeforeBlocking (0 ms)
+[ RUN      ] PassIntegrationTest.BlockingAppliedToReorderedLoops
+[       OK ] PassIntegrationTest.BlockingAppliedToReorderedLoops (0 ms)
+[ RUN      ] PassIntegrationTest.PassOrderMatters
+[       OK ] PassIntegrationTest.PassOrderMatters (0 ms)
+[ RUN      ] PassIntegrationTest.MetadataTracksBothPasses
+[       OK ] PassIntegrationTest.MetadataTracksBothPasses (0 ms)
+[ RUN      ] PassIntegrationTest.ApplyOptimizations_SpMV_CSR
+[       OK ] PassIntegrationTest.ApplyOptimizations_SpMV_CSR (0 ms)
+[ RUN      ] PassIntegrationTest.ApplyOptimizations_SpMV_CSC
+[       OK ] PassIntegrationTest.ApplyOptimizations_SpMV_CSC (0 ms)
+[ RUN      ] PassIntegrationTest.ApplyOptimizations_SpMM_CSR
+[       OK ] PassIntegrationTest.ApplyOptimizations_SpMM_CSR (0 ms)
+[ RUN      ] PassIntegrationTest.ApplyOptimizations_SpMM_CSC
+[       OK ] PassIntegrationTest.ApplyOptimizations_SpMM_CSC (0 ms)
+[----------] 16 tests from PassIntegrationTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 16 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 16 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"PassIntegrationTests" end time: Feb 16 18:02 GMT
+"PassIntegrationTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+24/45 Testing: OptSchedulingTests
+24/45 Test: OptSchedulingTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_opt_scheduling"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"OptSchedulingTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+[==========] Running 14 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 14 tests from OptSchedulingTest
+[ RUN      ] OptSchedulingTest.OptOrderEnumExists
+[       OK ] OptSchedulingTest.OptOrderEnumExists (0 ms)
+[ RUN      ] OptSchedulingTest.OptConfigHasOrderField
+[       OK ] OptSchedulingTest.OptConfigHasOrderField (0 ms)
+[ RUN      ] OptSchedulingTest.I_THEN_B_Order
+[       OK ] OptSchedulingTest.I_THEN_B_Order (0 ms)
+[ RUN      ] OptSchedulingTest.B_THEN_I_Order
+[       OK ] OptSchedulingTest.B_THEN_I_Order (0 ms)
+[ RUN      ] OptSchedulingTest.I_B_I_Order
+[       OK ] OptSchedulingTest.I_B_I_Order (0 ms)
+[ RUN      ] OptSchedulingTest.OnlyBlocking_OrderIrrelevant
+[       OK ] OptSchedulingTest.OnlyBlocking_OrderIrrelevant (0 ms)
+[ RUN      ] OptSchedulingTest.NoOptimizations_OrderIrrelevant
+[       OK ] OptSchedulingTest.NoOptimizations_OrderIrrelevant (0 ms)
+[ RUN      ] OptSchedulingTest.CSR_ScheduleFingerprintsDiffer
+[       OK ] OptSchedulingTest.CSR_ScheduleFingerprintsDiffer (0 ms)
+[ RUN      ] OptSchedulingTest.CSC_I_THEN_B_Order
+[       OK ] OptSchedulingTest.CSC_I_THEN_B_Order (0 ms)
+[ RUN      ] OptSchedulingTest.CSC_I_B_I_Order
+[       OK ] OptSchedulingTest.CSC_I_B_I_Order (0 ms)
+[ RUN      ] OptSchedulingTest.CSC_B_THEN_I_Order
+[       OK ] OptSchedulingTest.CSC_B_THEN_I_Order (0 ms)
+[ RUN      ] OptSchedulingTest.CSR_BThenI_DistinctFrom_IBI
+[       OK ] OptSchedulingTest.CSR_BThenI_DistinctFrom_IBI (0 ms)
+[ RUN      ] OptSchedulingTest.CSC_BThenI_DistinctFrom_IBI
+[       OK ] OptSchedulingTest.CSC_BThenI_DistinctFrom_IBI (0 ms)
+[ RUN      ] OptSchedulingTest.CSC_ScheduleFingerprintsDiffer
+[       OK ] OptSchedulingTest.CSC_ScheduleFingerprintsDiffer (0 ms)
+[----------] 14 tests from OptSchedulingTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 14 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 14 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"OptSchedulingTests" end time: Feb 16 18:02 GMT
+"OptSchedulingTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+25/45 Testing: LoopInterchangeTests
+25/45 Test: LoopInterchangeTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_loop_interchange"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"LoopInterchangeTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 10 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 10 tests from LoopInterchangeTest
+[ RUN      ] LoopInterchangeTest.OriginalLoopOrder_CSR
+[       OK ] LoopInterchangeTest.OriginalLoopOrder_CSR (0 ms)
+[ RUN      ] LoopInterchangeTest.OptConfigHasInterchangeFlag
+[       OK ] LoopInterchangeTest.OptConfigHasInterchangeFlag (0 ms)
+[ RUN      ] LoopInterchangeTest.Baseline_NoInterchange
+[       OK ] LoopInterchangeTest.Baseline_NoInterchange (0 ms)
+[ RUN      ] LoopInterchangeTest.IndividualOptimizations
+[       OK ] LoopInterchangeTest.IndividualOptimizations (0 ms)
+[ RUN      ] LoopInterchangeTest.InterchangeJK_CSR
+[       OK ] LoopInterchangeTest.InterchangeJK_CSR (0 ms)
+[ RUN      ] LoopInterchangeTest.InterchangePreservesBody
+[       OK ] LoopInterchangeTest.InterchangePreservesBody (0 ms)
+[ RUN      ] LoopInterchangeTest.CannotMoveSparseToOutermost
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_loop_interchange.cpp:242: Skipped
+Interchange validation not yet implemented
+
+[  SKIPPED ] LoopInterchangeTest.CannotMoveSparseToOutermost (0 ms)
+[ RUN      ] LoopInterchangeTest.InterchangeIsLocal
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_loop_interchange.cpp:259: Skipped
+Interchange optimization not yet implemented
+
+[  SKIPPED ] LoopInterchangeTest.InterchangeIsLocal (0 ms)
+[ RUN      ] LoopInterchangeTest.InterchangePreservesCorrectness
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_loop_interchange.cpp:272: Skipped
+End-to-end correctness test requires codegen
+
+[  SKIPPED ] LoopInterchangeTest.InterchangePreservesCorrectness (0 ms)
+[ RUN      ] LoopInterchangeTest.InterchangeWithBlocking
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_loop_interchange.cpp:290: Skipped
+Combined optimization not yet implemented
+
+[  SKIPPED ] LoopInterchangeTest.InterchangeWithBlocking (0 ms)
+[----------] 10 tests from LoopInterchangeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 10 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 6 tests.
+[  SKIPPED ] 4 tests, listed below:
+[  SKIPPED ] LoopInterchangeTest.CannotMoveSparseToOutermost
+[  SKIPPED ] LoopInterchangeTest.InterchangeIsLocal
+[  SKIPPED ] LoopInterchangeTest.InterchangePreservesCorrectness
+[  SKIPPED ] LoopInterchangeTest.InterchangeWithBlocking
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"LoopInterchangeTests" end time: Feb 16 18:02 GMT
+"LoopInterchangeTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+26/45 Testing: CodegenFrameworkTests
+26/45 Test: CodegenFrameworkTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_codegen_framework"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"CodegenFrameworkTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 11 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 11 tests from CodegenFrameworkTest
+[ RUN      ] CodegenFrameworkTest.CreateCodeGenerator
+[       OK ] CodegenFrameworkTest.CreateCodeGenerator (0 ms)
+[ RUN      ] CodegenFrameworkTest.IndentationTracking
+[       OK ] CodegenFrameworkTest.IndentationTracking (0 ms)
+[ RUN      ] CodegenFrameworkTest.HeaderGeneration
+[       OK ] CodegenFrameworkTest.HeaderGeneration (0 ms)
+[ RUN      ] CodegenFrameworkTest.OptimizationComments_Baseline
+[       OK ] CodegenFrameworkTest.OptimizationComments_Baseline (0 ms)
+[ RUN      ] CodegenFrameworkTest.OptimizationComments_FormatCorrectness
+[       OK ] CodegenFrameworkTest.OptimizationComments_FormatCorrectness (0 ms)
+[ RUN      ] CodegenFrameworkTest.OptimizationComments_BlockingOnly
+[       OK ] CodegenFrameworkTest.OptimizationComments_BlockingOnly (0 ms)
+[ RUN      ] CodegenFrameworkTest.TimingHarnessGeneration
+[       OK ] CodegenFrameworkTest.TimingHarnessGeneration (0 ms)
+[ RUN      ] CodegenFrameworkTest.MainFunctionStructure
+[       OK ] CodegenFrameworkTest.MainFunctionStructure (0 ms)
+[ RUN      ] CodegenFrameworkTest.MatrixMarketLoader
+[       OK ] CodegenFrameworkTest.MatrixMarketLoader (0 ms)
+[ RUN      ] CodegenFrameworkTest.ReferenceKernelGeneration
+[       OK ] CodegenFrameworkTest.ReferenceKernelGeneration (0 ms)
+[ RUN      ] CodegenFrameworkTest.GenerateCodeConvenience
+[       OK ] CodegenFrameworkTest.GenerateCodeConvenience (0 ms)
+[----------] 11 tests from CodegenFrameworkTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 11 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 11 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"CodegenFrameworkTests" end time: Feb 16 18:02 GMT
+"CodegenFrameworkTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+27/45 Testing: DenseLoopsTests
+27/45 Test: DenseLoopsTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_dense_loops"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"DenseLoopsTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 8 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 8 tests from DenseLoopsTest
+[ RUN      ] DenseLoopsTest.SimpleDenseLoop
+[       OK ] DenseLoopsTest.SimpleDenseLoop (0 ms)
+[ RUN      ] DenseLoopsTest.DenseLoopWithBounds
+[       OK ] DenseLoopsTest.DenseLoopWithBounds (0 ms)
+[ RUN      ] DenseLoopsTest.NestedDenseLoops
+[       OK ] DenseLoopsTest.NestedDenseLoops (0 ms)
+[ RUN      ] DenseLoopsTest.TripleNestedDenseLoops
+[       OK ] DenseLoopsTest.TripleNestedDenseLoops (0 ms)
+[ RUN      ] DenseLoopsTest.DenseLoopIndentation
+[       OK ] DenseLoopsTest.DenseLoopIndentation (0 ms)
+[ RUN      ] DenseLoopsTest.DenseLoopWithBody
+[       OK ] DenseLoopsTest.DenseLoopWithBody (0 ms)
+[ RUN      ] DenseLoopsTest.DenseLoopVariableNaming
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_dense_loops.cpp:193: Failure
+Expected: (output.find("int j")) != (std::string::npos), actual: 18446744073709551615 vs 18446744073709551615
+
+[  FAILED  ] DenseLoopsTest.DenseLoopVariableNaming (0 ms)
+[ RUN      ] DenseLoopsTest.DenseLoopBracePlacement
+[       OK ] DenseLoopsTest.DenseLoopBracePlacement (0 ms)
+[----------] 8 tests from DenseLoopsTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 7 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] DenseLoopsTest.DenseLoopVariableNaming
+
+ 1 FAILED TEST
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Failed.
+"DenseLoopsTests" end time: Feb 16 18:02 GMT
+"DenseLoopsTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+28/45 Testing: SparseLoopsTests
+28/45 Test: SparseLoopsTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_sparse_loops"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"SparseLoopsTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 12 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 12 tests from SparseLoopsTest
+[ RUN      ] SparseLoopsTest.CSR_SparseLoop
+[       OK ] SparseLoopsTest.CSR_SparseLoop (0 ms)
+[ RUN      ] SparseLoopsTest.CSR_ColumnIndexExtraction
+[       OK ] SparseLoopsTest.CSR_ColumnIndexExtraction (0 ms)
+[ RUN      ] SparseLoopsTest.CSR_ValueAccess
+[       OK ] SparseLoopsTest.CSR_ValueAccess (0 ms)
+[ RUN      ] SparseLoopsTest.CSC_SparseLoop
+[       OK ] SparseLoopsTest.CSC_SparseLoop (0 ms)
+[ RUN      ] SparseLoopsTest.CSC_RowIndexExtraction
+[       OK ] SparseLoopsTest.CSC_RowIndexExtraction (0 ms)
+[ RUN      ] SparseLoopsTest.CSC_ValueAccess
+[       OK ] SparseLoopsTest.CSC_ValueAccess (0 ms)
+[ RUN      ] SparseLoopsTest.SparseLoopNested
+[       OK ] SparseLoopsTest.SparseLoopNested (0 ms)
+[ RUN      ] SparseLoopsTest.SparseLoopIndentation
+[       OK ] SparseLoopsTest.SparseLoopIndentation (0 ms)
+[ RUN      ] SparseLoopsTest.SparsePointerVariable
+[       OK ] SparseLoopsTest.SparsePointerVariable (0 ms)
+[ RUN      ] SparseLoopsTest.SparseIndexComment
+[       OK ] SparseLoopsTest.SparseIndexComment (0 ms)
+[ RUN      ] SparseLoopsTest.CSR_StructAccess
+[       OK ] SparseLoopsTest.CSR_StructAccess (0 ms)
+[ RUN      ] SparseLoopsTest.CSC_StructAccess
+[       OK ] SparseLoopsTest.CSC_StructAccess (0 ms)
+[----------] 12 tests from SparseLoopsTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 12 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 12 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SparseLoopsTests" end time: Feb 16 18:02 GMT
+"SparseLoopsTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+29/45 Testing: BlockingCodegenTests
+29/45 Test: BlockingCodegenTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_blocking_codegen"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"BlockingCodegenTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 10 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 10 tests from BlockingCodegenTest
+[ RUN      ] BlockingCodegenTest.BlockLoopOuter
+[       OK ] BlockingCodegenTest.BlockLoopOuter (0 ms)
+[ RUN      ] BlockingCodegenTest.BlockLoopBounds
+[       OK ] BlockingCodegenTest.BlockLoopBounds (0 ms)
+[ RUN      ] BlockingCodegenTest.BlockedInnerStart
+[       OK ] BlockingCodegenTest.BlockedInnerStart (0 ms)
+[ RUN      ] BlockingCodegenTest.BlockedInnerEnd
+[       OK ] BlockingCodegenTest.BlockedInnerEnd (0 ms)
+[ RUN      ] BlockingCodegenTest.BlockedInnerLoop
+[       OK ] BlockingCodegenTest.BlockedInnerLoop (0 ms)
+[ RUN      ] BlockingCodegenTest.BlockSize32
+[       OK ] BlockingCodegenTest.BlockSize32 (0 ms)
+[ RUN      ] BlockingCodegenTest.BlockSize64
+[       OK ] BlockingCodegenTest.BlockSize64 (0 ms)
+[ RUN      ] BlockingCodegenTest.BlockingWithSparseInner
+[       OK ] BlockingCodegenTest.BlockingWithSparseInner (0 ms)
+[ RUN      ] BlockingCodegenTest.BlockingMetadataComment
+[       OK ] BlockingCodegenTest.BlockingMetadataComment (0 ms)
+[ RUN      ] BlockingCodegenTest.BlockingPreservesBody
+[       OK ] BlockingCodegenTest.BlockingPreservesBody (0 ms)
+[----------] 10 tests from BlockingCodegenTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 10 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 10 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"BlockingCodegenTests" end time: Feb 16 18:02 GMT
+"BlockingCodegenTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+30/45 Testing: BlockingCorrectnessTests
+30/45 Test: BlockingCorrectnessTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_blocking_correctness"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"BlockingCorrectnessTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 10 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 10 tests from BlockingCorrectnessTest
+[ RUN      ] BlockingCorrectnessTest.Bug1_OuterLoopUsesNumBlocks
+[       OK ] BlockingCorrectnessTest.Bug1_OuterLoopUsesNumBlocks (0 ms)
+[ RUN      ] BlockingCorrectnessTest.Bug2_IEndUsesOriginalUpperBound
+[       OK ] BlockingCorrectnessTest.Bug2_IEndUsesOriginalUpperBound (0 ms)
+[ RUN      ] BlockingCorrectnessTest.Bug3_NoVariableShadowing
+[       OK ] BlockingCorrectnessTest.Bug3_NoVariableShadowing (0 ms)
+[ RUN      ] BlockingCorrectnessTest.AllRowsVisitedExactlyOnce
+[       OK ] BlockingCorrectnessTest.AllRowsVisitedExactlyOnce (0 ms)
+[ RUN      ] BlockingCorrectnessTest.BlockingPreservesSparseIteration
+[       OK ] BlockingCorrectnessTest.BlockingPreservesSparseIteration (0 ms)
+[ RUN      ] BlockingCorrectnessTest.BlockingPreservesAccumulation
+[       OK ] BlockingCorrectnessTest.BlockingPreservesAccumulation (0 ms)
+[ RUN      ] BlockingCorrectnessTest.BlockSize16_CorrectBounds
+[       OK ] BlockingCorrectnessTest.BlockSize16_CorrectBounds (0 ms)
+[ RUN      ] BlockingCorrectnessTest.BlockSize64_CorrectBounds
+[       OK ] BlockingCorrectnessTest.BlockSize64_CorrectBounds (0 ms)
+[ RUN      ] BlockingCorrectnessTest.ReorderingPlusBlocking_NoShadowing
+[       OK ] BlockingCorrectnessTest.ReorderingPlusBlocking_NoShadowing (0 ms)
+[ RUN      ] BlockingCorrectnessTest.MetadataRecordsBlocking
+[       OK ] BlockingCorrectnessTest.MetadataRecordsBlocking (0 ms)
+[----------] 10 tests from BlockingCorrectnessTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 10 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 10 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"BlockingCorrectnessTests" end time: Feb 16 18:02 GMT
+"BlockingCorrectnessTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+31/45 Testing: ReorderingCorrectnessTests
+31/45 Test: ReorderingCorrectnessTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_reordering_correctness"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"ReorderingCorrectnessTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 16 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 16 tests from ReorderingCorrectnessTest
+[ RUN      ] ReorderingCorrectnessTest.CSR_NaturalOrder_Compiles
+[       OK ] ReorderingCorrectnessTest.CSR_NaturalOrder_Compiles (68 ms)
+[ RUN      ] ReorderingCorrectnessTest.CSR_ReversedOrder_Compiles
+[       OK ] ReorderingCorrectnessTest.CSR_ReversedOrder_Compiles (66 ms)
+[ RUN      ] ReorderingCorrectnessTest.CSC_NaturalOrder_Compiles
+[       OK ] ReorderingCorrectnessTest.CSC_NaturalOrder_Compiles (71 ms)
+[ RUN      ] ReorderingCorrectnessTest.CSC_ReversedOrder_Compiles
+[       OK ] ReorderingCorrectnessTest.CSC_ReversedOrder_Compiles (66 ms)
+[ RUN      ] ReorderingCorrectnessTest.CSR_NaturalOrder_CorrectStructure
+[       OK ] ReorderingCorrectnessTest.CSR_NaturalOrder_CorrectStructure (0 ms)
+[ RUN      ] ReorderingCorrectnessTest.CSR_ReversedOrder_SparseLoopNotOuter
+[       OK ] ReorderingCorrectnessTest.CSR_ReversedOrder_SparseLoopNotOuter (0 ms)
+[ RUN      ] ReorderingCorrectnessTest.CSR_ReversedOrder_NoUndefinedVariables
+[       OK ] ReorderingCorrectnessTest.CSR_ReversedOrder_NoUndefinedVariables (65 ms)
+[ RUN      ] ReorderingCorrectnessTest.CSR_NaturalOrder_NoReorderingApplied
+[       OK ] ReorderingCorrectnessTest.CSR_NaturalOrder_NoReorderingApplied (66 ms)
+[ RUN      ] ReorderingCorrectnessTest.Dense_NoReordering
+[       OK ] ReorderingCorrectnessTest.Dense_NoReordering (0 ms)
+[ RUN      ] ReorderingCorrectnessTest.CSR_ReversedOrder_HandledCorrectly
+[       OK ] ReorderingCorrectnessTest.CSR_ReversedOrder_HandledCorrectly (66 ms)
+[ RUN      ] ReorderingCorrectnessTest.ReorderingPlusBlocking_Compiles
+[       OK ] ReorderingCorrectnessTest.ReorderingPlusBlocking_Compiles (68 ms)
+[ RUN      ] ReorderingCorrectnessTest.ReorderingPlusBlocking_NoShadowing
+[       OK ] ReorderingCorrectnessTest.ReorderingPlusBlocking_NoShadowing (0 ms)
+[ RUN      ] ReorderingCorrectnessTest.CSC_GeneratesCorrectStructure
+[       OK ] ReorderingCorrectnessTest.CSC_GeneratesCorrectStructure (134 ms)
+[ RUN      ] ReorderingCorrectnessTest.MetadataTrackedCorrectly
+[       OK ] ReorderingCorrectnessTest.MetadataTrackedCorrectly (0 ms)
+[ RUN      ] ReorderingCorrectnessTest.ReorderingIsIdempotent
+[       OK ] ReorderingCorrectnessTest.ReorderingIsIdempotent (0 ms)
+[ RUN      ] ReorderingCorrectnessTest.GeneratedCodeIsDeterministic
+[       OK ] ReorderingCorrectnessTest.GeneratedCodeIsDeterministic (0 ms)
+[----------] 16 tests from ReorderingCorrectnessTest (674 ms total)
+
+[----------] Global test environment tear-down
+[==========] 16 tests from 1 test suite ran. (674 ms total)
+[  PASSED  ] 16 tests.
+<end of output>
+Test time =   0.68 sec
+----------------------------------------------------------
+Test Passed.
+"ReorderingCorrectnessTests" end time: Feb 16 18:02 GMT
+"ReorderingCorrectnessTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+32/45 Testing: SanityCheckTests
+32/45 Test: SanityCheckTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_sanity_check"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"SanityCheckTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 21 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 21 tests from SanityCheckTest
+[ RUN      ] SanityCheckTest.Blocking_SmallMatrix_LessThanBlockSize
+[       OK ] SanityCheckTest.Blocking_SmallMatrix_LessThanBlockSize (0 ms)
+[ RUN      ] SanityCheckTest.Blocking_BlockSizeOne_Degenerate
+[       OK ] SanityCheckTest.Blocking_BlockSizeOne_Degenerate (0 ms)
+[ RUN      ] SanityCheckTest.Blocking_BlockSizeEqualsMatrixSize_SingleBlock
+[       OK ] SanityCheckTest.Blocking_BlockSizeEqualsMatrixSize_SingleBlock (0 ms)
+[ RUN      ] SanityCheckTest.Blocking_SingleRow_CorrectBounds
+[       OK ] SanityCheckTest.Blocking_SingleRow_CorrectBounds (0 ms)
+[ RUN      ] SanityCheckTest.Reordering_CSR_Natural_NoChange
+[       OK ] SanityCheckTest.Reordering_CSR_Natural_NoChange (0 ms)
+[ RUN      ] SanityCheckTest.Reordering_CSR_Inverted_CorrectOrder
+[       OK ] SanityCheckTest.Reordering_CSR_Inverted_CorrectOrder (0 ms)
+[ RUN      ] SanityCheckTest.Reordering_CSC_Natural_NoChange
+[       OK ] SanityCheckTest.Reordering_CSC_Natural_NoChange (0 ms)
+[ RUN      ] SanityCheckTest.Reordering_CSC_Inverted_CorrectOrder
+[       OK ] SanityCheckTest.Reordering_CSC_Inverted_CorrectOrder (0 ms)
+[ RUN      ] SanityCheckTest.Reordering_Idempotent_NoDoubleApplication
+[       OK ] SanityCheckTest.Reordering_Idempotent_NoDoubleApplication (0 ms)
+[ RUN      ] SanityCheckTest.Combined_BlockingAndReordering_Compiles
+[       OK ] SanityCheckTest.Combined_BlockingAndReordering_Compiles (0 ms)
+[ RUN      ] SanityCheckTest.Combined_OptimizationOrder_BothValid
+[       OK ] SanityCheckTest.Combined_OptimizationOrder_BothValid (0 ms)
+[ RUN      ] SanityCheckTest.LoopOrder_CSR_MatchesNaturalOrder
+[       OK ] SanityCheckTest.LoopOrder_CSR_MatchesNaturalOrder (0 ms)
+[ RUN      ] SanityCheckTest.Blocking_PreservesSparseLoopStructure
+[       OK ] SanityCheckTest.Blocking_PreservesSparseLoopStructure (0 ms)
+[ RUN      ] SanityCheckTest.Metadata_Blocking_CorrectlyRecorded
+[       OK ] SanityCheckTest.Metadata_Blocking_CorrectlyRecorded (0 ms)
+[ RUN      ] SanityCheckTest.Metadata_Reordering_CorrectlyRecorded
+[       OK ] SanityCheckTest.Metadata_Reordering_CorrectlyRecorded (0 ms)
+[ RUN      ] SanityCheckTest.Metadata_Combined_BothRecorded
+[       OK ] SanityCheckTest.Metadata_Combined_BothRecorded (0 ms)
+[ RUN      ] SanityCheckTest.Format_CSR_GeneratesCorrectStructure
+[       OK ] SanityCheckTest.Format_CSR_GeneratesCorrectStructure (0 ms)
+[ RUN      ] SanityCheckTest.Format_CSC_GeneratesCorrectStructure
+[       OK ] SanityCheckTest.Format_CSC_GeneratesCorrectStructure (0 ms)
+[ RUN      ] SanityCheckTest.Format_Dense_GeneratesCorrectStructure
+[       OK ] SanityCheckTest.Format_Dense_GeneratesCorrectStructure (0 ms)
+[ RUN      ] SanityCheckTest.Blocking_ExactMultiple_CorrectBounds
+[       OK ] SanityCheckTest.Blocking_ExactMultiple_CorrectBounds (0 ms)
+[ RUN      ] SanityCheckTest.Blocking_PartialLastBlock_CorrectCapping
+[       OK ] SanityCheckTest.Blocking_PartialLastBlock_CorrectCapping (0 ms)
+[----------] 21 tests from SanityCheckTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 21 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 21 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SanityCheckTests" end time: Feb 16 18:02 GMT
+"SanityCheckTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+33/45 Testing: ScheduledOptimizationsCorrectnessTests
+33/45 Test: ScheduledOptimizationsCorrectnessTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_scheduled_optimizations_correctness"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"ScheduledOptimizationsCorrectnessTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 38 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 38 tests from ScheduledOptimizationsTest
+[ RUN      ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSR_Natural
+[       OK ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSR_Natural (214 ms)
+[ RUN      ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSC_Natural
+[       OK ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSC_Natural (214 ms)
+[ RUN      ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSR
+[       OK ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSR (212 ms)
+[ RUN      ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSC
+[       OK ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSC (217 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSR_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSR_Natural_BlockSize32 (281 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSR_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSR_Inverted_BlockSize32 (209 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSC_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSC_Natural_BlockSize32 (214 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSC_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSC_Inverted_BlockSize32 (212 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSR_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSR_Natural_BlockSize32 (214 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSR_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSR_Inverted_BlockSize32 (209 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSC_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSC_Natural_BlockSize32 (231 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSC_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSC_Inverted_BlockSize32 (253 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSR_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSR_Natural_BlockSize32 (250 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSR_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSR_Inverted_BlockSize32 (218 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSC_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSC_Natural_BlockSize32 (213 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSC_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSC_Inverted_BlockSize32 (246 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_BlockSize8
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_BlockSize8 (249 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_BlockSize16
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_BlockSize16 (267 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_BlockSize64
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_BlockSize64 (244 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_SmallMatrix_BlockSizeGreaterThanM
+[       OK ] ScheduledOptimizationsTest.EdgeCase_SmallMatrix_BlockSizeGreaterThanM (214 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_ExactMultiple_BlockSizeEqualsM
+[       OK ] ScheduledOptimizationsTest.EdgeCase_ExactMultiple_BlockSizeEqualsM (226 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_SingleRow
+[       OK ] ScheduledOptimizationsTest.EdgeCase_SingleRow (221 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_LargeMatrix_AllSchedules
+[       OK ] ScheduledOptimizationsTest.EdgeCase_LargeMatrix_AllSchedules (659 ms)
+[ RUN      ] ScheduledOptimizationsTest.ReorderingOnly_CSR_Inverted
+[       OK ] ScheduledOptimizationsTest.ReorderingOnly_CSR_Inverted (219 ms)
+[ RUN      ] ScheduledOptimizationsTest.BlockingOnly_BlockSize32
+[       OK ] ScheduledOptimizationsTest.BlockingOnly_BlockSize32 (230 ms)
+[ RUN      ] ScheduledOptimizationsTest.BlockingOnly_MultipleBlockSizes
+[       OK ] ScheduledOptimizationsTest.BlockingOnly_MultipleBlockSizes (726 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize16
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize16 (243 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize32 (234 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize64
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize64 (222 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSC_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSC_BlockSize32 (239 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSizeGreaterThanCols
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSizeGreaterThanCols (224 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize1
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize1 (229 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSR_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSR_BlockSize32 (225 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSR_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSR_BlockSize32 (247 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_B_I_CSR_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_I_B_I_CSR_BlockSize32 (233 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSC_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSC_BlockSize32 (229 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSC_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSC_BlockSize32 (290 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_B_I_CSC_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_I_B_I_CSC_BlockSize32 (239 ms)
+[----------] 38 tests from ScheduledOptimizationsTest (9734 ms total)
+
+[----------] Global test environment tear-down
+[==========] 38 tests from 1 test suite ran. (9734 ms total)
+[  PASSED  ] 38 tests.
+<end of output>
+Test time =   9.74 sec
+----------------------------------------------------------
+Test Passed.
+"ScheduledOptimizationsCorrectnessTests" end time: Feb 16 18:02 GMT
+"ScheduledOptimizationsCorrectnessTests" time elapsed: 00:00:09
+----------------------------------------------------------
+
+34/45 Testing: SpMVCodegenTests
+34/45 Test: SpMVCodegenTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_spmv_codegen"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"SpMVCodegenTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 12 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 12 tests from SpMVCodegenTest
+[ RUN      ] SpMVCodegenTest.SpMV_CSR_Baseline
+[       OK ] SpMVCodegenTest.SpMV_CSR_Baseline (0 ms)
+[ RUN      ] SpMVCodegenTest.SpMV_CSR_FormatCorrectness
+[       OK ] SpMVCodegenTest.SpMV_CSR_FormatCorrectness (0 ms)
+[ RUN      ] SpMVCodegenTest.SpMV_CSR_Blocking
+[       OK ] SpMVCodegenTest.SpMV_CSR_Blocking (0 ms)
+[ RUN      ] SpMVCodegenTest.SpMV_CSR_BothOpts
+[       OK ] SpMVCodegenTest.SpMV_CSR_BothOpts (0 ms)
+[ RUN      ] SpMVCodegenTest.SpMV_CSC_Baseline
+[       OK ] SpMVCodegenTest.SpMV_CSC_Baseline (0 ms)
+[ RUN      ] SpMVCodegenTest.SpMV_CSC_AllConfigs
+[       OK ] SpMVCodegenTest.SpMV_CSC_AllConfigs (0 ms)
+[ RUN      ] SpMVCodegenTest.SpMV_KernelSignature
+[       OK ] SpMVCodegenTest.SpMV_KernelSignature (0 ms)
+[ RUN      ] SpMVCodegenTest.SpMV_Accumulation
+[       OK ] SpMVCodegenTest.SpMV_Accumulation (0 ms)
+[ RUN      ] SpMVCodegenTest.SpMV_LocalSum
+[       OK ] SpMVCodegenTest.SpMV_LocalSum (0 ms)
+[ RUN      ] SpMVCodegenTest.SpMV_ReferenceKernel
+[       OK ] SpMVCodegenTest.SpMV_ReferenceKernel (0 ms)
+[ RUN      ] SpMVCodegenTest.SpMV_FullProgram
+[       OK ] SpMVCodegenTest.SpMV_FullProgram (0 ms)
+[ RUN      ] SpMVCodegenTest.SpMV_CompilableOutput
+[       OK ] SpMVCodegenTest.SpMV_CompilableOutput (0 ms)
+[----------] 12 tests from SpMVCodegenTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 12 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 12 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SpMVCodegenTests" end time: Feb 16 18:02 GMT
+"SpMVCodegenTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+35/45 Testing: SpMMCodegenTests
+35/45 Test: SpMMCodegenTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_spmm_codegen"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"SpMMCodegenTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 19 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 19 tests from SpMMCodegenTest
+[ RUN      ] SpMMCodegenTest.SpMM_CSR_Baseline
+[       OK ] SpMMCodegenTest.SpMM_CSR_Baseline (0 ms)
+[ RUN      ] SpMMCodegenTest.SpMM_CSR_Blocking
+[       OK ] SpMMCodegenTest.SpMM_CSR_Blocking (0 ms)
+[ RUN      ] SpMMCodegenTest.SpMM_CSR_AllOptimizations
+[       OK ] SpMMCodegenTest.SpMM_CSR_AllOptimizations (0 ms)
+[ RUN      ] SpMMCodegenTest.SpMM_CSC_Baseline
+[       OK ] SpMMCodegenTest.SpMM_CSC_Baseline (0 ms)
+[ RUN      ] SpMMCodegenTest.SpMM_CSC_Blocking
+[       OK ] SpMMCodegenTest.SpMM_CSC_Blocking (0 ms)
+[ RUN      ] SpMMCodegenTest.IncludesMatrixMarketLoader
+[       OK ] SpMMCodegenTest.IncludesMatrixMarketLoader (0 ms)
+[ RUN      ] SpMMCodegenTest.IncludesTimingUtilities
+[       OK ] SpMMCodegenTest.IncludesTimingUtilities (0 ms)
+[ RUN      ] SpMMCodegenTest.IncludesReferenceImplementation
+[       OK ] SpMMCodegenTest.IncludesReferenceImplementation (0 ms)
+[ RUN      ] SpMMCodegenTest.DifferentMatrixSizes
+[       OK ] SpMMCodegenTest.DifferentMatrixSizes (0 ms)
+[ RUN      ] SpMMCodegenTest.LargeMatrixDimensions
+[       OK ] SpMMCodegenTest.LargeMatrixDimensions (0 ms)
+[ RUN      ] SpMMCodegenTest.HasProperHeaderComments
+[       OK ] SpMMCodegenTest.HasProperHeaderComments (0 ms)
+[ RUN      ] SpMMCodegenTest.ShowsOptimizationsInComments
+[       OK ] SpMMCodegenTest.ShowsOptimizationsInComments (0 ms)
+[ RUN      ] SpMMCodegenTest.BaselineShowsNoOptimizations
+[       OK ] SpMMCodegenTest.BaselineShowsNoOptimizations (0 ms)
+[ RUN      ] SpMMCodegenTest.IncludesNecessaryHeaders
+[       OK ] SpMMCodegenTest.IncludesNecessaryHeaders (0 ms)
+[ RUN      ] SpMMCodegenTest.SpMM_CSR_B_THEN_I_HasJJOuter
+[       OK ] SpMMCodegenTest.SpMM_CSR_B_THEN_I_HasJJOuter (0 ms)
+[ RUN      ] SpMMCodegenTest.SpMM_CSC_B_THEN_I_HasJJOuter
+[       OK ] SpMMCodegenTest.SpMM_CSC_B_THEN_I_HasJJOuter (0 ms)
+[ RUN      ] SpMMCodegenTest.SpMM_CSR_I_THEN_B_HasIOuter
+[       OK ] SpMMCodegenTest.SpMM_CSR_I_THEN_B_HasIOuter (0 ms)
+[ RUN      ] SpMMCodegenTest.SpMM_CSC_I_THEN_B_HasKOuter
+[       OK ] SpMMCodegenTest.SpMM_CSC_I_THEN_B_HasKOuter (0 ms)
+[ RUN      ] SpMMCodegenTest.SpMM_CSR_DifferentSchedules_DifferentCode
+[       OK ] SpMMCodegenTest.SpMM_CSR_DifferentSchedules_DifferentCode (0 ms)
+[----------] 19 tests from SpMMCodegenTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 19 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 19 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SpMMCodegenTests" end time: Feb 16 18:02 GMT
+"SpMMCodegenTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+36/45 Testing: SpAddCodegenTests
+36/45 Test: SpAddCodegenTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_spadd_codegen"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"SpAddCodegenTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 8 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 8 tests from SpAddCodegenTest
+[ RUN      ] SpAddCodegenTest.SpAdd_CSR_KernelType
+[       OK ] SpAddCodegenTest.SpAdd_CSR_KernelType (0 ms)
+[ RUN      ] SpAddCodegenTest.SpAdd_CSR_Signature
+[       OK ] SpAddCodegenTest.SpAdd_CSR_Signature (0 ms)
+[ RUN      ] SpAddCodegenTest.SpAdd_CSR_CodePatterns
+[       OK ] SpAddCodegenTest.SpAdd_CSR_CodePatterns (0 ms)
+[ RUN      ] SpAddCodegenTest.SpAdd_CSR_ReferenceKernel
+[       OK ] SpAddCodegenTest.SpAdd_CSR_ReferenceKernel (0 ms)
+[ RUN      ] SpAddCodegenTest.SpAdd_CSR_FullProgram
+[       OK ] SpAddCodegenTest.SpAdd_CSR_FullProgram (0 ms)
+[ RUN      ] SpAddCodegenTest.SpAdd_CSR_BalancedBraces
+[       OK ] SpAddCodegenTest.SpAdd_CSR_BalancedBraces (0 ms)
+[ RUN      ] SpAddCodegenTest.SpAdd_CSC_CodePatterns
+[       OK ] SpAddCodegenTest.SpAdd_CSC_CodePatterns (0 ms)
+[ RUN      ] SpAddCodegenTest.SpAdd_CSC_BalancedBraces
+[       OK ] SpAddCodegenTest.SpAdd_CSC_BalancedBraces (0 ms)
+[----------] 8 tests from SpAddCodegenTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 8 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SpAddCodegenTests" end time: Feb 16 18:02 GMT
+"SpAddCodegenTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+37/45 Testing: SpElMulCodegenTests
+37/45 Test: SpElMulCodegenTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_spelmul_codegen"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"SpElMulCodegenTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 8 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 8 tests from SpElMulCodegenTest
+[ RUN      ] SpElMulCodegenTest.SpElMul_CSR_KernelType
+[       OK ] SpElMulCodegenTest.SpElMul_CSR_KernelType (0 ms)
+[ RUN      ] SpElMulCodegenTest.SpElMul_CSR_Signature
+[       OK ] SpElMulCodegenTest.SpElMul_CSR_Signature (0 ms)
+[ RUN      ] SpElMulCodegenTest.SpElMul_CSR_MergeIntersection
+[       OK ] SpElMulCodegenTest.SpElMul_CSR_MergeIntersection (0 ms)
+[ RUN      ] SpElMulCodegenTest.SpElMul_CSR_ReferenceKernel
+[       OK ] SpElMulCodegenTest.SpElMul_CSR_ReferenceKernel (0 ms)
+[ RUN      ] SpElMulCodegenTest.SpElMul_CSR_FullProgram
+[       OK ] SpElMulCodegenTest.SpElMul_CSR_FullProgram (0 ms)
+[ RUN      ] SpElMulCodegenTest.SpElMul_CSR_BalancedBraces
+[       OK ] SpElMulCodegenTest.SpElMul_CSR_BalancedBraces (0 ms)
+[ RUN      ] SpElMulCodegenTest.SpElMul_CSC_CodePatterns
+[       OK ] SpElMulCodegenTest.SpElMul_CSC_CodePatterns (0 ms)
+[ RUN      ] SpElMulCodegenTest.SpElMul_CSC_BalancedBraces
+[       OK ] SpElMulCodegenTest.SpElMul_CSC_BalancedBraces (0 ms)
+[----------] 8 tests from SpElMulCodegenTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 8 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SpElMulCodegenTests" end time: Feb 16 18:02 GMT
+"SpElMulCodegenTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+38/45 Testing: SpGEMMCodegenTests
+38/45 Test: SpGEMMCodegenTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_spgemm_codegen"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"SpGEMMCodegenTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 8 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 8 tests from SpGEMMCodegenTest
+[ RUN      ] SpGEMMCodegenTest.SpGEMM_CSR_KernelType
+[       OK ] SpGEMMCodegenTest.SpGEMM_CSR_KernelType (0 ms)
+[ RUN      ] SpGEMMCodegenTest.SpGEMM_CSR_Signature
+[       OK ] SpGEMMCodegenTest.SpGEMM_CSR_Signature (0 ms)
+[ RUN      ] SpGEMMCodegenTest.SpGEMM_CSR_GustavsonPattern
+[       OK ] SpGEMMCodegenTest.SpGEMM_CSR_GustavsonPattern (0 ms)
+[ RUN      ] SpGEMMCodegenTest.SpGEMM_CSR_ReferenceKernel
+[       OK ] SpGEMMCodegenTest.SpGEMM_CSR_ReferenceKernel (0 ms)
+[ RUN      ] SpGEMMCodegenTest.SpGEMM_CSR_FullProgram
+[       OK ] SpGEMMCodegenTest.SpGEMM_CSR_FullProgram (0 ms)
+[ RUN      ] SpGEMMCodegenTest.SpGEMM_CSR_BalancedBraces
+[       OK ] SpGEMMCodegenTest.SpGEMM_CSR_BalancedBraces (0 ms)
+[ RUN      ] SpGEMMCodegenTest.SpGEMM_CSC_CodePatterns
+[       OK ] SpGEMMCodegenTest.SpGEMM_CSC_CodePatterns (0 ms)
+[ RUN      ] SpGEMMCodegenTest.SpGEMM_CSC_BalancedBraces
+[       OK ] SpGEMMCodegenTest.SpGEMM_CSC_BalancedBraces (0 ms)
+[----------] 8 tests from SpGEMMCodegenTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 8 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SpGEMMCodegenTests" end time: Feb 16 18:02 GMT
+"SpGEMMCodegenTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+39/45 Testing: SDDMMCodegenTests
+39/45 Test: SDDMMCodegenTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_sddmm_codegen"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"SDDMMCodegenTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 8 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 8 tests from SDDMMCodegenTest
+[ RUN      ] SDDMMCodegenTest.SDDMM_CSR_KernelType
+[       OK ] SDDMMCodegenTest.SDDMM_CSR_KernelType (0 ms)
+[ RUN      ] SDDMMCodegenTest.SDDMM_CSR_Signature
+[       OK ] SDDMMCodegenTest.SDDMM_CSR_Signature (0 ms)
+[ RUN      ] SDDMMCodegenTest.SDDMM_CSR_CodePatterns
+[       OK ] SDDMMCodegenTest.SDDMM_CSR_CodePatterns (0 ms)
+[ RUN      ] SDDMMCodegenTest.SDDMM_CSR_ReferenceKernel
+[       OK ] SDDMMCodegenTest.SDDMM_CSR_ReferenceKernel (0 ms)
+[ RUN      ] SDDMMCodegenTest.SDDMM_CSR_FullProgram
+[       OK ] SDDMMCodegenTest.SDDMM_CSR_FullProgram (0 ms)
+[ RUN      ] SDDMMCodegenTest.SDDMM_CSR_BalancedBraces
+[       OK ] SDDMMCodegenTest.SDDMM_CSR_BalancedBraces (0 ms)
+[ RUN      ] SDDMMCodegenTest.SDDMM_CSC_CodePatterns
+[       OK ] SDDMMCodegenTest.SDDMM_CSC_CodePatterns (0 ms)
+[ RUN      ] SDDMMCodegenTest.SDDMM_CSC_BalancedBraces
+[       OK ] SDDMMCodegenTest.SDDMM_CSC_BalancedBraces (0 ms)
+[----------] 8 tests from SDDMMCodegenTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 8 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"SDDMMCodegenTests" end time: Feb 16 18:02 GMT
+"SDDMMCodegenTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+40/45 Testing: VisitorUnificationTests
+40/45 Test: VisitorUnificationTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_visitor_unification"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"VisitorUnificationTests" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 8 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 8 tests from VisitorUnification
+[ RUN      ] VisitorUnification.SpAdd_CSR_SiblingLoops
+[       OK ] VisitorUnification.SpAdd_CSR_SiblingLoops (0 ms)
+[ RUN      ] VisitorUnification.SpAdd_CSC_ColumnMajor
+[       OK ] VisitorUnification.SpAdd_CSC_ColumnMajor (0 ms)
+[ RUN      ] VisitorUnification.SpElMul_CSR_MergeIntersection
+[       OK ] VisitorUnification.SpElMul_CSR_MergeIntersection (0 ms)
+[ RUN      ] VisitorUnification.SpGEMM_CSR_NestedSparse
+[       OK ] VisitorUnification.SpGEMM_CSR_NestedSparse (0 ms)
+[ RUN      ] VisitorUnification.SDDMM_CSR_PreAndPostBody
+[       OK ] VisitorUnification.SDDMM_CSR_PreAndPostBody (0 ms)
+[ RUN      ] VisitorUnification.SpMV_CSR_Regression
+[       OK ] VisitorUnification.SpMV_CSR_Regression (0 ms)
+[ RUN      ] VisitorUnification.SpMM_CSR_Regression
+[       OK ] VisitorUnification.SpMM_CSR_Regression (0 ms)
+[ RUN      ] VisitorUnification.AllKernels_BalancedBraces
+[       OK ] VisitorUnification.AllKernels_BalancedBraces (0 ms)
+[----------] 8 tests from VisitorUnification (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 8 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"VisitorUnificationTests" end time: Feb 16 18:02 GMT
+"VisitorUnificationTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+41/45 Testing: BenchmarkPipelineOursOnly
+41/45 Test: BenchmarkPipelineOursOnly
+Command: "/opt/homebrew/Frameworks/Python.framework/Versions/3.13/bin/python3.13" "/Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/test_benchmark_pipeline.py" "--mode" "ours" "--kernel" "spmv"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"BenchmarkPipelineOursOnly" start time: Feb 16 18:02 GMT
+Output:
+----------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/test_benchmark_pipeline.py", line 213, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/test_benchmark_pipeline.py", line 196, in main
+    validate_ours_mode(rows, args.kernel)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/test_benchmark_pipeline.py", line 92, in validate_ours_mode
+    raise AssertionError(f"Expected {expected_ours_rows} rows, got {len(rows)}")
+AssertionError: Expected 40 rows, got 120
+<end of output>
+Test time = 104.29 sec
+----------------------------------------------------------
+Test Failed.
+"BenchmarkPipelineOursOnly" end time: Feb 16 18:03 GMT
+"BenchmarkPipelineOursOnly" time elapsed: 00:01:44
+----------------------------------------------------------
+

@@ -1,0 +1,5 @@
+tensor C : Dense<1000, 1000>;
+tensor S : CSR<1000, 1000>;
+tensor D : Dense<1000, 64>;
+tensor E : Dense<64, 1000>;
+compute C[i, j] = S[i, j] * D[i, k] * E[k, j];

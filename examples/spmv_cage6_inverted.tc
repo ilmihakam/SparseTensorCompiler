@@ -1,0 +1,4 @@
+tensor y : Dense<93>;
+tensor A : CSR<93, 93>;
+tensor x : Dense<93>;
+compute y[i] = A[j, i] * x[j];

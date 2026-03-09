@@ -1,0 +1,1 @@
+tensor C : Dense<100, 50>; tensor A : CSR<100, 80>; tensor B : Dense<80, 50>; compute C[i, j] = A[i, k] * B[k, j];

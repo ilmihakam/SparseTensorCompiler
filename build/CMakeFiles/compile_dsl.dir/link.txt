@@ -1,0 +1,1 @@
+/usr/bin/c++ -w -O3 -DNDEBUG -Wall -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/compile_dsl.dir/compile_dsl.cpp.o -o compile_dsl  libsparse_tensor_core.a

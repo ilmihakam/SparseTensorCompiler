@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "matrices": [
+    {
+      "name": "diag_band_sweep_001",
+      "generator": "structured_random_v1",
+      "rows": 2048,
+      "cols": 2048,
+      "seed": 11,
+      "value_mode": "ones",
+      "tags": [
+        "density_sweep",
+        "banded"
+      ],
+      "nnz": {
+        "mode": "density",
+        "density": 0.002,
+        "row_distribution": "lognormal",
+        "row_cv": 0.8,
+        "min_per_row": 0,
+        "max_per_row": 96
+      },
+      "support": {
+        "mode": "banded",
+        "bandwidth": 64,
+        "diagonal_jitter": 4
+      },
+      "clustering": {
+        "mode": "runs",
+        "avg_run_length": 3.0,
+        "avg_gap": 5.0
+      },
+      "columns": {
+        "mode": "uniform"
+      },
+      "inter_row_similarity": {
+        "mode": "window_share",
+        "window": 4,
+        "share_prob": 0.2
+      },
+      "block_structure": {
+        "enabled": false
+      }
+    },
+    {
+      "name": "hotspot_blocky_001",
+      "generator": "structured_random_v1",
+      "rows": 2048,
+      "cols": 2048,
+      "seed": 37,
+      "value_mode": "ones",
+      "tags": [
+        "hotspot",
+        "blocky"
+      ],
+      "nnz": {
+        "mode": "density",
+        "density": 0.004,
+        "row_distribution": "lognormal",
+        "row_cv": 1.6,
+        "min_per_row": 0,
+        "max_per_row": 160
+      },
+      "support": {
+        "mode": "global"
+      },
+      "clustering": {
+        "mode": "runs",
+        "avg_run_length": 6.0,
+        "avg_gap": 2.0
+      },
+      "columns": {
+        "mode": "hotspots",
+        "hotspot_count": 128,
+        "hotspot_prob": 0.7,
+        "hotspot_spread": 3
+      },
+      "inter_row_similarity": {
+        "mode": "window_share",
+        "window": 8,
+        "share_prob": 0.45
+      },
+      "block_structure": {
+        "enabled": true,
+        "block_rows": 8,
+        "block_cols": 8,
+        "block_density": 0.5,
+        "block_prob": 0.08
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "kernel": "spadd",
+      "pairs": [
+        {
+          "a": "diag_band_sweep_001",
+          "b": "hotspot_blocky_001"
+        }
+      ]
+    },
+    {
+      "kernel": "spelmul",
+      "pairs": [
+        {
+          "a": "diag_band_sweep_001",
+          "b": "hotspot_blocky_001"
+        }
+      ]
+    },
+    {
+      "kernel": "spgemm",
+      "pairs": [
+        {
+          "a": "diag_band_sweep_001",
+          "b": "hotspot_blocky_001"
+        }
+      ]
+    }
+  ]
+}

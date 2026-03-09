@@ -1,0 +1,37 @@
+kernel,impl,config,format,item,reason
+sddmm,ours,interchange_only,csr,bcsstk01,max_error 1.526e-05 > tol 1.000e-09
+sddmm,ours,i_then_b,csr,bcsstk01,max_error 1.526e-05 > tol 1.000e-09
+sddmm,ours,b_then_i,csr,bcsstk01,max_error 1.526e-05 > tol 1.000e-09
+sddmm,ours,i_b_i,csr,bcsstk01,max_error 1.526e-05 > tol 1.000e-09
+sddmm,taco,taco,csr,bcsstk01,max_error 1.530e-05 > taco_tol 1.000e-06
+sddmm,ours,interchange_only,csr,bcsstk17,max_error 4.578e-05 > tol 1.000e-09
+sddmm,ours,i_then_b,csr,bcsstk17,max_error 4.578e-05 > tol 1.000e-09
+sddmm,ours,b_then_i,csr,bcsstk17,max_error 4.578e-05 > tol 1.000e-09
+sddmm,ours,i_b_i,csr,bcsstk17,max_error 4.578e-05 > tol 1.000e-09
+sddmm,taco,taco,csr,bcsstk17,max_error 4.580e-05 > taco_tol 1.000e-06
+sddmm,taco,taco,csr,cant,Command failed: /Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/taco/build/sddmm_taco /tmp/stc_bench_no_mouse_gene/canon_sddmm/cant.mtx 64 100 csr
+sddmm,taco,taco,csr,consph,Command failed: /Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/taco/build/sddmm_taco /tmp/stc_bench_no_mouse_gene/canon_sddmm/consph.mtx 64 100 csr
+sddmm,ours,interchange_only,csr,nasa2146,max_error 1.788e-07 > tol 1.000e-09
+sddmm,ours,i_then_b,csr,nasa2146,max_error 1.788e-07 > tol 1.000e-09
+sddmm,ours,b_then_i,csr,nasa2146,max_error 1.788e-07 > tol 1.000e-09
+sddmm,ours,i_b_i,csr,nasa2146,max_error 1.788e-07 > tol 1.000e-09
+sddmm,taco,taco,csr,pdb1HYS,Command timed out after 1200s: /Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/taco/build/sddmm_taco /tmp/stc_bench_no_mouse_gene/canon_sddmm/pdb1HYS.mtx 64 100 csr
+sddmm,taco,taco,csr,venkat01,Command failed: /Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/taco/build/sddmm_taco /tmp/stc_bench_no_mouse_gene/canon_sddmm/venkat01.mtx 64 100 csr
+sddmm,ours,interchange_only,csc,bcsstk01,max_error 1.526e-05 > tol 1.000e-09
+sddmm,ours,i_then_b,csc,bcsstk01,max_error 1.526e-05 > tol 1.000e-09
+sddmm,ours,b_then_i,csc,bcsstk01,max_error 1.526e-05 > tol 1.000e-09
+sddmm,ours,i_b_i,csc,bcsstk01,max_error 1.526e-05 > tol 1.000e-09
+sddmm,taco,taco,csc,bcsstk01,max_error 1.910e-05 > taco_tol 1.000e-06
+sddmm,ours,interchange_only,csc,bcsstk17,max_error 4.578e-05 > tol 1.000e-09
+sddmm,ours,i_then_b,csc,bcsstk17,max_error 4.578e-05 > tol 1.000e-09
+sddmm,ours,b_then_i,csc,bcsstk17,max_error 4.578e-05 > tol 1.000e-09
+sddmm,ours,i_b_i,csc,bcsstk17,max_error 4.578e-05 > tol 1.000e-09
+sddmm,taco,taco,csc,bcsstk17,max_error 4.580e-05 > taco_tol 1.000e-06
+sddmm,taco,taco,csc,cant,Command failed: /Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/taco/build/sddmm_taco /tmp/stc_bench_no_mouse_gene/canon_sddmm/cant.mtx 64 100 csc
+sddmm,taco,taco,csc,consph,Command failed: /Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/taco/build/sddmm_taco /tmp/stc_bench_no_mouse_gene/canon_sddmm/consph.mtx 64 100 csc
+sddmm,ours,interchange_only,csc,nasa2146,max_error 1.788e-07 > tol 1.000e-09
+sddmm,ours,i_then_b,csc,nasa2146,max_error 1.788e-07 > tol 1.000e-09
+sddmm,ours,b_then_i,csc,nasa2146,max_error 1.788e-07 > tol 1.000e-09
+sddmm,ours,i_b_i,csc,nasa2146,max_error 1.788e-07 > tol 1.000e-09
+sddmm,taco,taco,csc,pdb1HYS,Command timed out after 1200s: /Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/taco/build/sddmm_taco /tmp/stc_bench_no_mouse_gene/canon_sddmm/pdb1HYS.mtx 64 100 csc
+sddmm,taco,taco,csc,venkat01,Command failed: /Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/taco/build/sddmm_taco /tmp/stc_bench_no_mouse_gene/canon_sddmm/venkat01.mtx 64 100 csc

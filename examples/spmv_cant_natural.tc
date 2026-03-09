@@ -1,0 +1,4 @@
+tensor y : Dense<62451>;
+tensor A : CSR<62451, 62451>;
+tensor x : Dense<62451>;
+compute y[i] = A[i, j] * x[j];

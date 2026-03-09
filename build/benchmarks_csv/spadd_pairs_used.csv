@@ -1,0 +1,2 @@
+matrix_a,matrix_b,rows_a,cols_a,nnz_a,rows_b,cols_b,nnz_b
+bcsstk01,bcsstk01,48,48,400,48,48,400

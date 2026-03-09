@@ -1,0 +1,2 @@
+kernel,impl,config,format,item,reason
+spmv,taco,taco,csr,bcsstk17,max_error 1.430e-06 > taco_tol 1.000e-06

@@ -1,0 +1,1 @@
+/usr/bin/c++ -w -O3 -DNDEBUG -Wall -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/extract_generated_code.dir/extract_generated_code.cpp.o -o extract_generated_code  libsparse_tensor_core.a

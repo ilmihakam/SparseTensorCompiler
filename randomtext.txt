@@ -1,0 +1,434 @@
+# Honours Project Overview
+Machine learning matrices are filled with near-zero or zero values, which has prompted exploration into sparse matrices that avoid computing on these values. However, unlike their dense equivalents, sparse tensors struggle to take advantage of modern hardware, resulting in massive inefficiencies.
+
+Compiler infrastructure struggles to fill this gap, as each different format requires a different set of optimization techniques.  In this project, you will look at optimization strategies for common operations on these data structures.
+
+In this project, you will pick an existing, underexplored sparse format and optimize it. The key outcomes will be the following:
+  - Build simple matrix operations (add, multiply) in your sparse format
+  - Optimise those matrix operations by hand
+  - Build a simple compiler infrastructure that generates these optimised matrix
+     operations (students looking for an easy project should end here)
+  - Build a simple optimiser for sequences of these operations to enable operator fusion on your datastructure of choice (see suggestions below).
+
+Data structure choice is left up to you, but the following suggestions would make good projects: COO (coordinate list), CSR (compressed sparse row), CSC (compressed sparse column), ELL (ELLPACK), and DIA (Diagonal format)  --- more suggestions can be found in section 2.1.3 of https://dl.acm.org/doi/pdf/10.1145/3571157 and I'm open to other suggestions for formats.
+
+Primary goal of the project: Knowing which optimization techniques are better for specific formats (i.e. COO, CSR, CSC and ELL)
+
+# Recommended Reading
+
+Format Abstraction for Sparse Tensor Compilers: https://dl.acm.org/doi/10.1145/3276493 
+A Sparse Iteration Space Transformation Framework for Sparse Tensor Algebra - https://dl.acm.org/doi/10.1145/3428226
+The Sparse Tensor Algebra - https://dl.acm.org/doi/10.1145/3133901
+Sparse Tensor Algebra Optimization - https://arxiv.org/pdf/1802.10574
+
+# Developing my own DSL
+I need to develop my Domain-Specific Language for Sparse Compiler which needs to have:
+Operator: + (addition), some function f (to be expressed as a Machine Learning model), call method, index notation (implicit, explicit), * (multiplication). Making benchmarking easy, DSL
+
+The DSL uses explicit type-enforced tensor declarations (Dense, CSR, COO, CSC, ELLPACK, DIA)
+
+# Lowering
+The DSL needs to be lowered to an AST in which the AST is lowered further into the IR where the IR will be tested for code generation, I'm looking to target with C++/LLVM with the IR.
+
+# Mapping (Type Checking)
+Semantic Analysis occurs to check the properties of the tensors and map them based on the properties to a TensorType.
+
+# Sparse Tensor Base Format
+
+The Sparse IR needs to have:
+
+<TensorName>: <Type>, [i, j, k]  (type in in CSC, CSR)
+for [<TensorNameList>] [<Iterator Index>] {
+compute A[i][j] = B[i][j] * C[i][j] + D[i]
+call <Function>(<TensorName>)
+}
+
+# Sparse Tensor Formats
+After being able to lower with the IR, we are moving with optimisations, , Code Blocking(Loop Tiling), Loop Reordering That is after the compiler infrastructure is completed.
+
+# General Flow 
+DSL -> AST -> Type Check -> IR 1.
+-> Optimisations 2. -> Code Generation -> ML Training Benchmarkin
+
+# Design Decisions 
+1. once we have the IR, the infra we will be targeting can be xDSL, C++, LLVM or Rust 
+2. once we have the infra, for specific tensor formats say CSR and CSC we would need to choose the optimizations that we want to try out for it.
+
+# Additional Notes
+The compiler infrastructure, i.e. the DSL, AST generator, IR generator, code generator and optimisations all need to be robust and maintainable for future extensions and development.
+
+# MVP Implementation Plan - DSL → IR Compatible
+
+## Phase 1: Clean Setup + Grammar Extensions
+1. **Remove messy existing code** - clean slate approach
+2. **Extend grammar minimally** for IR lowering compatibility
+3. **Add missing constructs**:
+   - `call` statements: `call f(A);`
+   - Tensor declarations: `tensor A : Dense<10, 20>;` (type-enforced)
+   - For loops: `for [A, B] [i, j] { ... }`
+   - Block structure: `{ statement_list }`
+
+## Phase 2: Extended Lexer MVP
+**Additional tokens needed:**
+- **Keywords**: `call`, `tensor`, `for`
+- **Delimiters**: `{`, `}`, `:`
+- **All existing tokens**: `compute`, `+`, `*`, `=`, `[`, `]`, `(`, `)`, `,`, `;`
+
+**Tests**: Verify all tokens including new ones for IR compatibility
+
+## Phase 3: Extended Parser MVP
+**New grammar rules to support IR lowering:**
+```ebnf
+program         ::= statement*
+statement       ::= computation ';' | call_statement ';' | declaration ';' | for_statement
+computation     ::= 'compute' tensor_access '=' expression
+call_statement  ::= 'call' IDENTIFIER '(' argument_list? ')'
+declaration     ::= 'tensor' IDENTIFIER ':' tensor_type ('<' shape_list '>')?
+tensor_type     ::= 'Dense' | 'CSR' | 'CSC' 
+shape_list      ::= NUMBER (',' NUMBER)*
+for_statement   ::= 'for' '[' identifier_list ']' '[' index_list ']' '{' statement_list '}'
+```
+
+**Tests**: Each new construct + combinations that match IR structure
+
+## Phase 4: IR Lowering Validation
+**Test examples that can lower to IR:**
+```cpp
+// DSL Input:
+tensor A : CSR<100, 50>;
+tensor B : Dense<50, 20>;
+tensor C : Dense<100, 20>;
+for [A, B, C] [i, j, k] {
+    compute C[i, j] = A[i, k] * B[k, j];
+    call optimize(C);
+}
+
+// Should map to IR structure exactly
+```
+
+## Success Criteria:
+✅ All IR constructs representable in DSL
+✅ Clear mapping: DSL → AST → IR
+✅ Minimal extensions (no unnecessary features)
+✅ Maintains simplicity while enabling IR lowering
+
+**Focus**: Add only what's needed for IR compatibility, keep it minimal and focused. 
+- Also remember to have TDD in terms of the flow lexer tests -> lexer implementation. parser tests -> parser implementation -> ast generation tests -> ast implementation
+
+- Update lexer tests, lexer.l, parser.y, parser tests, ast, ast generation tests, ast in phases rather than all at the same time 
+
+- Add this for the grammar
+
+program         ::= declaration* statement*
+
+declaration     ::= 'tensor' IDENTIFIER ':' tensor_type ('<' shape_list '>')? ';'
+
+tensor_type     ::= 'Dense' | 'CSR' | 'COO' | 'CSC' | 'ELLPACK' | 'DIA'
+
+shape_list      ::= NUMBER (',' NUMBER)*
+
+statement       ::= computation ';'
+
+computation     ::= 'compute' tensor_access '=' expression
+
+
+# IR Implementation Plan
+
+IR Lowering Implementation Plan                                                                                                          │ │
+│ │                                                                                                                                          │ │
+│ │ Overview                                                                                                                                 │ │
+│ │                                                                                                                                          │ │
+│ │ Implement IR (Intermediate Representation) lowering from the typed AST to a format-aware IR that can be used for code generation and     │ │
+│ │ optimization. Following TDD approach throughout.                                                                                         │ │
+│ │                                                                                                                                          │ │
+│ │ Current State Analysis                                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ ✅ Completed: DSL → Lexer → Parser → Typed AST                                                                                            │ │
+│ │ - AST contains tensor type information (just these formats Dense, CSR, CSC)                                                              │ │
+│ │ - AST contains shape information for tensors                                                                                             │ │
+│ │ - Visitor pattern already implemented in AST                                                                                             │ │
+│ │ - 150+ tests passing (lexer, parser, AST, integration)                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ IR Design (Based on CLAUDE.md specification)                                                                                             │ │
+│ │                                                                                                                                          │ │
+│ │ IR Structure                                                                                                                             │ │
+│ │                                                                                                                                          │ │
+│ │ <TensorName>: <Type>, [i, j, k]                                                                                                          │ │
+│ │ for [<TensorNameList>] [<Iterator Index>] {                                                                                              │ │
+│ │     compute A[i][j] = B[i][j] * C[i][j] + D[i]                                                                                           │ │
+│ │     call <Function>(<TensorName>)                                                                                                        │ │
+│ │ }                                                                                                                                        │ │
+│ │                                                                                                                                          │ │
+│ │ IR Node Types Needed                                                                                                                     │ │
+│ │                                                                                                                                          │ │
+│ │ 1. IRProgram - Root containing declarations and statements                                                                               │ │
+│ │ 2. IRDeclaration - A: CSR, [i, j]                                                                                                        │ │
+│ │ 3. IRForLoop - for [A, B] [i, j] { ... }                                                                                                 │ │
+│ │ 4. IRCompute - compute A[i] = B[i] + C[i]                                                                                                │ │
+│ │ 5. IRCall - call optimize(A)                                                                                                             │ │
+│ │ 6. IRExpression nodes (TensorAccess, BinaryOp, FunctionCall, etc.)                                                                       │ │
+│ │                                                                                                                                          │ │
+│ │ ---                                                                                                                                      │ │
+│ │ Phase 1: IR Node Design & Structure                                                                                                      │ │
+│ │                                                                                                                                          │ │
+│ │ Goal: Define IR classes and data structures                                                                                              │ │
+│ │                                                                                                                                          │ │
+│ │ Tasks:                                                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Create include/ir.h with IR node classes                                                                                              │ │
+│ │   - IRNode base class                                                                                                                    │ │
+│ │   - IRProgram, IRDeclaration, IRForLoop, IRCompute, IRCall                                                                               │ │
+│ │   - IR expression nodes (reuse or adapt AST expression nodes)                                                                            │ │
+│ │   - IR visitor interface for future code generation                                                                                      │ │
+│ │ 2. Create src/ir.cpp with IR node implementations                                                                                        │ │
+│ │   - Constructors and destructors                                                                                                         │ │
+│ │   - Helper methods (toString() for debugging)                                                                                            │ │
+│ │   - Accept methods for visitor pattern                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ Tests to Write FIRST:                                                                                                                    │ │
+│ │                                                                                                                                          │ │
+│ │ - src/tests/ir/test_ir_nodes.cpp                                                                                                         │ │
+│ │   - Test IR node creation                                                                                                                │ │
+│ │   - Test IR node properties (type, shape, indices)                                                                                       │ │
+│ │   - Test IR program structure                                                                                                            │ │
+│ │   - Test toString() methods for debugging                                                                                                │ │
+│ │                                                                                                                                          │ │
+│ │ Deliverable: IR node structure with ~15-20 unit tests                                                                                    │ │
+│ │                                                                                                                                          │ │
+│ │ ---                                                                                                                                      │ │
+│ │ Phase 2: AST → IR Lowering Visitor                                                                                                       │ │
+│ │                                                                                                                                          │ │
+│ │ Goal: Implement visitor that transforms AST to IR                                                                                        │ │
+│ │                                                                                                                                          │ │
+│ │ Tasks:                                                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Create include/ir_lowering.h                                                                                                          │ │
+│ │   - IRLoweringVisitor class inheriting from ASTVisitor                                                                                   │ │
+│ │   - Methods to visit each AST node type                                                                                                  │ │
+│ │   - Symbol table for tracking tensor types and shapes                                                                                    │ │
+│ │   - Index analysis for for-loop generation                                                                                               │ │
+│ │ 2. Create src/ir_lowering.cpp                                                                                                            │ │
+│ │   - Implement visit methods:                                                                                                             │ │
+│ │       - visit(Declaration&) → Create IRDeclaration with type info                                                                        │ │
+│ │     - visit(Computation&) → Create IRCompute                                                                                             │ │
+│ │     - visit(ForStatement&) → Create IRForLoop                                                                                            │ │
+│ │     - visit(CallStatement&) → Create IRCall                                                                                              │ │
+│ │     - Expression visitors (mostly pass-through)                                                                                          │ │
+│ │ 3. Key lowering logic:                                                                                                                   │ │
+│ │   - Extract tensor type from AST Declaration                                                                                             │ │
+│ │   - Extract shape from AST Declaration                                                                                                   │ │
+│ │   - Preserve index information                                                                                                           │ │
+│ │   - Build symbol table during lowering                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ Tests to Write FIRST:                                                                                                                    │ │
+│ │                                                                                                                                          │ │
+│ │ - src/tests/ir/test_ir_lowering.cpp                                                                                                      │ │
+│ │   - Test simple declaration lowering (Dense, CSR, etc.)                                                                                  │ │
+│ │   - Test declaration with shape lowering                                                                                                 │ │
+│ │   - Test computation lowering                                                                                                            │ │
+│ │   - Test for-loop lowering                                                                                                               │ │
+│ │   - Test call statement lowering                                                                                                         │ │
+│ │   - Test complete program lowering                                                                                                       │ │
+│ │   - Test symbol table correctness                                                                                                        │ │
+│ │                                                                                                                                          │ │
+│ │ Deliverable: AST→IR visitor with ~25-30 unit tests                                                                                       │ │
+│ │                                                                                                                                          │ │
+│ │ ---                                                                                                                                      │ │
+│ │ Phase 3: IR Validation & Semantic Checks                                                                                                 │ │
+│ │                                                                                                                                          │ │
+│ │ Goal: Validate IR correctness and perform semantic analysis                                                                              │ │
+│ │                                                                                                                                          │ │
+│ │ Tasks:                                                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Create include/ir_validator.h                                                                                                         │ │
+│ │   - IRValidator class (visitor pattern)                                                                                                  │ │
+│ │   - Semantic checks:                                                                                                                     │ │
+│ │       - Tensor usage before declaration                                                                                                  │ │
+│ │     - Index consistency (free vs bound indices)                                                                                          │ │
+│ │     - Type compatibility for operations                                                                                                  │ │
+│ │     - Shape compatibility checks                                                                                                         │ │
+│ │ 2. Create src/ir_validator.cpp                                                                                                           │ │
+│ │   - Implement validation logic                                                                                                           │ │
+│ │   - Collect and report errors                                                                                                            │ │
+│ │   - Index analysis for Einstein notation                                                                                                 │ │
+│ │                                                                                                                                          │ │
+│ │ Tests to Write FIRST:                                                                                                                    │ │
+│ │                                                                                                                                          │ │
+│ │ - src/tests/ir/test_ir_validation.cpp                                                                                                    │ │
+│ │   - Test valid IR passes validation                                                                                                      │ │
+│ │   - Test undeclared tensor usage fails                                                                                                   │ │
+│ │   - Test index mismatch detection                                                                                                        │ │
+│ │   - Test type compatibility checks                                                                                                       │ │
+│ │   - Test shape mismatch detection                                                                                                        │ │
+│ │   - Test Einstein notation validation                                                                                                    │ │
+│ │                                                                                                                                          │ │
+│ │ Deliverable: IR validator with ~20-25 tests                                                                                              │ │
+│ │                                                                                                                                          │ │
+│ │ ---                                                                                                                                      │ │
+│ │ Phase 4: End-to-End Integration Tests                                                                                                    │ │
+│ │                                                                                                                                          │ │
+│ │ Goal: Test complete DSL → AST → IR pipeline                                                                                              │ │
+│ │                                                                                                                                          │ │
+│ │ Tasks:                                                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Create src/tests/ir/test_ir_integration.cpp                                                                                           │ │
+│ │   - Parse DSL → AST → Lower to IR → Validate                                                                                             │ │
+│ │   - Test complete programs from CLAUDE.md examples                                                                                       │ │
+│ │   - Test all tensor types (Dense, CSR, COO, CSC, ELLPACK, DIA)                                                                           │ │
+│ │   - Test error cases (semantic errors)                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ Test Cases:                                                                                                                              │ │
+│ │                                                                                                                                          │ │
+│ │ - Simple Dense tensor declaration                                                                                                        │ │
+│ │ - CSR matrix-vector multiply                                                                                                             │ │
+│ │ - COO tensor operations                                                                                                                  │ │
+│ │ - Mixed tensor type programs                                                                                                             │ │
+│ │ - Matrix multiplication (typed)                                                                                                          │ │
+│ │ - Programs with function calls                                                                                                           │ │
+│ │ - Error cases (type mismatches, undeclared tensors)                                                                                      │ │
+│ │                                                                                                                                          │ │
+│ │ Deliverable: ~20-30 integration tests                                                                                                    │ │
+│ │                                                                                                                                          │ │
+│ │ ---                                                                                                                                      │ │
+│ │ Phase 5: IR Pretty Printer & Debugging                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ Goal: Human-readable IR output for debugging and inspection                                                                              │ │
+│ │                                                                                                                                          │ │
+│ │ Tasks:                                                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Create include/ir_printer.h                                                                                                           │ │
+│ │   - IRPrinter class (visitor pattern)                                                                                                    │ │
+│ │   - Methods to format IR as text                                                                                                         │ │
+│ │ 2. Create src/ir_printer.cpp                                                                                                             │ │
+│ │   - Implement toString() for each IR node                                                                                                │ │
+│ │   - Format matches IR specification in CLAUDE.md                                                                                         │ │
+│ │   - Indentation and readability                                                                                                          │ │
+│ │                                                                                                                                          │ │
+│ │ Example Output:                                                                                                                          │ │
+│ │                                                                                                                                          │ │
+│ │ A: CSR, [i, j]                                                                                                                           │ │
+│ │ B: Dense, [j, k]                                                                                                                         │ │
+│ │ C: Dense, [i, k]                                                                                                                         │ │
+│ │ for [A, B, C] [i, j, k] {                                                                                                                │ │
+│ │     compute C[i, k] = A[i, j] * B[j, k]                                                                                                  │ │
+│ │ }                                                                                                                                        │ │
+│ │                                                                                                                                          │ │
+│ │ Tests to Write FIRST:                                                                                                                    │ │
+│ │                                                                                                                                          │ │
+│ │ - src/tests/ir/test_ir_printer.cpp                                                                                                       │ │
+│ │   - Test declaration printing                                                                                                            │ │
+│ │   - Test for-loop printing                                                                                                               │ │
+│ │   - Test compute printing                                                                                                                │ │
+│ │   - Test complete program printing                                                                                                       │ │
+│ │   - Verify output matches specification                                                                                                  │ │
+│ │                                                                                                                                          │ │
+│ │ Deliverable: IR printer with ~10-15 tests                                                                                                │ │
+│ │                                                                                                                                          │ │
+│ │ ---                                                                                                                                      │ │
+│ │ Phase 6: CMake Integration & Documentation                                                                                               │ │
+│ │                                                                                                                                          │ │
+│ │ Goal: Integrate IR into build system                                                                                                     │ │
+│ │                                                                                                                                          │ │
+│ │ Tasks:                                                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Update CMakeLists.txt                                                                                                                 │ │
+│ │   - Add IR source files to compilation                                                                                                   │ │
+│ │   - Add all IR test executables                                                                                                          │ │
+│ │   - Configure test targets                                                                                                               │ │
+│ │ 2. Create documentation:                                                                                                                 │ │
+│ │   - Update docs/ with IR specification                                                                                                   │ │
+│ │   - Document IR node types                                                                                                               │ │
+│ │   - Document lowering process                                                                                                            │ │
+│ │   - Add usage examples                                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ Deliverable: Build system + documentation                                                                                                │ │
+│ │                                                                                                                                          │ │
+│ │ ---                                                                                                                                      │ │
+│ │ Implementation Order (TDD Flow)                                                                                                          │ │
+│ │                                                                                                                                          │ │
+│ │ Step 1: IR Nodes (Week 1)                                                                                                                │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Write test_ir_nodes.cpp (15-20 tests)                                                                                                 │ │
+│ │ 2. Implement ir.h                                                                                                                        │ │
+│ │ 3. Implement ir.cpp                                                                                                                      │ │
+│ │ 4. All tests pass                                                                                                                        │ │
+│ │                                                                                                                                          │ │
+│ │ Step 2: Lowering Visitor (Week 1-2)                                                                                                      │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Write test_ir_lowering.cpp (25-30 tests)                                                                                              │ │
+│ │ 2. Implement ir_lowering.h                                                                                                               │ │
+│ │ 3. Implement ir_lowering.cpp                                                                                                             │ │
+│ │ 4. All tests pass                                                                                                                        │ │
+│ │                                                                                                                                          │ │
+│ │ Step 3: Validation (Week 2)                                                                                                              │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Write test_ir_validation.cpp (20-25 tests)                                                                                            │ │
+│ │ 2. Implement ir_validator.h                                                                                                              │ │
+│ │ 3. Implement ir_validator.cpp                                                                                                            │ │
+│ │ 4. All tests pass                                                                                                                        │ │
+│ │                                                                                                                                          │ │
+│ │ Step 4: Integration (Week 2)                                                                                                             │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Write test_ir_integration.cpp (20-30 tests)                                                                                           │ │
+│ │ 2. Fix any issues discovered                                                                                                             │ │
+│ │ 3. All tests pass                                                                                                                        │ │
+│ │                                                                                                                                          │ │
+│ │ Step 5: Printer (Week 2-3)                                                                                                               │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Write test_ir_printer.cpp (10-15 tests)                                                                                               │ │
+│ │ 2. Implement ir_printer.h                                                                                                                │ │
+│ │ 3. Implement ir_printer.cpp                                                                                                              │ │
+│ │ 4. All tests pass                                                                                                                        │ │
+│ │                                                                                                                                          │ │
+│ │ Step 6: Polish (Week 3)                                                                                                                  │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Update CMakeLists.txt                                                                                                                 │ │
+│ │ 2. Write documentation                                                                                                                   │ │
+│ │ 3. Final integration testing                                                                                                             │ │
+│ │                                                                                                                                          │ │
+│ │ ---                                                                                                                                      │ │
+│ │ Success Criteria                                                                                                                         │ │
+│ │                                                                                                                                          │ │
+│ │ - ✅ All IR nodes properly defined and tested                                                                                             │ │
+│ │ - ✅ Complete AST → IR lowering working                                                                                                   │ │
+│ │ - ✅ IR validation catching semantic errors                                                                                               │ │
+│ │ - ✅ ~90-120 new tests passing                                                                                                            │ │
+│ │ - ✅ Human-readable IR output                                                                                                             │ │
+│ │ - ✅ Zero regressions in existing 150+ tests                                                                                              │ │
+│ │ - ✅ Ready for code generation phase                                                                                                      │ │
+│ │                                                                                                                                          │ │
+│ │ ---                                                                                                                                      │ │
+│ │ File Structure After Implementation                                                                                                      │ │
+│ │                                                                                                                                          │ │
+│ │ include/                                                                                                                                 │ │
+│ │ ├── ast.h (existing)                                                                                                                     │ │
+│ │ ├── ir.h (new)                                                                                                                           │ │
+│ │ ├── ir_lowering.h (new)                                                                                                                  │ │
+│ │ ├── ir_validator.h (new)                                                                                                                 │ │
+│ │ └── ir_printer.h (new)                                                                                                                   │ │
+│ │                                                                                                                                          │ │
+│ │ src/                                                                                                                                     │ │
+│ │ ├── ast.cpp (existing)                                                                                                                   │ │
+│ │ ├── ir.cpp (new)                                                                                                                         │ │
+│ │ ├── ir_lowering.cpp (new)                                                                                                                │ │
+│ │ ├── ir_validator.cpp (new)                                                                                                               │ │
+│ │ └── ir_printer.cpp (new)                                                                                                                 │ │
+│ │                                                                                                                                          │ │
+│ │ src/tests/ir/                                                                                                                            │ │
+│ │ ├── test_ir_nodes.cpp (new)                                                                                                              │ │
+│ │ ├── test_ir_lowering.cpp (new)                                                                                                           │ │
+│ │ ├── test_ir_validation.cpp (new)                                                                                                         │ │
+│ │ ├── test_ir_integration.cpp (new)                                                                                                        │ │
+│ │ └── test_ir_printer.cpp (new)                                                                                                            │ │
+│ │                                                                                                                                          │ │
+│ │ ---                                                                                                                                      │ │
+│ │ Key Design Decisions                                                                                                                     │ │
+│ │                                                                                                                                          │ │
+│ │ 1. Reuse AST Expression Nodes: IR expressions can reuse AST expression nodes (TensorAccess, BinaryOp, etc.) to avoid duplication         │ │
+│ │ 2. Symbol Table: Build during lowering to track tensor types and shapes for validation                                                   │ │
+│ │ 3. Two-Phase Approach:                                                                                                                   │ │
+│ │   - Phase 1: Lower AST → IR (structural transformation)                                                                                  │ │
+│ │   - Phase 2: Validate IR (semantic checks)                                                                                               │ │
+│ │ 4. Visitor Pattern: Consistent with existing AST design, enables future extensions                                                       │ │
+│ │ 5. Format Preservation: IR maintains tensor type information (Dense, CSR, etc.) for format-specific optimizations later   
+- Build a full IR implementation such as implementing IR nodes + lowering validation together + Type check it as well + add tests for this. follow a TDD approach.

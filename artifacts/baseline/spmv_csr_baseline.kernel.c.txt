@@ -1,0 +1,9 @@
+void compute(const SparseMatrix* A, const double* x, double* y) {
+    for (int i = 0; i < A->rows; i++) {
+        for (int pA = A->row_ptr[i]; pA < A->row_ptr[i + 1]; pA++) {
+            int j = A->col_idx[pA];
+            y[i] += A->vals[pA] * x[j];
+        }
+    }
+}
+

@@ -1,0 +1,21 @@
+========================================
+Operation: compute
+========================================
+
+Output:
+  Tensor y : Dense<100> [i]
+
+Inputs:
+  Tensor A : CSC<100, 100> [i, j]
+  Tensor x : Dense<100> [j]
+
+Loop Nest:
+  for j_block in [0, 4) (block):
+    for j in [0, 100) (dense):
+      for i in [0, 100) (sparse):
+        y[i] += A_vals[pA] * x[j];
+
+Optimizations:
+  Format-correctness reordering: not needed
+  Interchange: not applied
+  Blocking: index=j, block_size=32

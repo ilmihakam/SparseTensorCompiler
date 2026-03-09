@@ -1,0 +1,5 @@
+tensor A : CSR<100, 50>;
+tensor x : Dense<50>;
+tensor z : Dense<50>;
+tensor y : Dense<100>;
+compute y[i] = A[i, j] * x[j] * z[j];

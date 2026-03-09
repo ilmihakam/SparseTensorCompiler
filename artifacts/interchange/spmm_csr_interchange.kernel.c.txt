@@ -1,0 +1,12 @@
+void compute(const SparseMatrix* A, const double** B, double** C, int N_j) {
+    // Optimization: loop interchange applied
+    for (int i = 0; i < A->rows; i++) {
+        for (int j = 0; j < N_j; j++) {
+            for (int pA = A->row_ptr[i]; pA < A->row_ptr[i + 1]; pA++) {
+                int k = A->col_idx[pA];
+                C[i][j] += A->vals[pA] * B[k][j];
+            }
+        }
+    }
+}
+

@@ -1,0 +1,1 @@
+/usr/bin/c++ -w -O3 -DNDEBUG -Wall -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/sparse_compiler.dir/src/main.cpp.o -o sparse_compiler  libsparse_tensor_core.a

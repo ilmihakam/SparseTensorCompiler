@@ -1,0 +1,126 @@
+Start testing: Feb 17 21:08 GMT
+----------------------------------------------------------
+35/53 Testing: ScheduledOptimizationsCorrectnessTests
+35/53 Test: ScheduledOptimizationsCorrectnessTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_scheduled_optimizations_correctness"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"ScheduledOptimizationsCorrectnessTests" start time: Feb 17 21:08 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 38 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 38 tests from ScheduledOptimizationsTest
+[ RUN      ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSR_Natural
+[       OK ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSR_Natural (219 ms)
+[ RUN      ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSC_Natural
+[       OK ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSC_Natural (185 ms)
+[ RUN      ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSR
+[       OK ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSR (223 ms)
+[ RUN      ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSC
+[       OK ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSC (178 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSR_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSR_Natural_BlockSize32 (173 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSR_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSR_Inverted_BlockSize32 (167 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSC_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSC_Natural_BlockSize32 (170 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSC_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSC_Inverted_BlockSize32 (167 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSR_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSR_Natural_BlockSize32 (165 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSR_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSR_Inverted_BlockSize32 (171 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSC_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSC_Natural_BlockSize32 (172 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSC_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSC_Inverted_BlockSize32 (171 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSR_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSR_Natural_BlockSize32 (169 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSR_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSR_Inverted_BlockSize32 (168 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSC_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSC_Natural_BlockSize32 (171 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSC_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSC_Inverted_BlockSize32 (172 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_BlockSize8
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_BlockSize8 (167 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_BlockSize16
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_BlockSize16 (223 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_BlockSize64
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_BlockSize64 (258 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_SmallMatrix_BlockSizeGreaterThanM
+[       OK ] ScheduledOptimizationsTest.EdgeCase_SmallMatrix_BlockSizeGreaterThanM (175 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_ExactMultiple_BlockSizeEqualsM
+[       OK ] ScheduledOptimizationsTest.EdgeCase_ExactMultiple_BlockSizeEqualsM (172 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_SingleRow
+[       OK ] ScheduledOptimizationsTest.EdgeCase_SingleRow (175 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_LargeMatrix_AllSchedules
+[       OK ] ScheduledOptimizationsTest.EdgeCase_LargeMatrix_AllSchedules (523 ms)
+[ RUN      ] ScheduledOptimizationsTest.ReorderingOnly_CSR_Inverted
+[       OK ] ScheduledOptimizationsTest.ReorderingOnly_CSR_Inverted (171 ms)
+[ RUN      ] ScheduledOptimizationsTest.BlockingOnly_BlockSize32
+[       OK ] ScheduledOptimizationsTest.BlockingOnly_BlockSize32 (171 ms)
+[ RUN      ] ScheduledOptimizationsTest.BlockingOnly_MultipleBlockSizes
+[       OK ] ScheduledOptimizationsTest.BlockingOnly_MultipleBlockSizes (514 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize16
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize16 (213 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize32 (191 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize64
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize64 (191 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSC_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSC_BlockSize32 (189 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSizeGreaterThanCols
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSizeGreaterThanCols (184 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize1
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize1 (185 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSR_BlockSize32
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_scheduled_optimizations_correctness.cpp:254: Failure
+Expected: (error) < (1e-10), actual: 7.4412839999999996 vs 1e-10
+SpMM I_THEN_B CSR B=32 failed: max_error = 7.4412839999999996
+
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSR_BlockSize32 (186 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSR_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSR_BlockSize32 (200 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_B_I_CSR_BlockSize32
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_scheduled_optimizations_correctness.cpp:254: Failure
+Expected: (error) < (1e-10), actual: 7.4412839999999996 vs 1e-10
+SpMM I_B_I CSR B=32 failed: max_error = 7.4412839999999996
+
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_B_I_CSR_BlockSize32 (194 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSC_BlockSize32
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_scheduled_optimizations_correctness.cpp:254: Failure
+Expected: (error) < (1e-10), actual: 338.84570000000002 vs 1e-10
+SpMM I_THEN_B CSC B=32 failed: max_error = 338.84570000000002
+
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSC_BlockSize32 (206 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSC_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSC_BlockSize32 (200 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_B_I_CSC_BlockSize32
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_scheduled_optimizations_correctness.cpp:254: Failure
+Expected: (error) < (1e-10), actual: 338.84570000000002 vs 1e-10
+SpMM I_B_I CSC B=32 failed: max_error = 338.84570000000002
+
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_B_I_CSC_BlockSize32 (191 ms)
+[----------] 38 tests from ScheduledOptimizationsTest (7737 ms total)
+
+[----------] Global test environment tear-down
+[==========] 38 tests from 1 test suite ran. (7737 ms total)
+[  PASSED  ] 34 tests.
+[  FAILED  ] 4 tests, listed below:
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSR_BlockSize32
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_B_I_CSR_BlockSize32
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSC_BlockSize32
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_B_I_CSC_BlockSize32
+
+ 4 FAILED TESTS
+<end of output>
+Test time =   7.74 sec
+----------------------------------------------------------
+Test Failed.
+"ScheduledOptimizationsCorrectnessTests" end time: Feb 17 21:08 GMT
+"ScheduledOptimizationsCorrectnessTests" time elapsed: 00:00:07
+----------------------------------------------------------
+
+End testing: Feb 17 21:08 GMT

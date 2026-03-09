@@ -1,0 +1,4 @@
+tensor C : Dense<1000, 1000>;
+tensor A : CSR<1000, 1000>;
+tensor B : CSR<1000, 1000>;
+compute C[i, j] = A[i, j] + B[i, j];
