@@ -1,0 +1,22 @@
+========================================
+Operation: compute
+========================================
+
+Output:
+  Tensor C : Dense<100, 50> [i, j]
+
+Inputs:
+  Tensor A : CSC<100, 80> [i, k]
+  Tensor B : Dense<80, 50> [k, j]
+
+Loop Nest:
+  for k in [0, 80) (dense):
+    for j_block in [0, 2) (block):
+      for j in [0, 50) (dense):
+        for i in [0, 100) (sparse):
+          C[i][j] += A_vals[pA] * B[k][j];
+
+Optimizations:
+  Format-correctness reordering: not needed
+  Interchange: applied
+  Blocking: index=j, block_size=32

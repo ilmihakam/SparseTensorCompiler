@@ -1,0 +1,11 @@
+// SpMV: Sparse Matrix-Vector Multiply
+// y = A * x, where A is sparse, x and y are dense vectors
+
+// Declare tensors with their formats and dimensions
+tensor y : Dense<1000>;           // Output vector (1000 elements)
+tensor A : CSR<1000, 1000>;       // Sparse matrix in CSR format
+tensor x : Dense<1000>;           // Input vector (1000 elements)
+
+// Computation: Einstein notation
+// i is the free index (output), j is bound (summation)
+compute y[i] = A[i, j] * x[j];

@@ -1,0 +1,11 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/test_blocking_correctness.dir/src/tests/codegen/test_blocking_correctness.cpp.o"
+  "CMakeFiles/test_blocking_correctness.dir/src/tests/codegen/test_blocking_correctness.cpp.o.d"
+  "test_blocking_correctness"
+  "test_blocking_correctness.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/test_blocking_correctness.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

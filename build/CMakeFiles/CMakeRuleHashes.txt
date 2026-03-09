@@ -1,0 +1,5 @@
+# Hashes of file build rules.
+fc4b38e62d2e77b26c39c2f047551d0b CMakeFiles/check-format
+df34d85cbdfbedc2ca4568580ce2a3c3 CMakeFiles/format
+8e4cce78c7558ab520967693f5cf78be lexer.cpp
+379cc35b9d13cae4d9f94839f73ff677 parser.cpp

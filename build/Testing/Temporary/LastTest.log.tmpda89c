@@ -1,0 +1,240 @@
+Start testing: Feb 16 20:11 GMT
+----------------------------------------------------------
+27/48 Testing: DenseLoopsTests
+27/48 Test: DenseLoopsTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_dense_loops"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"DenseLoopsTests" start time: Feb 16 20:11 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 8 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 8 tests from DenseLoopsTest
+[ RUN      ] DenseLoopsTest.SimpleDenseLoop
+[       OK ] DenseLoopsTest.SimpleDenseLoop (0 ms)
+[ RUN      ] DenseLoopsTest.DenseLoopWithBounds
+[       OK ] DenseLoopsTest.DenseLoopWithBounds (0 ms)
+[ RUN      ] DenseLoopsTest.NestedDenseLoops
+[       OK ] DenseLoopsTest.NestedDenseLoops (0 ms)
+[ RUN      ] DenseLoopsTest.TripleNestedDenseLoops
+[       OK ] DenseLoopsTest.TripleNestedDenseLoops (0 ms)
+[ RUN      ] DenseLoopsTest.DenseLoopIndentation
+[       OK ] DenseLoopsTest.DenseLoopIndentation (0 ms)
+[ RUN      ] DenseLoopsTest.DenseLoopWithBody
+[       OK ] DenseLoopsTest.DenseLoopWithBody (0 ms)
+[ RUN      ] DenseLoopsTest.DenseLoopVariableNaming
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_dense_loops.cpp:193: Failure
+Expected: (output.find("int j")) != (std::string::npos), actual: 18446744073709551615 vs 18446744073709551615
+
+[  FAILED  ] DenseLoopsTest.DenseLoopVariableNaming (0 ms)
+[ RUN      ] DenseLoopsTest.DenseLoopBracePlacement
+[       OK ] DenseLoopsTest.DenseLoopBracePlacement (0 ms)
+[----------] 8 tests from DenseLoopsTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 7 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] DenseLoopsTest.DenseLoopVariableNaming
+
+ 1 FAILED TEST
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Failed.
+"DenseLoopsTests" end time: Feb 16 20:11 GMT
+"DenseLoopsTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+48/48 Testing: BenchmarkScheduleSanitySpMM
+48/48 Test: BenchmarkScheduleSanitySpMM
+Command: "/opt/homebrew/Frameworks/Python.framework/Versions/3.13/bin/python3.13" "/Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/test_benchmark_pipeline.py" "--mode" "schedule-sanity" "--kernel" "spmm"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"BenchmarkScheduleSanitySpMM" start time: Feb 16 20:11 GMT
+Output:
+----------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/test_benchmark_pipeline.py", line 213, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/test_benchmark_pipeline.py", line 190, in main
+    run_schedule_sanity_spmm()
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/test_benchmark_pipeline.py", line 162, in run_schedule_sanity_spmm
+    raise RuntimeError(
+    ...<4 lines>...
+    )
+RuntimeError: Schedule sanity runner failed
+Command: /opt/homebrew/opt/python@3.13/bin/python3.13 /Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/sanity_check_spmm_schedules.py --matrix nasa2146 --formats csr,csc --iterations 1 --output /var/folders/d5/11zgvjvj00n_m4h94q8z4lcw0000gn/T/benchmark_schedule_sanity_wz9uz8ca/sanity.csv --failed-output /var/folders/d5/11zgvjvj00n_m4h94q8z4lcw0000gn/T/benchmark_schedule_sanity_wz9uz8ca/sanity_failed.csv
+STDOUT:
+========================================================================
+SpMM Schedule Sanity Check
+========================================================================
+Matrix: nasa2146
+Formats: csr, csc
+Configs: baseline, interchange_only, block_only, i_then_b, b_then_i, i_b_i
+Iterations: 1
+Tolerance: 1.0e-09
+========================================================================
+
+Format: csr
+  [1/12] baseline         ... FAIL (loop_order=['i', 'pA', 'j'] expected_prefix=['i', 'p', 'j'])
+  [2/12] interchange_only ... FAIL (loop_order=['i', 'j', 'pA'] expected_prefix=['i', 'j', 'p'])
+  [3/12] block_only       ... PASS (0.3640 ms, loops: i jj p t t)
+  [4/12] i_then_b         ... PASS (0.3600 ms, loops: i jj p t t)
+  [5/12] b_then_i         ... PASS (0.1410 ms, loops: jj i p t t)
+  [6/12] i_b_i            ... PASS (0.3670 ms, loops: i jj p t t)
+
+Format: csc
+  [7/12] baseline         ... FAIL (loop_order=['k', 'pA', 'j'] expected_prefix=['k', 'p', 'j'])
+  [8/12] interchange_only ... FAIL (loop_order=['k', 'j', 'pA'] expected_prefix=['k', 'j', 'p'])
+  [9/12] block_only       ... PASS (0.1960 ms, loops: k jj t p t)
+  [10/12] i_then_b         ... PASS (0.1960 ms, loops: k jj t p t)
+  [11/12] b_then_i         ... PASS (0.1970 ms, loops: jj k t p t)
+  [12/12] i_b_i            ... PASS (0.2000 ms, loops: k jj t p t)
+
+========================================================================
+Schedule Sanity Summary
+========================================================================
+Total runs: 12
+Pass: 8
+Fail: 4
+Results CSV: /var/folders/d5/11zgvjvj00n_m4h94q8z4lcw0000gn/T/benchmark_schedule_sanity_wz9uz8ca/sanity.csv
+Failed CSV: /var/folders/d5/11zgvjvj00n_m4h94q8z4lcw0000gn/T/benchmark_schedule_sanity_wz9uz8ca/sanity_failed.csv
+
+STDERR:
+
+<end of output>
+Test time =   3.86 sec
+----------------------------------------------------------
+Test Failed.
+"BenchmarkScheduleSanitySpMM" end time: Feb 16 20:11 GMT
+"BenchmarkScheduleSanitySpMM" time elapsed: 00:00:03
+----------------------------------------------------------
+
+44/48 Testing: BenchmarkPipelineOursOnly
+44/48 Test: BenchmarkPipelineOursOnly
+Command: "/opt/homebrew/Frameworks/Python.framework/Versions/3.13/bin/python3.13" "/Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/test_benchmark_pipeline.py" "--mode" "ours" "--kernel" "spmv"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"BenchmarkPipelineOursOnly" start time: Feb 16 20:11 GMT
+Output:
+----------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/test_benchmark_pipeline.py", line 213, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/test_benchmark_pipeline.py", line 196, in main
+    validate_ours_mode(rows, args.kernel)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/Users/ilmihakam/co/backend/SparseTensorCompiler/benchmarks/scripts/test_benchmark_pipeline.py", line 92, in validate_ours_mode
+    raise AssertionError(f"Expected {expected_ours_rows} rows, got {len(rows)}")
+AssertionError: Expected 40 rows, got 120
+<end of output>
+Test time = 142.92 sec
+----------------------------------------------------------
+Test Failed.
+"BenchmarkPipelineOursOnly" end time: Feb 16 20:13 GMT
+"BenchmarkPipelineOursOnly" time elapsed: 00:02:22
+----------------------------------------------------------
+
+33/48 Testing: ScheduledOptimizationsCorrectnessTests
+33/48 Test: ScheduledOptimizationsCorrectnessTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_scheduled_optimizations_correctness"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"ScheduledOptimizationsCorrectnessTests" start time: Feb 16 20:13 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 38 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 38 tests from ScheduledOptimizationsTest
+[ RUN      ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSR_Natural
+[       OK ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSR_Natural (266 ms)
+[ RUN      ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSC_Natural
+[       OK ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSC_Natural (256 ms)
+[ RUN      ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSR
+[       OK ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSR (272 ms)
+[ RUN      ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSC
+[       OK ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSC (288 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSR_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSR_Natural_BlockSize32 (287 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSR_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSR_Inverted_BlockSize32 (252 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSC_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSC_Natural_BlockSize32 (252 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSC_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSC_Inverted_BlockSize32 (262 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSR_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSR_Natural_BlockSize32 (264 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSR_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSR_Inverted_BlockSize32 (268 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSC_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSC_Natural_BlockSize32 (278 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSC_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSC_Inverted_BlockSize32 (256 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSR_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSR_Natural_BlockSize32 (287 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSR_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSR_Inverted_BlockSize32 (297 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSC_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSC_Natural_BlockSize32 (284 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSC_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSC_Inverted_BlockSize32 (277 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_BlockSize8
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_BlockSize8 (375 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_BlockSize16
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_BlockSize16 (291 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_BlockSize64
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_BlockSize64 (269 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_SmallMatrix_BlockSizeGreaterThanM
+[       OK ] ScheduledOptimizationsTest.EdgeCase_SmallMatrix_BlockSizeGreaterThanM (270 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_ExactMultiple_BlockSizeEqualsM
+[       OK ] ScheduledOptimizationsTest.EdgeCase_ExactMultiple_BlockSizeEqualsM (250 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_SingleRow
+[       OK ] ScheduledOptimizationsTest.EdgeCase_SingleRow (264 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_LargeMatrix_AllSchedules
+[       OK ] ScheduledOptimizationsTest.EdgeCase_LargeMatrix_AllSchedules (801 ms)
+[ RUN      ] ScheduledOptimizationsTest.ReorderingOnly_CSR_Inverted
+[       OK ] ScheduledOptimizationsTest.ReorderingOnly_CSR_Inverted (261 ms)
+[ RUN      ] ScheduledOptimizationsTest.BlockingOnly_BlockSize32
+[       OK ] ScheduledOptimizationsTest.BlockingOnly_BlockSize32 (259 ms)
+[ RUN      ] ScheduledOptimizationsTest.BlockingOnly_MultipleBlockSizes
+[       OK ] ScheduledOptimizationsTest.BlockingOnly_MultipleBlockSizes (814 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize16
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize16 (317 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize32 (272 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize64
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize64 (269 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSC_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSC_BlockSize32 (287 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSizeGreaterThanCols
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSizeGreaterThanCols (344 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize1
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize1 (279 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSR_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSR_BlockSize32 (259 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSR_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSR_BlockSize32 (290 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_B_I_CSR_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_I_B_I_CSR_BlockSize32 (266 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSC_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSC_BlockSize32 (308 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSC_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSC_BlockSize32 (302 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_B_I_CSC_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_I_B_I_CSC_BlockSize32 (301 ms)
+[----------] 38 tests from ScheduledOptimizationsTest (11715 ms total)
+
+[----------] Global test environment tear-down
+[==========] 38 tests from 1 test suite ran. (11715 ms total)
+[  PASSED  ] 38 tests.
+<end of output>
+Test time =  11.72 sec
+----------------------------------------------------------
+Test Passed.
+"ScheduledOptimizationsCorrectnessTests" end time: Feb 16 20:13 GMT
+"ScheduledOptimizationsCorrectnessTests" time elapsed: 00:00:11
+----------------------------------------------------------
+

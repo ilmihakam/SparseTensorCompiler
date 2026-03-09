@@ -1,0 +1,4 @@
+tensor C : Dense<1000, 1000>;
+tensor A : CSC<1000, 1000>;
+tensor B : CSC<1000, 1000>;
+compute C[i, j] = A[i, j] * B[i, j];

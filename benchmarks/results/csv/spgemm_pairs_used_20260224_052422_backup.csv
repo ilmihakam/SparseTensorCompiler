@@ -1,0 +1,4 @@
+matrix_a,matrix_b,rows_a,cols_a,nnz_a,rows_b,cols_b,nnz_b
+bcsstk01,bcsstk01,48,48,400,48,48,400
+bcsstk17,bcsstk17,10974,10974,428650,10974,10974,428650
+bodyy4,bodyy4,17546,17546,121938,17546,17546,121938

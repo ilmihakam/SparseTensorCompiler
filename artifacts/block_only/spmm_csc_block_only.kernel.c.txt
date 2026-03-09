@@ -1,0 +1,16 @@
+void compute(const SparseMatrix* A, const double** B, double** C, int N_j) {
+    // Optimization: loop blocking (block_size=32)
+    for (int k = 0; k < A->cols; k++) {
+        for (int pA = A->col_ptr[k]; pA < A->col_ptr[k + 1]; pA++) {
+            int i = A->row_idx[pA];
+            for (int j_block = 0; j_block < (N_j + 31) / 32; j_block++) {
+                int j_start = j_block * 32;
+                int j_end = (j_start + 32 < N_j) ? j_start + 32 : N_j;
+                for (int j = j_start; j < j_end; j++) {
+                    C[i][j] += A->vals[pA] * B[k][j];
+                }
+            }
+        }
+    }
+}
+

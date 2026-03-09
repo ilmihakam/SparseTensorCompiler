@@ -1,0 +1,12 @@
+# Generated kernel code (regenerated each run)
+kernels/
+
+# Raw benchmark outputs
+results/raw/
+
+# Compiled executables in taco/build
+taco/build/
+
+# Downloaded matrix archives
+matrices/**/*.tar.gz
+matrices/**/*.zip

@@ -1,0 +1,214 @@
+Start testing: Mar 08 14:44 GMT
+----------------------------------------------------------
+16/50 Testing: GeneralLoweringTests
+16/50 Test: GeneralLoweringTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_general_lowering"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"GeneralLoweringTests" start time: Mar 08 14:44 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 13 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 13 tests from GeneralLoweringTest
+[ RUN      ] GeneralLoweringTest.ScalarTimesSpMV_UsesTaglessGeneralPath
+[       OK ] GeneralLoweringTest.ScalarTimesSpMV_UsesTaglessGeneralPath (0 ms)
+[ RUN      ] GeneralLoweringTest.ScalarTimesSpMV_HasValidLoopNest
+[       OK ] GeneralLoweringTest.ScalarTimesSpMV_HasValidLoopNest (0 ms)
+[ RUN      ] GeneralLoweringTest.ThreeTensorAdd_UsesGeneralScheduledShape
+[       OK ] GeneralLoweringTest.ThreeTensorAdd_UsesGeneralScheduledShape (0 ms)
+[ RUN      ] GeneralLoweringTest.ThreeTensorAdd_HasUnionMergeLoop
+[       OK ] GeneralLoweringTest.ThreeTensorAdd_HasUnionMergeLoop (0 ms)
+[ RUN      ] GeneralLoweringTest.TripleElMul_CorrectDepth
+[       OK ] GeneralLoweringTest.TripleElMul_CorrectDepth (0 ms)
+[ RUN      ] GeneralLoweringTest.IntersectionMerge_HasMergeStrategy
+[       OK ] GeneralLoweringTest.IntersectionMerge_HasMergeStrategy (0 ms)
+[ RUN      ] GeneralLoweringTest.CSCFormatReversesOrder
+[       OK ] GeneralLoweringTest.CSCFormatReversesOrder (0 ms)
+[ RUN      ] GeneralLoweringTest.DimensionInference_SparsePreferred
+[       OK ] GeneralLoweringTest.DimensionInference_SparsePreferred (0 ms)
+[ RUN      ] GeneralLoweringTest.SparseIteratorsPopulated
+[       OK ] GeneralLoweringTest.SparseIteratorsPopulated (0 ms)
+[ RUN      ] GeneralLoweringTest.StructuredBodyPopulated
+[       OK ] GeneralLoweringTest.StructuredBodyPopulated (0 ms)
+[ RUN      ] GeneralLoweringTest.AccumulatorPattern_SamplingLoopHasPreStmts
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_general_lowering.cpp:403: Failure
+Expected: (samplingLoop->preStmts.size()) >= (1u), actual: 0 vs 1
+
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_general_lowering.cpp:405: Failure
+Expected: (samplingLoop->postStmts.size()) >= (1u), actual: 0 vs 1
+
+[  FAILED  ] GeneralLoweringTest.AccumulatorPattern_SamplingLoopHasPreStmts (0 ms)
+[ RUN      ] GeneralLoweringTest.ScheduledFallbackProducesCanonicalLoopNest
+[       OK ] GeneralLoweringTest.ScheduledFallbackProducesCanonicalLoopNest (0 ms)
+[ RUN      ] GeneralLoweringTest.BoundIndicesInnermost
+[       OK ] GeneralLoweringTest.BoundIndicesInnermost (0 ms)
+[----------] 13 tests from GeneralLoweringTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 13 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 12 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] GeneralLoweringTest.AccumulatorPattern_SamplingLoopHasPreStmts
+
+ 1 FAILED TEST
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Failed.
+"GeneralLoweringTests" end time: Mar 08 14:44 GMT
+"GeneralLoweringTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+32/50 Testing: ScheduledOptimizationsCorrectnessTests
+32/50 Test: ScheduledOptimizationsCorrectnessTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_scheduled_optimizations_correctness"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"ScheduledOptimizationsCorrectnessTests" start time: Mar 08 14:44 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 47 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 47 tests from ScheduledOptimizationsTest
+[ RUN      ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSR_Natural
+[       OK ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSR_Natural (220 ms)
+[ RUN      ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSC_Natural
+[       OK ] ScheduledOptimizationsTest.Baseline_NoOptimizations_CSC_Natural (197 ms)
+[ RUN      ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSR
+[       OK ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSR (204 ms)
+[ RUN      ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSC
+[       OK ] ScheduledOptimizationsTest.MatrixMarket_SymmetryAndDuplicates_CSC (205 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSR_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSR_Natural_BlockSize32 (195 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSR_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSR_Inverted_BlockSize32 (191 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSC_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSC_Natural_BlockSize32 (193 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_CSC_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_CSC_Inverted_BlockSize32 (221 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSR_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSR_Natural_BlockSize32 (191 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSR_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSR_Inverted_BlockSize32 (190 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSC_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSC_Natural_BlockSize32 (194 ms)
+[ RUN      ] ScheduledOptimizationsTest.B_THEN_I_CSC_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.B_THEN_I_CSC_Inverted_BlockSize32 (194 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSR_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSR_Natural_BlockSize32 (196 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSR_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSR_Inverted_BlockSize32 (194 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSC_Natural_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSC_Natural_BlockSize32 (195 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_B_I_CSC_Inverted_BlockSize32
+[       OK ] ScheduledOptimizationsTest.I_B_I_CSC_Inverted_BlockSize32 (199 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_BlockSize8
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_BlockSize8 (193 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_BlockSize16
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_BlockSize16 (197 ms)
+[ RUN      ] ScheduledOptimizationsTest.I_THEN_B_BlockSize64
+[       OK ] ScheduledOptimizationsTest.I_THEN_B_BlockSize64 (197 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_SmallMatrix_BlockSizeGreaterThanM
+[       OK ] ScheduledOptimizationsTest.EdgeCase_SmallMatrix_BlockSizeGreaterThanM (210 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_ExactMultiple_BlockSizeEqualsM
+[       OK ] ScheduledOptimizationsTest.EdgeCase_ExactMultiple_BlockSizeEqualsM (208 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_SingleRow
+[       OK ] ScheduledOptimizationsTest.EdgeCase_SingleRow (206 ms)
+[ RUN      ] ScheduledOptimizationsTest.EdgeCase_LargeMatrix_AllSchedules
+[       OK ] ScheduledOptimizationsTest.EdgeCase_LargeMatrix_AllSchedules (763 ms)
+[ RUN      ] ScheduledOptimizationsTest.ReorderingOnly_CSR_Inverted
+[       OK ] ScheduledOptimizationsTest.ReorderingOnly_CSR_Inverted (191 ms)
+[ RUN      ] ScheduledOptimizationsTest.BlockingOnly_BlockSize32
+[       OK ] ScheduledOptimizationsTest.BlockingOnly_BlockSize32 (195 ms)
+[ RUN      ] ScheduledOptimizationsTest.BlockingOnly_MultipleBlockSizes
+[       OK ] ScheduledOptimizationsTest.BlockingOnly_MultipleBlockSizes (587 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize16
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize16 (260 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize32 (223 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize64
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize64 (220 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSC_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSC_BlockSize32 (218 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSizeGreaterThanCols
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSizeGreaterThanCols (209 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize1
+[       OK ] ScheduledOptimizationsTest.SpMM_BlockingOnly_CSR_BlockSize1 (206 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSR_BlockSize32
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_scheduled_optimizations_correctness.cpp:248: Failure
+Expected: (error) < (1e-10), actual: 783.04020000000003 vs 1e-10
+SpMM I_THEN_B CSR B=32 failed: max_error = 783.04020000000003
+
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSR_BlockSize32 (202 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSR_BlockSize32
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_scheduled_optimizations_correctness.cpp:248: Failure
+Expected: (error) < (1e-10), actual: 783.04020000000003 vs 1e-10
+SpMM B_THEN_I CSR B=32 failed: max_error = 783.04020000000003
+
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSR_BlockSize32 (211 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_B_I_CSR_BlockSize32
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_scheduled_optimizations_correctness.cpp:248: Failure
+Expected: (error) < (1e-10), actual: 783.04020000000003 vs 1e-10
+SpMM I_B_I CSR B=32 failed: max_error = 783.04020000000003
+
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_B_I_CSR_BlockSize32 (197 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSC_BlockSize32
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_scheduled_optimizations_correctness.cpp:248: Failure
+Expected: (error) < (1e-10), actual: 783.04020000000003 vs 1e-10
+SpMM I_THEN_B CSC B=32 failed: max_error = 783.04020000000003
+
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSC_BlockSize32 (196 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSC_BlockSize32
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_scheduled_optimizations_correctness.cpp:248: Failure
+Expected: (error) < (1e-10), actual: 783.04020000000003 vs 1e-10
+SpMM B_THEN_I CSC B=32 failed: max_error = 783.04020000000003
+
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSC_BlockSize32 (210 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpMM_I_B_I_CSC_BlockSize32
+/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_scheduled_optimizations_correctness.cpp:248: Failure
+Expected: (error) < (1e-10), actual: 783.04020000000003 vs 1e-10
+SpMM I_B_I CSC B=32 failed: max_error = 783.04020000000003
+
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_B_I_CSC_BlockSize32 (199 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpGEMM_CSR_Baseline
+[       OK ] ScheduledOptimizationsTest.SpGEMM_CSR_Baseline (200 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpGEMM_CSR_IBlocking_BlockSize32
+[       OK ] ScheduledOptimizationsTest.SpGEMM_CSR_IBlocking_BlockSize32 (204 ms)
+[ RUN      ] ScheduledOptimizationsTest.SpGEMM_CSC_OuterProduct_Baseline
+[       OK ] ScheduledOptimizationsTest.SpGEMM_CSC_OuterProduct_Baseline (198 ms)
+[ RUN      ] ScheduledOptimizationsTest.SDDMM_CSR_Baseline
+[       OK ] ScheduledOptimizationsTest.SDDMM_CSR_Baseline (202 ms)
+[ RUN      ] ScheduledOptimizationsTest.SDDMM_CSR_InterchangeOnly
+[       OK ] ScheduledOptimizationsTest.SDDMM_CSR_InterchangeOnly (206 ms)
+[ RUN      ] ScheduledOptimizationsTest.SDDMM_CSR_KBlockingOnly
+[       OK ] ScheduledOptimizationsTest.SDDMM_CSR_KBlockingOnly (209 ms)
+[ RUN      ] ScheduledOptimizationsTest.SDDMM_CSR_I_THEN_B
+[       OK ] ScheduledOptimizationsTest.SDDMM_CSR_I_THEN_B (209 ms)
+[ RUN      ] ScheduledOptimizationsTest.SDDMM_CSR_B_THEN_I
+[       OK ] ScheduledOptimizationsTest.SDDMM_CSR_B_THEN_I (209 ms)
+[ RUN      ] ScheduledOptimizationsTest.SDDMM_CSR_I_B_I
+[       OK ] ScheduledOptimizationsTest.SDDMM_CSR_I_B_I (209 ms)
+[----------] 47 tests from ScheduledOptimizationsTest (10548 ms total)
+
+[----------] Global test environment tear-down
+[==========] 47 tests from 1 test suite ran. (10548 ms total)
+[  PASSED  ] 41 tests.
+[  FAILED  ] 6 tests, listed below:
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSR_BlockSize32
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSR_BlockSize32
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_B_I_CSR_BlockSize32
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_THEN_B_CSC_BlockSize32
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_B_THEN_I_CSC_BlockSize32
+[  FAILED  ] ScheduledOptimizationsTest.SpMM_I_B_I_CSC_BlockSize32
+
+ 6 FAILED TESTS
+<end of output>
+Test time =  10.55 sec
+----------------------------------------------------------
+Test Failed.
+"ScheduledOptimizationsCorrectnessTests" end time: Mar 08 14:44 GMT
+"ScheduledOptimizationsCorrectnessTests" time elapsed: 00:00:10
+----------------------------------------------------------
+
+End testing: Mar 08 14:44 GMT

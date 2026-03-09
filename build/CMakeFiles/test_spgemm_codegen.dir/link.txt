@@ -1,0 +1,1 @@
+/usr/bin/c++ -w -O3 -DNDEBUG -Wall -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/test_spgemm_codegen.dir/src/tests/codegen/test_spgemm_codegen.cpp.o -o test_spgemm_codegen  libsparse_tensor_core.a /opt/homebrew/lib/libgtest.a /opt/homebrew/lib/libgtest_main.a /opt/homebrew/lib/libgtest.a

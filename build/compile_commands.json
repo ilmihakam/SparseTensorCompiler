@@ -1,0 +1,380 @@
+[
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/src/ast.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/ast.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/ast.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/src/ast.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/src/codegen.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/codegen.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/codegen.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/src/codegen.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/src/codegen/output_assembly_emitter.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/codegen/output_assembly_emitter.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/codegen/output_assembly_emitter.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/src/codegen/output_assembly_emitter.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/src/codegen/output_assembly_shared.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/codegen/output_assembly_shared.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/codegen/output_assembly_shared.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/src/codegen/output_assembly_shared.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/src/codegen/program_emitter.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/codegen/program_emitter.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/codegen/program_emitter.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/src/codegen/program_emitter.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/src/codegen/reference_emitter.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/codegen/reference_emitter.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/codegen/reference_emitter.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/src/codegen/reference_emitter.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/src/codegen/runtime_emitter.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/codegen/runtime_emitter.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/codegen/runtime_emitter.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/src/codegen/runtime_emitter.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/src/ir.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/ir.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/ir.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/src/ir.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/src/optimizations.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/optimizations.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/optimizations.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/src/optimizations.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/src/scheduled_optimizations.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/scheduled_optimizations.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/scheduled_optimizations.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/src/scheduled_optimizations.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/src/semantic_ir.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/semantic_ir.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/semantic_ir.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/src/semantic_ir.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/lexer.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/build/lexer.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/lexer.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/lexer.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_tensor_core.dir/parser.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/build/parser.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/parser.cpp",
+  "output": "CMakeFiles/sparse_tensor_core.dir/parser.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/sparse_compiler.dir/src/main.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/main.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/main.cpp",
+  "output": "CMakeFiles/sparse_compiler.dir/src/main.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_basic_tokens.dir/src/tests/lexer/test_basic_tokens.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/lexer/test_basic_tokens.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/lexer/test_basic_tokens.cpp",
+  "output": "CMakeFiles/test_basic_tokens.dir/src/tests/lexer/test_basic_tokens.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_literals.dir/src/tests/lexer/test_literals.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/lexer/test_literals.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/lexer/test_literals.cpp",
+  "output": "CMakeFiles/test_literals.dir/src/tests/lexer/test_literals.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_sequences.dir/src/tests/lexer/test_sequences.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/lexer/test_sequences.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/lexer/test_sequences.cpp",
+  "output": "CMakeFiles/test_sequences.dir/src/tests/lexer/test_sequences.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_tensor_types.dir/src/tests/lexer/test_tensor_types.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/lexer/test_tensor_types.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/lexer/test_tensor_types.cpp",
+  "output": "CMakeFiles/test_tensor_types.dir/src/tests/lexer/test_tensor_types.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_parser_basic.dir/src/tests/parser/test_parser_basic.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/parser/test_parser_basic.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/parser/test_parser_basic.cpp",
+  "output": "CMakeFiles/test_parser_basic.dir/src/tests/parser/test_parser_basic.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_ast_generation.dir/src/tests/ast/test_ast_generation.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ast/test_ast_generation.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ast/test_ast_generation.cpp",
+  "output": "CMakeFiles/test_ast_generation.dir/src/tests/ast/test_ast_generation.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_typed_declarations.dir/src/tests/ast/test_typed_declarations.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ast/test_typed_declarations.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ast/test_typed_declarations.cpp",
+  "output": "CMakeFiles/test_typed_declarations.dir/src/tests/ast/test_typed_declarations.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_parser_ast_integration.dir/src/tests/parser/test_parser_ast_integration.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/parser/test_parser_ast_integration.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/parser/test_parser_ast_integration.cpp",
+  "output": "CMakeFiles/test_parser_ast_integration.dir/src/tests/parser/test_parser_ast_integration.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_tensor_declarations.dir/src/tests/parser/test_tensor_declarations.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/parser/test_tensor_declarations.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/parser/test_tensor_declarations.cpp",
+  "output": "CMakeFiles/test_tensor_declarations.dir/src/tests/parser/test_tensor_declarations.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_typed_integration.dir/src/tests/parser/test_typed_integration.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/parser/test_typed_integration.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/parser/test_typed_integration.cpp",
+  "output": "CMakeFiles/test_typed_integration.dir/src/tests/parser/test_typed_integration.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_spmm_parsing.dir/src/tests/parser/test_spmm_parsing.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/parser/test_spmm_parsing.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/parser/test_spmm_parsing.cpp",
+  "output": "CMakeFiles/test_spmm_parsing.dir/src/tests/parser/test_spmm_parsing.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_ir_lowering.dir/src/tests/ir/test_ir_lowering.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_ir_lowering.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_ir_lowering.cpp",
+  "output": "CMakeFiles/test_ir_lowering.dir/src/tests/ir/test_ir_lowering.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_ir_expr.dir/src/tests/ir/test_ir_expr.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_ir_expr.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_ir_expr.cpp",
+  "output": "CMakeFiles/test_ir_expr.dir/src/tests/ir/test_ir_expr.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_spmm_ir_lowering.dir/src/tests/ir/test_spmm_ir_lowering.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_spmm_ir_lowering.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_spmm_ir_lowering.cpp",
+  "output": "CMakeFiles/test_spmm_ir_lowering.dir/src/tests/ir/test_spmm_ir_lowering.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_new_kernel_lowering.dir/src/tests/ir/test_new_kernel_lowering.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_new_kernel_lowering.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_new_kernel_lowering.cpp",
+  "output": "CMakeFiles/test_new_kernel_lowering.dir/src/tests/ir/test_new_kernel_lowering.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_general_lowering.dir/src/tests/ir/test_general_lowering.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_general_lowering.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_general_lowering.cpp",
+  "output": "CMakeFiles/test_general_lowering.dir/src/tests/ir/test_general_lowering.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_semantic_ir.dir/src/tests/ir/test_semantic_ir.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_semantic_ir.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_semantic_ir.cpp",
+  "output": "CMakeFiles/test_semantic_ir.dir/src/tests/ir/test_semantic_ir.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_opt_config.dir/src/tests/optimizations/test_opt_config.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_opt_config.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_opt_config.cpp",
+  "output": "CMakeFiles/test_opt_config.dir/src/tests/optimizations/test_opt_config.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_format_analyzer.dir/src/tests/optimizations/test_format_analyzer.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_format_analyzer.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_format_analyzer.cpp",
+  "output": "CMakeFiles/test_format_analyzer.dir/src/tests/optimizations/test_format_analyzer.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_reordering_pass.dir/src/tests/optimizations/test_reordering_pass.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_reordering_pass.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_reordering_pass.cpp",
+  "output": "CMakeFiles/test_reordering_pass.dir/src/tests/optimizations/test_reordering_pass.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_blocking_pass.dir/src/tests/optimizations/test_blocking_pass.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_blocking_pass.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_blocking_pass.cpp",
+  "output": "CMakeFiles/test_blocking_pass.dir/src/tests/optimizations/test_blocking_pass.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_pass_integration.dir/src/tests/optimizations/test_pass_integration.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_pass_integration.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_pass_integration.cpp",
+  "output": "CMakeFiles/test_pass_integration.dir/src/tests/optimizations/test_pass_integration.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_opt_scheduling.dir/src/tests/optimizations/test_opt_scheduling.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_opt_scheduling.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_opt_scheduling.cpp",
+  "output": "CMakeFiles/test_opt_scheduling.dir/src/tests/optimizations/test_opt_scheduling.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_loop_interchange.dir/src/tests/optimizations/test_loop_interchange.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_loop_interchange.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_loop_interchange.cpp",
+  "output": "CMakeFiles/test_loop_interchange.dir/src/tests/optimizations/test_loop_interchange.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_codegen_framework.dir/src/tests/codegen/test_codegen_framework.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_codegen_framework.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_codegen_framework.cpp",
+  "output": "CMakeFiles/test_codegen_framework.dir/src/tests/codegen/test_codegen_framework.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_dense_loops.dir/src/tests/codegen/test_dense_loops.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_dense_loops.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_dense_loops.cpp",
+  "output": "CMakeFiles/test_dense_loops.dir/src/tests/codegen/test_dense_loops.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_sparse_loops.dir/src/tests/codegen/test_sparse_loops.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_sparse_loops.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_sparse_loops.cpp",
+  "output": "CMakeFiles/test_sparse_loops.dir/src/tests/codegen/test_sparse_loops.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_blocking_codegen.dir/src/tests/codegen/test_blocking_codegen.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_blocking_codegen.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_blocking_codegen.cpp",
+  "output": "CMakeFiles/test_blocking_codegen.dir/src/tests/codegen/test_blocking_codegen.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_blocking_correctness.dir/src/tests/codegen/test_blocking_correctness.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_blocking_correctness.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_blocking_correctness.cpp",
+  "output": "CMakeFiles/test_blocking_correctness.dir/src/tests/codegen/test_blocking_correctness.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_reordering_correctness.dir/src/tests/codegen/test_reordering_correctness.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_reordering_correctness.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_reordering_correctness.cpp",
+  "output": "CMakeFiles/test_reordering_correctness.dir/src/tests/codegen/test_reordering_correctness.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_sanity_check.dir/src/tests/codegen/test_sanity_check.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_sanity_check.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_sanity_check.cpp",
+  "output": "CMakeFiles/test_sanity_check.dir/src/tests/codegen/test_sanity_check.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_scheduled_optimizations_correctness.dir/src/tests/codegen/test_scheduled_optimizations_correctness.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_scheduled_optimizations_correctness.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_scheduled_optimizations_correctness.cpp",
+  "output": "CMakeFiles/test_scheduled_optimizations_correctness.dir/src/tests/codegen/test_scheduled_optimizations_correctness.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_spmv_codegen.dir/src/tests/codegen/test_spmv_codegen.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_spmv_codegen.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_spmv_codegen.cpp",
+  "output": "CMakeFiles/test_spmv_codegen.dir/src/tests/codegen/test_spmv_codegen.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_spmm_codegen.dir/src/tests/codegen/test_spmm_codegen.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_spmm_codegen.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_spmm_codegen.cpp",
+  "output": "CMakeFiles/test_spmm_codegen.dir/src/tests/codegen/test_spmm_codegen.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_spadd_codegen.dir/src/tests/codegen/test_spadd_codegen.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_spadd_codegen.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_spadd_codegen.cpp",
+  "output": "CMakeFiles/test_spadd_codegen.dir/src/tests/codegen/test_spadd_codegen.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_spelmul_codegen.dir/src/tests/codegen/test_spelmul_codegen.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_spelmul_codegen.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_spelmul_codegen.cpp",
+  "output": "CMakeFiles/test_spelmul_codegen.dir/src/tests/codegen/test_spelmul_codegen.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_spgemm_codegen.dir/src/tests/codegen/test_spgemm_codegen.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_spgemm_codegen.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_spgemm_codegen.cpp",
+  "output": "CMakeFiles/test_spgemm_codegen.dir/src/tests/codegen/test_spgemm_codegen.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_sddmm_codegen.dir/src/tests/codegen/test_sddmm_codegen.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_sddmm_codegen.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_sddmm_codegen.cpp",
+  "output": "CMakeFiles/test_sddmm_codegen.dir/src/tests/codegen/test_sddmm_codegen.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_visitor_unification.dir/src/tests/codegen/test_visitor_unification.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_visitor_unification.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_visitor_unification.cpp",
+  "output": "CMakeFiles/test_visitor_unification.dir/src/tests/codegen/test_visitor_unification.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_new_kernel_optimizations.dir/src/tests/optimizations/test_new_kernel_optimizations.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_new_kernel_optimizations.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_new_kernel_optimizations.cpp",
+  "output": "CMakeFiles/test_new_kernel_optimizations.dir/src/tests/optimizations/test_new_kernel_optimizations.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_output_format.dir/src/tests/ir/test_output_format.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_output_format.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/ir/test_output_format.cpp",
+  "output": "CMakeFiles/test_output_format.dir/src/tests/ir/test_output_format.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_spgemm_hash_output.dir/src/tests/codegen/test_spgemm_hash_output.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_spgemm_hash_output.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_spgemm_hash_output.cpp",
+  "output": "CMakeFiles/test_spgemm_hash_output.dir/src/tests/codegen/test_spgemm_hash_output.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_realistic_inputs.dir/src/tests/codegen/test_realistic_inputs.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_realistic_inputs.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_realistic_inputs.cpp",
+  "output": "CMakeFiles/test_realistic_inputs.dir/src/tests/codegen/test_realistic_inputs.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_general_codegen.dir/src/tests/codegen/test_general_codegen.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_general_codegen.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_general_codegen.cpp",
+  "output": "CMakeFiles/test_general_codegen.dir/src/tests/codegen/test_general_codegen.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_sparse_output_config_effects.dir/src/tests/optimizations/test_sparse_output_config_effects.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_sparse_output_config_effects.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/optimizations/test_sparse_output_config_effects.cpp",
+  "output": "CMakeFiles/test_sparse_output_config_effects.dir/src/tests/optimizations/test_sparse_output_config_effects.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_sparse_output_codegen.dir/src/tests/codegen/test_sparse_output_codegen.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_sparse_output_codegen.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_sparse_output_codegen.cpp",
+  "output": "CMakeFiles/test_sparse_output_codegen.dir/src/tests/codegen/test_sparse_output_codegen.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++ -DSOURCE_DIR=\\\"/Users/ilmihakam/co/backend/SparseTensorCompiler\\\" -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -isystem /opt/homebrew/include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/test_kernel_golden.dir/src/tests/codegen/test_kernel_golden.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_kernel_golden.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/src/tests/codegen/test_kernel_golden.cpp",
+  "output": "CMakeFiles/test_kernel_golden.dir/src/tests/codegen/test_kernel_golden.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -I/Users/ilmihakam/co/backend/SparseTensorCompiler/../include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/extract_generated_code.dir/extract_generated_code.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/build/extract_generated_code.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/extract_generated_code.cpp",
+  "output": "CMakeFiles/extract_generated_code.dir/extract_generated_code.cpp.o"
+},
+{
+  "directory": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build",
+  "command": "/usr/bin/c++  -I/Users/ilmihakam/co/backend/SparseTensorCompiler/include -I/Users/ilmihakam/co/backend/SparseTensorCompiler/build -I/Users/ilmihakam/co/backend/SparseTensorCompiler/../include -w -O3 -DNDEBUG -Wall -std=c++17 -arch arm64 -o CMakeFiles/compile_dsl.dir/compile_dsl.cpp.o -c /Users/ilmihakam/co/backend/SparseTensorCompiler/build/compile_dsl.cpp",
+  "file": "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/compile_dsl.cpp",
+  "output": "CMakeFiles/compile_dsl.dir/compile_dsl.cpp.o"
+}
+]

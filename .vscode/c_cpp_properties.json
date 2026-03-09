@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/build",
+                "/opt/homebrew/include",
+                "/opt/homebrew/opt/googletest/include",
+                "/usr/local/include",
+                "/usr/include"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/clang++",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "compilerArgs": ["-std=c++17"],
+            "intelliSenseMode": "macos-clang-x64"
+        }
+    ],
+    "version": 4
+}
