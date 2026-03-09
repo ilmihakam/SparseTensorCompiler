@@ -126,14 +126,24 @@ _NORMALIZED_HWC_FIELDS = {
     "cache-misses": "hwc_cache_misses",
     "branches": "hwc_branches",
     "branch-misses": "hwc_branch_misses",
+    # lauka counter names (Apple Silicon):
+    "core_active_cycle": "hwc_cycles",
+    "fixed_cycles": "hwc_cycles",
+    "inst_all": "hwc_instructions",
+    "fixed_instructions": "hwc_instructions",
+    "l1d_cache_miss_ld_nonspec": "hwc_cache_misses",
+    "branch_mispred_nonspec": "hwc_branch_misses",
 }
 
 
 @dataclass(frozen=True)
 class HardwareCounterConfig:
-    mode: Literal["off", "perf"] = "off"
+    mode: Literal["off", "perf", "lauka"] = "off"
     events: Tuple[str, ...] = ()
     strict: bool = False
+    lauka_bin: str = "lauka"
+    lauka_runs: int = 5
+    lauka_warmup: int = 1
 
 
 @dataclass
@@ -617,19 +627,36 @@ def parse_hwc_events(raw: str) -> List[str]:
 def add_hwc_args(parser) -> None:
     parser.add_argument(
         "--hwc-mode",
-        choices=["off", "perf"],
+        choices=["off", "perf", "lauka"],
         default=DEFAULT_HWC_MODE,
         help="Hardware counter collection mode",
     )
     parser.add_argument(
         "--hwc-events",
         default="",
-        help="Comma-separated perf events to collect when --hwc-mode=perf",
+        help="Comma-separated events to collect when --hwc-mode=perf or lauka",
     )
     parser.add_argument(
         "--hwc-strict",
         action="store_true",
-        help="Fail a benchmark row if requested perf events are unavailable",
+        help="Fail a benchmark row if requested events are unavailable",
+    )
+    parser.add_argument(
+        "--hwc-lauka-bin",
+        default="lauka",
+        help="Path to lauka binary (default: 'lauka')",
+    )
+    parser.add_argument(
+        "--hwc-lauka-runs",
+        type=int,
+        default=5,
+        help="Number of lauka measurement runs (min 3, default: 5)",
+    )
+    parser.add_argument(
+        "--hwc-lauka-warmup",
+        type=int,
+        default=1,
+        help="Number of lauka warmup runs (default: 1)",
     )
 
 
@@ -639,7 +666,17 @@ def build_hwc_config(args) -> HardwareCounterConfig:
     strict = bool(getattr(args, "hwc_strict", False))
     if mode == "perf" and not events:
         raise ValueError("--hwc-events must be non-empty when --hwc-mode=perf")
-    return HardwareCounterConfig(mode=mode, events=events, strict=strict)
+    if mode == "lauka" and not events:
+        raise ValueError("--hwc-events must be non-empty when --hwc-mode=lauka")
+    lauka_bin = getattr(args, "hwc_lauka_bin", "lauka")
+    lauka_runs = int(getattr(args, "hwc_lauka_runs", 5))
+    lauka_warmup = int(getattr(args, "hwc_lauka_warmup", 1))
+    if mode == "lauka" and lauka_runs < 3:
+        raise ValueError("--hwc-lauka-runs must be >= 3")
+    return HardwareCounterConfig(
+        mode=mode, events=events, strict=strict,
+        lauka_bin=lauka_bin, lauka_runs=lauka_runs, lauka_warmup=lauka_warmup,
+    )
 
 
 def default_hwc_fields(
@@ -664,7 +701,7 @@ def default_hwc_fields(
         "hwc_branch_misses": 0.0,
     }
     for event_name, raw_value in (event_values or {}).items():
-        field_name = _NORMALIZED_HWC_FIELDS.get(normalize_perf_event_name(event_name))
+        field_name = _NORMALIZED_HWC_FIELDS.get(normalize_event_name(event_name))
         if field_name:
             values[field_name] = float(raw_value)
     return values
@@ -774,7 +811,7 @@ def build_config_specs(
     return specs
 
 
-def normalize_perf_event_name(event_name: str) -> str:
+def normalize_event_name(event_name: str) -> str:
     base = event_name.strip()
     if ":" in base:
         base = base.split(":", 1)[0]
@@ -831,6 +868,152 @@ def parse_perf_stat_output(stderr: str, requested_events: Sequence[str]) -> Dict
         events_recorded=recorded,
         event_values=values,
     )
+
+
+_SI_MULTIPLIERS = {"K": 1e3, "M": 1e6, "G": 1e9, "T": 1e12}
+_UNIT_SUFFIXES = ("ms", "MB", "cy", "s", "B")
+
+
+def parse_si_value(text: str) -> float:
+    """Parse lauka SI-suffixed numbers: '2.51G' → 2.51e9, '591' → 591.0."""
+    s = text.strip()
+    if not s:
+        raise ValueError("empty value")
+    # Strip known unit suffixes first (e.g. 'ms', 'MB', 'cy')
+    for suffix in _UNIT_SUFFIXES:
+        if s.endswith(suffix):
+            s = s[: -len(suffix)]
+            break
+    # Check for SI multiplier as last character
+    if s and s[-1] in _SI_MULTIPLIERS:
+        return float(s[:-1]) * _SI_MULTIPLIERS[s[-1]]
+    return float(s)
+
+
+_ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
+
+
+def build_lauka_command(
+    command: Sequence[str],
+    events: Sequence[str],
+    *,
+    lauka_bin: str = "lauka",
+    runs: int = 5,
+    warmup: int = 1,
+) -> List[str]:
+    child_cmd = " ".join(str(a) for a in command)
+    return [
+        "sudo", lauka_bin,
+        "-n", str(runs),
+        "--warmup", str(warmup),
+        "--color", "never",
+        "-m", ",".join(events),
+        "--", child_cmd,
+    ]
+
+
+def parse_lauka_output(stdout: str, requested_events: Sequence[str]) -> Dict[str, object]:
+    """Parse lauka table output into hwc fields.
+
+    Each measurement row looks like:
+      core_active_cycle           2.51G ± 22.1M     2.48G … 2.54G        0 (0%)
+    """
+    cleaned = _ANSI_RE.sub("", stdout)
+    requested = [e.strip() for e in requested_events if e.strip()]
+    recorded: List[str] = []
+    values: Dict[str, float] = {}
+
+    for line in cleaned.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        # Split on whitespace; first token is counter name, second is mean value
+        parts = line.split()
+        if len(parts) < 2:
+            continue
+        name = parts[0]
+        # Skip header/separator lines
+        if name.startswith("-") or name.startswith("=") or name.lower() == "counter":
+            continue
+        # Try to parse the mean value (second token)
+        try:
+            mean_val = parse_si_value(parts[1])
+        except (ValueError, IndexError):
+            continue
+        recorded.append(name)
+        values[name] = mean_val
+
+    requested_set = set(requested)
+    recorded_set = set(recorded)
+    if not recorded:
+        status = "unavailable"
+    elif requested_set.issubset(recorded_set):
+        status = "ok"
+    else:
+        status = "partial"
+
+    return default_hwc_fields(
+        status=status,
+        tool="lauka",
+        events_requested=requested,
+        events_recorded=recorded,
+        event_values=values,
+    )
+
+
+def run_lauka_collection(
+    command: Sequence[str],
+    hwc_config: HardwareCounterConfig,
+    timeout: int = 1200,
+) -> Dict[str, object]:
+    """Run a separate lauka invocation to collect hardware counters."""
+    lauka_cmd = build_lauka_command(
+        command,
+        hwc_config.events,
+        lauka_bin=hwc_config.lauka_bin,
+        runs=hwc_config.lauka_runs,
+        warmup=hwc_config.lauka_warmup,
+    )
+    process = subprocess.Popen(
+        lauka_cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        start_new_session=True,
+    )
+    try:
+        stdout, stderr = process.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(process.pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+        except Exception:  # noqa: BLE001
+            process.terminate()
+        try:
+            stdout, stderr = process.communicate(timeout=5)
+        except subprocess.TimeoutExpired:
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            except Exception:  # noqa: BLE001
+                process.kill()
+            stdout, stderr = process.communicate()
+        raise RuntimeError(f"lauka timed out after {timeout}s")
+
+    if process.returncode == 2:
+        raise RuntimeError(
+            f"lauka PMU scheduling error — counter combination may be incompatible. "
+            f"stderr: {(stderr or '').strip()}"
+        )
+    if process.returncode != 0:
+        msg = (stderr or "").strip() or (stdout or "").strip()
+        if "sudo" in msg.lower() or "password" in msg.lower():
+            raise RuntimeError(f"lauka requires sudo privileges: {msg}")
+        raise RuntimeError(f"lauka failed (exit {process.returncode}): {msg}")
+
+    return parse_lauka_output(stdout, hwc_config.events)
 
 
 def run_benchmark_command(
@@ -894,14 +1077,19 @@ def run_trials(
     avg_times: List[float] = []
     max_errors: List[float] = []
 
+    # For lauka mode, don't wrap trials — run them directly for timing,
+    # then collect counters in a separate lauka invocation afterward.
+    # For perf mode, wrap each trial as before.
+    trial_hwc_config = hwc_config if (hwc_config and hwc_config.mode == "perf") else None
+
     for _ in range(trials):
-        result = run_benchmark_command(command, timeout=timeout, hwc_config=hwc_config)
+        result = run_benchmark_command(command, timeout=timeout, hwc_config=trial_hwc_config)
         metrics = parse_timing_metrics(result.stdout)
         stdouts.append(result.stdout)
         metrics_list.append(metrics)
-        if hwc_config and hwc_config.mode == "perf":
-            hwc_fields = parse_perf_stat_output(result.stderr, hwc_config.events)
-            if hwc_config.strict and hwc_fields["hwc_status"] != "ok":
+        if trial_hwc_config:
+            hwc_fields = parse_perf_stat_output(result.stderr, trial_hwc_config.events)
+            if trial_hwc_config.strict and hwc_fields["hwc_status"] != "ok":
                 raise RuntimeError(
                     "Requested perf events unavailable or partial: "
                     f"{hwc_fields['hwc_events_recorded'] or '<none>'}"
@@ -934,7 +1122,26 @@ def run_trials(
         trial_max_error_max=float(max_error_max),
     )
 
-    return metrics_list[selected_idx], summary, stdouts[selected_idx], hwc_results[selected_idx]
+    # After trials, do one lauka collection if mode == "lauka"
+    if hwc_config and hwc_config.mode == "lauka":
+        try:
+            hwc_final = run_lauka_collection(command, hwc_config, timeout=timeout)
+            if hwc_config.strict and hwc_final["hwc_status"] != "ok":
+                raise RuntimeError(
+                    "Requested lauka events unavailable or partial: "
+                    f"{hwc_final['hwc_events_recorded'] or '<none>'}"
+                )
+        except Exception as exc:
+            if hwc_config.strict:
+                raise
+            hwc_final = default_hwc_fields(
+                status="error", tool="lauka",
+                events_requested=hwc_config.events,
+            )
+    else:
+        hwc_final = hwc_results[selected_idx]
+
+    return metrics_list[selected_idx], summary, stdouts[selected_idx], hwc_final
 
 
 def run_command(args: Sequence[str], timeout: int = 600) -> str:

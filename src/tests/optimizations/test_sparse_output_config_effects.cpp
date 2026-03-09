@@ -52,7 +52,10 @@ static bool hasBlockLoop(const sparseir::scheduled::Loop* loop) {
 // Helper: check if a loop with sparseTensorName == name iterating output exists
 static bool hasSparseOutputLoop(const sparseir::scheduled::Loop* loop, const std::string& name) {
     if (!loop) return false;
-    if (loop->kind == sparseir::scheduled::LoopKind::Sparse && loop->driverTensor == name) return true;
+    if (loop->headerKind == sparseir::scheduled::LoopHeaderKind::SparseIterator &&
+        loop->iterator.beginExpr.rfind(name + "->", 0) == 0) {
+        return true;
+    }
     for (const auto& c : loop->children)
         if (hasSparseOutputLoop(c.get(), name)) return true;
     return false;

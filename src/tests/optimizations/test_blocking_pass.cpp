@@ -441,9 +441,9 @@ TEST(BlockingPassTest, SpMM_2DBlocking_BlockLoopsExist) {
 }
 
 /**
- * Test: SpMM 2D blocking stores per-loop tileBlockSize on wrapper nodes.
+ * Test: SpMM 2D blocking stores explicit block emission metadata on wrappers.
  */
-TEST(BlockingPassTest, SpMM_2DBlocking_TileBlockSizeOnWrappers) {
+TEST(BlockingPassTest, SpMM_2DBlocking_BlockMetadataOnWrappers) {
     auto op = parseAndLowerForBlocking(R"(
         tensor C : Dense<100, 100>;
         tensor A : CSR<100, 50>;
@@ -459,14 +459,14 @@ TEST(BlockingPassTest, SpMM_2DBlocking_TileBlockSizeOnWrappers) {
     const auto* jBlock = findLoop(op->rootLoop.get(), "j_block");
     ASSERT_NE(iBlock, nullptr);
     ASSERT_NE(jBlock, nullptr);
-    EXPECT_EQ(iBlock->tileBlockSize, 32);
-    EXPECT_EQ(jBlock->tileBlockSize, 64);
     EXPECT_EQ(iBlock->headerKind, sparseir::scheduled::LoopHeaderKind::Block);
+    EXPECT_EQ(iBlock->block.blockSize, 32);
     EXPECT_EQ(iBlock->block.tripCountExpr, "(A->rows + 31) / 32");
     EXPECT_EQ(iBlock->block.innerIndexName, "i");
     EXPECT_EQ(iBlock->block.innerLowerExpr, "i_start");
     EXPECT_EQ(iBlock->block.innerUpperExpr, "i_end");
     EXPECT_EQ(jBlock->headerKind, sparseir::scheduled::LoopHeaderKind::Block);
+    EXPECT_EQ(jBlock->block.blockSize, 64);
     EXPECT_EQ(jBlock->block.tripCountExpr, "(N_j + 63) / 64");
     EXPECT_EQ(jBlock->block.innerIndexName, "j");
     EXPECT_EQ(jBlock->block.innerLowerExpr, "j_start");

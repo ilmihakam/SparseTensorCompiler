@@ -1,10 +1,133 @@
-Start testing: Mar 09 14:02 GMT
+Start testing: Mar 09 15:45 GMT
 ----------------------------------------------------------
+15/51 Testing: NewKernelLoweringTests
+15/51 Test: NewKernelLoweringTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_new_kernel_lowering"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"NewKernelLoweringTests" start time: Mar 09 15:45 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 17 tests from 6 test suites.
+[----------] Global test environment set-up.
+[----------] 4 tests from SpAddLoweringTest
+[ RUN      ] SpAddLoweringTest.ProducesDenseTwoSparseCompute
+[       OK ] SpAddLoweringTest.ProducesDenseTwoSparseCompute (0 ms)
+[ RUN      ] SpAddLoweringTest.OuterDenseWithUnionMergeChild
+[       OK ] SpAddLoweringTest.OuterDenseWithUnionMergeChild (0 ms)
+[ RUN      ] SpAddLoweringTest.UnionMergeLoopTagsBothInputs
+[       OK ] SpAddLoweringTest.UnionMergeLoopTagsBothInputs (0 ms)
+[ RUN      ] SpAddLoweringTest.ExpressionInfoRootOpIsAdd
+[       OK ] SpAddLoweringTest.ExpressionInfoRootOpIsAdd (0 ms)
+[----------] 4 tests from SpAddLoweringTest (0 ms total)
+
+[----------] 3 tests from SpElMulLoweringTest
+[ RUN      ] SpElMulLoweringTest.ProducesIntersectionTwoSparseCompute
+[       OK ] SpElMulLoweringTest.ProducesIntersectionTwoSparseCompute (0 ms)
+[ RUN      ] SpElMulLoweringTest.InnerLoopHasIntersectionMerge
+[       OK ] SpElMulLoweringTest.InnerLoopHasIntersectionMerge (0 ms)
+[ RUN      ] SpElMulLoweringTest.MergeLoopTagsBothTensors
+[       OK ] SpElMulLoweringTest.MergeLoopTagsBothTensors (0 ms)
+[----------] 3 tests from SpElMulLoweringTest (0 ms total)
+
+[----------] 2 tests from SpGEMMLoweringTest
+[ RUN      ] SpGEMMLoweringTest.ProducesDenseSparseProductCompute
+[       OK ] SpGEMMLoweringTest.ProducesDenseSparseProductCompute (0 ms)
+[ RUN      ] SpGEMMLoweringTest.ThreeLevelNestDenseSparseASparseB
+[       OK ] SpGEMMLoweringTest.ThreeLevelNestDenseSparseASparseB (0 ms)
+[----------] 2 tests from SpGEMMLoweringTest (0 ms total)
+
+[----------] 3 tests from SDDMMLoweringTest
+[ RUN      ] SDDMMLoweringTest.ProducesSampledContractionCompute
+[       OK ] SDDMMLoweringTest.ProducesSampledContractionCompute (0 ms)
+[ RUN      ] SDDMMLoweringTest.ExprInfoHasThreeAccesses
+[       OK ] SDDMMLoweringTest.ExprInfoHasThreeAccesses (0 ms)
+[ RUN      ] SDDMMLoweringTest.SparseSamplingLoopWithDenseChild
+[       OK ] SDDMMLoweringTest.SparseSamplingLoopWithDenseChild (0 ms)
+[----------] 3 tests from SDDMMLoweringTest (0 ms total)
+
+[----------] 3 tests from FusedSpMVLoweringTest
+[ RUN      ] FusedSpMVLoweringTest.IsFusedWithReluFunction
+[       OK ] FusedSpMVLoweringTest.IsFusedWithReluFunction (0 ms)
+[ RUN      ] FusedSpMVLoweringTest.ProducesSingleSparseContraction
+[       OK ] FusedSpMVLoweringTest.ProducesSingleSparseContraction (0 ms)
+[ RUN      ] FusedSpMVLoweringTest.LoopNestIdenticalToNonFused
+[       OK ] FusedSpMVLoweringTest.LoopNestIdenticalToNonFused (0 ms)
+[----------] 3 tests from FusedSpMVLoweringTest (0 ms total)
+
+[----------] 2 tests from BackwardCompatTest
+[ RUN      ] BackwardCompatTest.SpMVStillLowersThroughScheduledPath
+[       OK ] BackwardCompatTest.SpMVStillLowersThroughScheduledPath (0 ms)
+[ RUN      ] BackwardCompatTest.SpMMStillLowersThroughScheduledPath
+[       OK ] BackwardCompatTest.SpMMStillLowersThroughScheduledPath (0 ms)
+[----------] 2 tests from BackwardCompatTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 17 tests from 6 test suites ran. (0 ms total)
+[  PASSED  ] 17 tests.
+<end of output>
+Test time =   0.18 sec
+----------------------------------------------------------
+Test Passed.
+"NewKernelLoweringTests" end time: Mar 09 15:45 GMT
+"NewKernelLoweringTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/51 Testing: GeneralLoweringTests
+16/51 Test: GeneralLoweringTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_general_lowering"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"GeneralLoweringTests" start time: Mar 09 15:45 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 13 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 13 tests from GeneralLoweringTest
+[ RUN      ] GeneralLoweringTest.ScalarTimesSpMV_UsesTaglessGeneralPath
+[       OK ] GeneralLoweringTest.ScalarTimesSpMV_UsesTaglessGeneralPath (0 ms)
+[ RUN      ] GeneralLoweringTest.ScalarTimesSpMV_HasValidLoopNest
+[       OK ] GeneralLoweringTest.ScalarTimesSpMV_HasValidLoopNest (0 ms)
+[ RUN      ] GeneralLoweringTest.ThreeTensorAdd_UsesGeneralScheduledShape
+[       OK ] GeneralLoweringTest.ThreeTensorAdd_UsesGeneralScheduledShape (0 ms)
+[ RUN      ] GeneralLoweringTest.ThreeTensorAdd_HasUnionMergeLoop
+[       OK ] GeneralLoweringTest.ThreeTensorAdd_HasUnionMergeLoop (0 ms)
+[ RUN      ] GeneralLoweringTest.TripleElMul_CorrectDepth
+[       OK ] GeneralLoweringTest.TripleElMul_CorrectDepth (0 ms)
+[ RUN      ] GeneralLoweringTest.IntersectionMerge_HasMergeStrategy
+[       OK ] GeneralLoweringTest.IntersectionMerge_HasMergeStrategy (0 ms)
+[ RUN      ] GeneralLoweringTest.CSCFormatReversesOrder
+[       OK ] GeneralLoweringTest.CSCFormatReversesOrder (0 ms)
+[ RUN      ] GeneralLoweringTest.DimensionInference_SparsePreferred
+[       OK ] GeneralLoweringTest.DimensionInference_SparsePreferred (0 ms)
+[ RUN      ] GeneralLoweringTest.SparseIteratorsPopulated
+[       OK ] GeneralLoweringTest.SparseIteratorsPopulated (0 ms)
+[ RUN      ] GeneralLoweringTest.StructuredBodyPopulated
+[       OK ] GeneralLoweringTest.StructuredBodyPopulated (0 ms)
+[ RUN      ] GeneralLoweringTest.AccumulatorPattern_RemainsGeneralWithoutScalarAccumulator
+[       OK ] GeneralLoweringTest.AccumulatorPattern_RemainsGeneralWithoutScalarAccumulator (0 ms)
+[ RUN      ] GeneralLoweringTest.ScheduledFallbackProducesCanonicalLoopNest
+[       OK ] GeneralLoweringTest.ScheduledFallbackProducesCanonicalLoopNest (0 ms)
+[ RUN      ] GeneralLoweringTest.BoundIndicesInnermost
+[       OK ] GeneralLoweringTest.BoundIndicesInnermost (0 ms)
+[----------] 13 tests from GeneralLoweringTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 13 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 13 tests.
+<end of output>
+Test time =   0.13 sec
+----------------------------------------------------------
+Test Passed.
+"GeneralLoweringTests" end time: Mar 09 15:45 GMT
+"GeneralLoweringTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
 17/51 Testing: SemanticIRTests
 17/51 Test: SemanticIRTests
 Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_semantic_ir"
 Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
-"SemanticIRTests" start time: Mar 09 14:02 GMT
+"SemanticIRTests" start time: Mar 09 15:45 GMT
 Output:
 ----------------------------------------------------------
 Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
@@ -22,7 +145,7 @@ Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17
 [ RUN      ] SemanticIRTest.ScheduleComputePopulatesExplicitEmissionMetadataForCSCSpMM
 [       OK ] SemanticIRTest.ScheduleComputePopulatesExplicitEmissionMetadataForCSCSpMM (0 ms)
 [ RUN      ] SemanticIRTest.ScheduledProgramCodegenEmitsCallsRegionsAndDirectComputeLoops
-[       OK ] SemanticIRTest.ScheduledProgramCodegenEmitsCallsRegionsAndDirectComputeLoops (0 ms)
+[       OK ] SemanticIRTest.ScheduledProgramCodegenEmitsCallsRegionsAndDirectComputeLoops (1 ms)
 [ RUN      ] SemanticIRTest.ScheduledProgramCodegenBuildsSparseOutputAssemblyInline
 [       OK ] SemanticIRTest.ScheduledProgramCodegenBuildsSparseOutputAssemblyInline (0 ms)
 [ RUN      ] SemanticIRTest.ScheduleComputeLowersSpAddWithUnionMergeLoop
@@ -61,16 +184,16 @@ Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17
 [       OK ] SemanticIRTest.MixedProgramWithMultipleComputeShapes (0 ms)
 [ RUN      ] SemanticIRTest.ProgramSchedulingThreeShapesAllFullyLowered
 [       OK ] SemanticIRTest.ProgramSchedulingThreeShapesAllFullyLowered (0 ms)
-[----------] 25 tests from SemanticIRTest (0 ms total)
+[----------] 25 tests from SemanticIRTest (3 ms total)
 
 [----------] Global test environment tear-down
-[==========] 25 tests from 1 test suite ran. (0 ms total)
+[==========] 25 tests from 1 test suite ran. (3 ms total)
 [  PASSED  ] 25 tests.
 <end of output>
-Test time =   0.00 sec
+Test time =   0.13 sec
 ----------------------------------------------------------
 Test Passed.
-"SemanticIRTests" end time: Mar 09 14:02 GMT
+"SemanticIRTests" end time: Mar 09 15:45 GMT
 "SemanticIRTests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -78,7 +201,7 @@ Test Passed.
 21/51 Test: BlockingPassTests
 Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_blocking_pass"
 Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
-"BlockingPassTests" start time: Mar 09 14:02 GMT
+"BlockingPassTests" start time: Mar 09 15:45 GMT
 Output:
 ----------------------------------------------------------
 Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
@@ -117,8 +240,8 @@ Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17
 [       OK ] BlockingPassTest.SpMM_2DBlocking_MetadataTracked (0 ms)
 [ RUN      ] BlockingPassTest.SpMM_2DBlocking_BlockLoopsExist
 [       OK ] BlockingPassTest.SpMM_2DBlocking_BlockLoopsExist (0 ms)
-[ RUN      ] BlockingPassTest.SpMM_2DBlocking_TileBlockSizeOnWrappers
-[       OK ] BlockingPassTest.SpMM_2DBlocking_TileBlockSizeOnWrappers (0 ms)
+[ RUN      ] BlockingPassTest.SpMM_2DBlocking_BlockMetadataOnWrappers
+[       OK ] BlockingPassTest.SpMM_2DBlocking_BlockMetadataOnWrappers (0 ms)
 [ RUN      ] BlockingPassTest.SpMM_2DBlocking_UniformSize
 [       OK ] BlockingPassTest.SpMM_2DBlocking_UniformSize (0 ms)
 [ RUN      ] BlockingPassTest.SpMV_2DBlocking_StillOnlyOneDimension
@@ -133,10 +256,10 @@ Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17
 [==========] 21 tests from 1 test suite ran. (0 ms total)
 [  PASSED  ] 21 tests.
 <end of output>
-Test time =   0.19 sec
+Test time =   0.13 sec
 ----------------------------------------------------------
 Test Passed.
-"BlockingPassTests" end time: Mar 09 14:02 GMT
+"BlockingPassTests" end time: Mar 09 15:45 GMT
 "BlockingPassTests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -144,7 +267,7 @@ Test Passed.
 25/51 Test: CodegenFrameworkTests
 Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_codegen_framework"
 Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
-"CodegenFrameworkTests" start time: Mar 09 14:02 GMT
+"CodegenFrameworkTests" start time: Mar 09 15:45 GMT
 Output:
 ----------------------------------------------------------
 Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
@@ -187,10 +310,10 @@ Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17
 [==========] 15 tests from 1 test suite ran. (1 ms total)
 [  PASSED  ] 15 tests.
 <end of output>
-Test time =   0.01 sec
+Test time =   0.13 sec
 ----------------------------------------------------------
 Test Passed.
-"CodegenFrameworkTests" end time: Mar 09 14:02 GMT
+"CodegenFrameworkTests" end time: Mar 09 15:45 GMT
 "CodegenFrameworkTests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -198,7 +321,7 @@ Test Passed.
 34/51 Test: SpMMCodegenTests
 Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_spmm_codegen"
 Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
-"SpMMCodegenTests" start time: Mar 09 14:02 GMT
+"SpMMCodegenTests" start time: Mar 09 15:45 GMT
 Output:
 ----------------------------------------------------------
 Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
@@ -249,18 +372,74 @@ Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17
 [==========] 19 tests from 1 test suite ran. (2 ms total)
 [  PASSED  ] 19 tests.
 <end of output>
-Test time =   0.01 sec
+Test time =   0.14 sec
 ----------------------------------------------------------
 Test Passed.
-"SpMMCodegenTests" end time: Mar 09 14:02 GMT
+"SpMMCodegenTests" end time: Mar 09 15:45 GMT
 "SpMMCodegenTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+45/51 Testing: SparseOutputConfigEffectsTests
+45/51 Test: SparseOutputConfigEffectsTests
+Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_sparse_output_config_effects"
+Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
+"SparseOutputConfigEffectsTests" start time: Mar 09 15:45 GMT
+Output:
+----------------------------------------------------------
+Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
+[==========] Running 16 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 16 tests from SparseOutputConfigEffects
+[ RUN      ] SparseOutputConfigEffects.SpAdd_HasSparseOutputTree
+[       OK ] SparseOutputConfigEffects.SpAdd_HasSparseOutputTree (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SpElMul_HasSparseOutputTree
+[       OK ] SparseOutputConfigEffects.SpElMul_HasSparseOutputTree (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SpGEMM_HasSparseOutputTree
+[       OK ] SparseOutputConfigEffects.SpGEMM_HasSparseOutputTree (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SDDMM_HasSparseOutputTree
+[       OK ] SparseOutputConfigEffects.SDDMM_HasSparseOutputTree (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SpAdd_BlockingApplied
+[       OK ] SparseOutputConfigEffects.SpAdd_BlockingApplied (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SpElMul_BlockingApplied
+[       OK ] SparseOutputConfigEffects.SpElMul_BlockingApplied (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SpGEMM_BlockingApplied
+[       OK ] SparseOutputConfigEffects.SpGEMM_BlockingApplied (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SDDMM_BlockingApplied
+[       OK ] SparseOutputConfigEffects.SDDMM_BlockingApplied (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SpAdd_InterchangeNoop
+[       OK ] SparseOutputConfigEffects.SpAdd_InterchangeNoop (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SpElMul_InterchangeNoop
+[       OK ] SparseOutputConfigEffects.SpElMul_InterchangeNoop (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SpGEMM_InterchangeNoop
+[       OK ] SparseOutputConfigEffects.SpGEMM_InterchangeNoop (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SDDMM_InterchangeApplied
+[       OK ] SparseOutputConfigEffects.SDDMM_InterchangeApplied (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SpAdd_AllOpts_OnlyBlockingApplies
+[       OK ] SparseOutputConfigEffects.SpAdd_AllOpts_OnlyBlockingApplies (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SDDMM_AllOpts_BothApply
+[       OK ] SparseOutputConfigEffects.SDDMM_AllOpts_BothApply (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SpAdd_CSC_HasSparseOutputTree
+[       OK ] SparseOutputConfigEffects.SpAdd_CSC_HasSparseOutputTree (0 ms)
+[ RUN      ] SparseOutputConfigEffects.SpAdd_CSC_BlockingApplied
+[       OK ] SparseOutputConfigEffects.SpAdd_CSC_BlockingApplied (0 ms)
+[----------] 16 tests from SparseOutputConfigEffects (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 16 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 16 tests.
+<end of output>
+Test time =   0.13 sec
+----------------------------------------------------------
+Test Passed.
+"SparseOutputConfigEffectsTests" end time: Mar 09 15:45 GMT
+"SparseOutputConfigEffectsTests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
 46/51 Testing: SparseOutputCodegenTests
 46/51 Test: SparseOutputCodegenTests
 Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_sparse_output_codegen"
 Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
-"SparseOutputCodegenTests" start time: Mar 09 14:02 GMT
+"SparseOutputCodegenTests" start time: Mar 09 15:45 GMT
 Output:
 ----------------------------------------------------------
 Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
@@ -297,16 +476,16 @@ Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17
 [       OK ] SparseOutputCodegen.SpAdd_FairnessContract (0 ms)
 [ RUN      ] SparseOutputCodegen.SpGEMM_FairnessContract
 [       OK ] SparseOutputCodegen.SpGEMM_FairnessContract (0 ms)
-[----------] 15 tests from SparseOutputCodegen (2 ms total)
+[----------] 15 tests from SparseOutputCodegen (3 ms total)
 
 [----------] Global test environment tear-down
-[==========] 15 tests from 1 test suite ran. (2 ms total)
+[==========] 15 tests from 1 test suite ran. (3 ms total)
 [  PASSED  ] 15 tests.
 <end of output>
-Test time =   0.01 sec
+Test time =   0.14 sec
 ----------------------------------------------------------
 Test Passed.
-"SparseOutputCodegenTests" end time: Mar 09 14:02 GMT
+"SparseOutputCodegenTests" end time: Mar 09 15:45 GMT
 "SparseOutputCodegenTests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -314,7 +493,7 @@ Test Passed.
 47/51 Test: KernelGoldenTests
 Command: "/Users/ilmihakam/co/backend/SparseTensorCompiler/build/test_kernel_golden"
 Directory: /Users/ilmihakam/co/backend/SparseTensorCompiler/build
-"KernelGoldenTests" start time: Mar 09 14:02 GMT
+"KernelGoldenTests" start time: Mar 09 15:45 GMT
 Output:
 ----------------------------------------------------------
 Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17.0/googletest/src/gtest_main.cc
@@ -353,17 +532,17 @@ Running main() from /private/tmp/googletest-20250808-4780-aa0gxy/googletest-1.17
 [       OK ] KernelGoldenTest.SpMM_CSR_IBI (0 ms)
 [ RUN      ] KernelGoldenTest.SpMM_CSC_IBI
 [       OK ] KernelGoldenTest.SpMM_CSC_IBI (0 ms)
-[----------] 16 tests from KernelGoldenTest (1 ms total)
+[----------] 16 tests from KernelGoldenTest (2 ms total)
 
 [----------] Global test environment tear-down
-[==========] 16 tests from 1 test suite ran. (1 ms total)
+[==========] 16 tests from 1 test suite ran. (2 ms total)
 [  PASSED  ] 16 tests.
 <end of output>
-Test time =   0.00 sec
+Test time =   0.13 sec
 ----------------------------------------------------------
 Test Passed.
-"KernelGoldenTests" end time: Mar 09 14:02 GMT
+"KernelGoldenTests" end time: Mar 09 15:45 GMT
 "KernelGoldenTests" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Mar 09 14:02 GMT
+End testing: Mar 09 15:45 GMT

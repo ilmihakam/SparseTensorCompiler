@@ -316,7 +316,9 @@ TEST(SemanticIRTest, ScheduleComputeLowersCSCSpMMWithParentOverride) {
     auto* sparseLoop = scheduled->rootLoop->children[0].get();
     ASSERT_NE(sparseLoop, nullptr);
     EXPECT_EQ(sparseLoop->indexName, "i");
-    EXPECT_EQ(sparseLoop->parentIndexOverride, "k");
+    EXPECT_EQ(sparseLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(sparseLoop->iterator.beginExpr, "A->col_ptr[k]");
+    EXPECT_EQ(sparseLoop->iterator.endExpr, "A->col_ptr[k + 1]");
     ASSERT_EQ(sparseLoop->children.size(), 1u);
     EXPECT_EQ(sparseLoop->children[0]->indexName, "j");
 }
@@ -420,8 +422,9 @@ TEST(SemanticIRTest, ScheduleComputeLowersSpAddWithUnionMergeLoop) {
     ASSERT_NE(scheduled->rootLoop, nullptr);
     EXPECT_EQ(scheduled->rootLoop->indexName, "i");
     ASSERT_EQ(scheduled->rootLoop->children.size(), 1u);
-    EXPECT_EQ(scheduled->rootLoop->children[0]->mergeStrategy, ir::MergeStrategy::Union);
-    EXPECT_EQ(scheduled->rootLoop->children[0]->mergedTensors.size(), 2u);
+    EXPECT_EQ(scheduled->rootLoop->children[0]->headerKind, sparseir::scheduled::LoopHeaderKind::SparseMerge);
+    EXPECT_EQ(scheduled->rootLoop->children[0]->merge.strategy, ir::MergeStrategy::Union);
+    EXPECT_EQ(scheduled->rootLoop->children[0]->merge.terms.size(), 2u);
 }
 
 TEST(SemanticIRTest, ScheduleComputeLowersSpElMulWithMergeLoop) {
@@ -437,8 +440,9 @@ TEST(SemanticIRTest, ScheduleComputeLowersSpElMulWithMergeLoop) {
     ASSERT_NE(scheduled->rootLoop, nullptr);
     EXPECT_EQ(scheduled->rootLoop->indexName, "j");
     ASSERT_EQ(scheduled->rootLoop->children.size(), 1u);
-    EXPECT_EQ(scheduled->rootLoop->children[0]->mergeStrategy, ir::MergeStrategy::Intersection);
-    ASSERT_EQ(scheduled->rootLoop->children[0]->mergedTensors.size(), 2u);
+    EXPECT_EQ(scheduled->rootLoop->children[0]->headerKind, sparseir::scheduled::LoopHeaderKind::SparseMerge);
+    EXPECT_EQ(scheduled->rootLoop->children[0]->merge.strategy, ir::MergeStrategy::Intersection);
+    ASSERT_EQ(scheduled->rootLoop->children[0]->merge.terms.size(), 2u);
 }
 
 TEST(SemanticIRTest, ScheduleComputeLowersSparseOutputSpAddThroughOutputPattern) {
@@ -458,7 +462,9 @@ TEST(SemanticIRTest, ScheduleComputeLowersSparseOutputSpAddThroughOutputPattern)
     ASSERT_EQ(scheduled->rootLoop->children.size(), 1u);
     auto* outputLoop = scheduled->rootLoop->children[0].get();
     ASSERT_NE(outputLoop, nullptr);
-    EXPECT_EQ(outputLoop->driverTensor, "C");
+    EXPECT_EQ(outputLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(outputLoop->iterator.beginExpr, "C->row_ptr[i]");
+    EXPECT_EQ(outputLoop->iterator.endExpr, "C->row_ptr[i + 1]");
     EXPECT_FALSE(outputLoop->postStmts.empty());
 }
 
@@ -475,7 +481,9 @@ TEST(SemanticIRTest, ScheduleComputeLowersSparseOutputSpElMulThroughOutputPatter
     EXPECT_EQ(scheduled->outputPattern, sparseir::OutputPatternKind::Intersection);
     ASSERT_NE(scheduled->rootLoop, nullptr);
     ASSERT_EQ(scheduled->rootLoop->children.size(), 1u);
-    EXPECT_EQ(scheduled->rootLoop->children[0]->driverTensor, "C");
+    EXPECT_EQ(scheduled->rootLoop->children[0]->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(scheduled->rootLoop->children[0]->iterator.beginExpr, "C->row_ptr[i]");
+    EXPECT_EQ(scheduled->rootLoop->children[0]->iterator.endExpr, "C->row_ptr[i + 1]");
 }
 
 TEST(SemanticIRTest, ScheduleComputeLowersSparseOutputSDDMMThroughOutputPattern) {
@@ -494,7 +502,9 @@ TEST(SemanticIRTest, ScheduleComputeLowersSparseOutputSDDMMThroughOutputPattern)
     ASSERT_EQ(scheduled->rootLoop->children.size(), 1u);
     auto* samplingLoop = scheduled->rootLoop->children[0].get();
     ASSERT_NE(samplingLoop, nullptr);
-    EXPECT_EQ(samplingLoop->driverTensor, "C");
+    EXPECT_EQ(samplingLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(samplingLoop->iterator.beginExpr, "C->row_ptr[i]");
+    EXPECT_EQ(samplingLoop->iterator.endExpr, "C->row_ptr[i + 1]");
     EXPECT_FALSE(samplingLoop->preStmts.empty());
     EXPECT_FALSE(samplingLoop->postStmts.empty());
 }
@@ -533,9 +543,13 @@ TEST(SemanticIRTest, ScheduleComputeLowersCSCSpGEMMThroughOutputPattern) {
     ASSERT_NE(scheduled->rootLoop, nullptr);
     EXPECT_EQ(scheduled->rootLoop->indexName, "j");
     ASSERT_EQ(scheduled->rootLoop->children.size(), 1u);
-    EXPECT_EQ(scheduled->rootLoop->children[0]->driverTensor, "B");
+    EXPECT_EQ(scheduled->rootLoop->children[0]->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(scheduled->rootLoop->children[0]->iterator.beginExpr, "B->col_ptr[j]");
+    EXPECT_EQ(scheduled->rootLoop->children[0]->iterator.endExpr, "B->col_ptr[j + 1]");
     ASSERT_EQ(scheduled->rootLoop->children[0]->children.size(), 1u);
-    EXPECT_EQ(scheduled->rootLoop->children[0]->children[0]->driverTensor, "A");
+    EXPECT_EQ(scheduled->rootLoop->children[0]->children[0]->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(scheduled->rootLoop->children[0]->children[0]->iterator.beginExpr, "A->col_ptr[k]");
+    EXPECT_EQ(scheduled->rootLoop->children[0]->children[0]->iterator.endExpr, "A->col_ptr[k + 1]");
 }
 
 TEST(SemanticIRTest, ScheduleComputeLowersDenseSpGEMMWithoutKernelTags) {
@@ -550,9 +564,13 @@ TEST(SemanticIRTest, ScheduleComputeLowersDenseSpGEMMWithoutKernelTags) {
     ASSERT_NE(scheduled->rootLoop, nullptr);
     EXPECT_EQ(scheduled->rootLoop->indexName, "i");
     ASSERT_EQ(scheduled->rootLoop->children.size(), 1u);
-    EXPECT_EQ(scheduled->rootLoop->children[0]->driverTensor, "A");
+    EXPECT_EQ(scheduled->rootLoop->children[0]->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(scheduled->rootLoop->children[0]->iterator.beginExpr, "A->row_ptr[i]");
+    EXPECT_EQ(scheduled->rootLoop->children[0]->iterator.endExpr, "A->row_ptr[i + 1]");
     ASSERT_EQ(scheduled->rootLoop->children[0]->children.size(), 1u);
-    EXPECT_EQ(scheduled->rootLoop->children[0]->children[0]->driverTensor, "B");
+    EXPECT_EQ(scheduled->rootLoop->children[0]->children[0]->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(scheduled->rootLoop->children[0]->children[0]->iterator.beginExpr, "B->row_ptr[k]");
+    EXPECT_EQ(scheduled->rootLoop->children[0]->children[0]->iterator.endExpr, "B->row_ptr[k + 1]");
 }
 
 TEST(SemanticIRTest, ScheduleComputeLowersDenseSDDMMWithoutKernelTags) {
@@ -573,7 +591,9 @@ TEST(SemanticIRTest, ScheduleComputeLowersDenseSDDMMWithoutKernelTags) {
     auto* sparseLoop = scheduled->rootLoop->children[0].get();
     ASSERT_NE(sparseLoop, nullptr);
     EXPECT_EQ(sparseLoop->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(sparseLoop->driverTensor, "S");
+    EXPECT_EQ(sparseLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(sparseLoop->iterator.beginExpr, "S->row_ptr[i]");
+    EXPECT_EQ(sparseLoop->iterator.endExpr, "S->row_ptr[i + 1]");
     ASSERT_EQ(sparseLoop->children.size(), 1u);
     EXPECT_EQ(sparseLoop->children[0]->indexName, "k");
     EXPECT_FALSE(sparseLoop->preStmts.empty());
@@ -626,7 +646,9 @@ TEST(SemanticIRTest, ScheduledInterchangeAppliesDirectlyToDenseSDDMM) {
     ASSERT_EQ(scheduled->rootLoop->children.size(), 1u);
     EXPECT_EQ(scheduled->rootLoop->children[0]->indexName, "k");
     ASSERT_EQ(scheduled->rootLoop->children[0]->children.size(), 1u);
-    EXPECT_EQ(scheduled->rootLoop->children[0]->children[0]->driverTensor, "S");
+    EXPECT_EQ(scheduled->rootLoop->children[0]->children[0]->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(scheduled->rootLoop->children[0]->children[0]->iterator.beginExpr, "S->row_ptr[i]");
+    EXPECT_EQ(scheduled->rootLoop->children[0]->children[0]->iterator.endExpr, "S->row_ptr[i + 1]");
     EXPECT_TRUE(scheduled->optimizations.interchangeApplied);
 }
 
@@ -670,7 +692,9 @@ TEST(SemanticIRTest, StructuralRegressionSpMMNesting) {
     auto* kLoop = scheduled->rootLoop->children[0].get();
     EXPECT_EQ(kLoop->indexName, "k");
     EXPECT_EQ(kLoop->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(kLoop->driverTensor, "A");
+    EXPECT_EQ(kLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(kLoop->iterator.beginExpr, "A->row_ptr[i]");
+    EXPECT_EQ(kLoop->iterator.endExpr, "A->row_ptr[i + 1]");
     ASSERT_EQ(kLoop->children.size(), 1u);
 
     // j(dense, child of k) with accumulation body
@@ -740,10 +764,14 @@ TEST(SemanticIRTest, StructuralRegressionSpGEMMWorkspaceAccumulator) {
     // k(sparse:A) → j(sparse:B) with structured hash-update body
     ASSERT_EQ(scheduled->rootLoop->children.size(), 1u);
     auto* kLoop = scheduled->rootLoop->children[0].get();
-    EXPECT_EQ(kLoop->driverTensor, "A");
+    EXPECT_EQ(kLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(kLoop->iterator.beginExpr, "A->row_ptr[i]");
+    EXPECT_EQ(kLoop->iterator.endExpr, "A->row_ptr[i + 1]");
     ASSERT_EQ(kLoop->children.size(), 1u);
     auto* jLoop = kLoop->children[0].get();
-    EXPECT_EQ(jLoop->driverTensor, "B");
+    EXPECT_EQ(jLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(jLoop->iterator.beginExpr, "B->row_ptr[k]");
+    EXPECT_EQ(jLoop->iterator.endExpr, "B->row_ptr[k + 1]");
     ASSERT_EQ(jLoop->postStmts.size(), 2u);
     EXPECT_NE(dynamic_cast<ir::IRIfStmt*>(jLoop->postStmts[0].get()), nullptr);
     EXPECT_NE(dynamic_cast<ir::IRAssign*>(jLoop->postStmts[1].get()), nullptr);

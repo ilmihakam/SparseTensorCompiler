@@ -216,7 +216,9 @@ TEST(NewKernelOpts, Interchange_SDDMM_SparseTensorPreserved) {
     const auto* kLoop = childAt(op->rootLoop.get(), 0);
     const auto* jLoop = childAt(kLoop, 0);
     ASSERT_NE(jLoop, nullptr);
-    EXPECT_EQ(jLoop->driverTensor, "S");
+    EXPECT_EQ(jLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(jLoop->iterator.beginExpr, "S->row_ptr[i]");
+    EXPECT_EQ(jLoop->iterator.endExpr, "S->row_ptr[i + 1]");
 }
 
 TEST(NewKernelOpts, Interchange_SpMM_StillWorks) {
@@ -241,7 +243,9 @@ TEST(NewKernelOpts, Interchange_SpMM_SparseTensorPreserved) {
     const auto* jLoop = childAt(op->rootLoop.get(), 0);
     const auto* kLoop = childAt(jLoop, 0);
     ASSERT_NE(kLoop, nullptr);
-    EXPECT_EQ(kLoop->driverTensor, "A");
+    EXPECT_EQ(kLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(kLoop->iterator.beginExpr, "A->row_ptr[i]");
+    EXPECT_EQ(kLoop->iterator.endExpr, "A->row_ptr[i + 1]");
 }
 
 TEST(NewKernelOpts, AllOpts_SpAdd_ITHENB_BlockOnly) {

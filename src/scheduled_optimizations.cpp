@@ -111,12 +111,7 @@ void swapLoopHeaders(Loop& lhs, Loop& rhs) {
     std::swap(lhs.iterator, rhs.iterator);
     std::swap(lhs.merge, rhs.merge);
     std::swap(lhs.block, rhs.block);
-    std::swap(lhs.driverTensor, rhs.driverTensor);
-    std::swap(lhs.parentIndexOverride, rhs.parentIndexOverride);
-    std::swap(lhs.mergeStrategy, rhs.mergeStrategy);
-    std::swap(lhs.mergedTensors, rhs.mergedTensors);
     std::swap(lhs.isExternallyBound, rhs.isExternallyBound);
-    std::swap(lhs.tileBlockSize, rhs.tileBlockSize);
 }
 
 void copyLoopHeader(const Loop& src, Loop& dst) {
@@ -133,12 +128,7 @@ void copyLoopHeader(const Loop& src, Loop& dst) {
     dst.iterator = src.iterator;
     dst.merge = src.merge;
     dst.block = src.block;
-    dst.driverTensor = src.driverTensor;
-    dst.parentIndexOverride = src.parentIndexOverride;
-    dst.mergeStrategy = src.mergeStrategy;
-    dst.mergedTensors = src.mergedTensors;
     dst.isExternallyBound = src.isExternallyBound;
-    dst.tileBlockSize = src.tileBlockSize;
 }
 
 void configureBlockLoopEmission(Loop& blockLoop, const Loop& denseLoop) {
@@ -146,7 +136,7 @@ void configureBlockLoopEmission(Loop& blockLoop, const Loop& denseLoop) {
     const std::string blockVar = blockLoop.indexName;
     const std::string startVar = originalIdx + "_start";
     const std::string endVar = originalIdx + "_end";
-    const int blockSize = blockLoop.tileBlockSize;
+    const int blockSize = blockLoop.block.blockSize;
     const std::string runtimeUpperBound = blockLoop.runtimeBound.empty()
         ? std::to_string(blockLoop.upper * blockSize)
         : blockLoop.runtimeBound;
@@ -214,7 +204,7 @@ bool blockLoopByIndex(Compute& compute, int blockSize, const std::string& target
     blockLoop->upper = numBlocks;
     blockLoop->runtimeBound = savedRuntimeBound;  // original dense-loop bound
     blockLoop->kind = LoopKind::Block;
-    blockLoop->tileBlockSize = blockSize;
+    blockLoop->block.blockSize = blockSize;
     configureBlockLoopEmission(*blockLoop, *target);
     blockLoop->children.push_back(std::move(target));
 

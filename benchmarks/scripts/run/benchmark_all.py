@@ -100,6 +100,12 @@ def build_command(args: argparse.Namespace, kernel: str) -> list[str]:
         cmd.extend(["--hwc-mode", args.hwc_mode, "--hwc-events", args.hwc_events])
     if args.hwc_strict:
         cmd.append("--hwc-strict")
+    if args.hwc_mode == "lauka":
+        cmd.extend([
+            "--hwc-lauka-bin", args.hwc_lauka_bin,
+            "--hwc-lauka-runs", str(args.hwc_lauka_runs),
+            "--hwc-lauka-warmup", str(args.hwc_lauka_warmup),
+        ])
 
     if args.sweep_block:
         cmd.append("--sweep-block")

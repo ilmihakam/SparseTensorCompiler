@@ -445,15 +445,11 @@ std::unique_ptr<scheduled::Loop> makeDenseLoop(const std::string& indexName, int
 }
 
 std::unique_ptr<scheduled::Loop> makeSparseLoop(const std::string& indexName,
-                                                int upper,
-                                                const std::string& tensorName,
-                                                const std::string& parentIndex) {
+                                                int upper) {
     auto loop = std::make_unique<scheduled::Loop>();
     loop->indexName = indexName;
     loop->kind = scheduled::LoopKind::Sparse;
     loop->upper = upper;
-    loop->driverTensor = tensorName;
-    loop->parentIndexOverride = parentIndex;
     return loop;
 }
 
@@ -482,8 +478,10 @@ void configureDenseLoopEmission(scheduled::Loop& loop) {
     loop.block = {};
 }
 
-void configureSparseIteratorEmission(scheduled::Loop& loop, ir::Format format) {
-    const std::string tensorName = loop.driverTensor.empty() ? "A" : loop.driverTensor;
+void configureSparseIteratorEmission(scheduled::Loop& loop,
+                                     const std::string& tensorName,
+                                     const std::string& parentIndex,
+                                     ir::Format format) {
     const std::string ptrVar = "p" + tensorName;
     const std::string ptrArray = (format == ir::Format::CSC) ? "col_ptr" : "row_ptr";
     const std::string indexArray = (format == ir::Format::CSC) ? "row_idx" : "col_idx";
@@ -494,14 +492,18 @@ void configureSparseIteratorEmission(scheduled::Loop& loop, ir::Format format) {
     loop.bindingVarName = loop.indexName;
     loop.bindingExpr = tensorName + "->" + indexArray + "[" + ptrVar + "]";
     loop.iterator.pointerVar = ptrVar;
-    loop.iterator.beginExpr = tensorName + "->" + ptrArray + "[" + loop.parentIndexOverride + "]";
-    loop.iterator.endExpr = tensorName + "->" + ptrArray + "[" + loop.parentIndexOverride + " + 1]";
+    loop.iterator.beginExpr = tensorName + "->" + ptrArray + "[" + parentIndex + "]";
+    loop.iterator.endExpr = tensorName + "->" + ptrArray + "[" + parentIndex + " + 1]";
     loop.iterator.indexExpr = loop.bindingExpr;
     loop.merge = {};
     loop.block = {};
 }
 
-void configureSparseMergeEmission(scheduled::Loop& loop, ir::Format format) {
+void configureSparseMergeEmission(scheduled::Loop& loop,
+                                  ir::MergeStrategy strategy,
+                                  const std::vector<std::string>& mergedTensors,
+                                  const std::string& parentIndex,
+                                  ir::Format format) {
     const std::string ptrArray = (format == ir::Format::CSC) ? "col_ptr" : "row_ptr";
     const std::string indexArray = (format == ir::Format::CSC) ? "row_idx" : "col_idx";
 
@@ -512,16 +514,16 @@ void configureSparseMergeEmission(scheduled::Loop& loop, ir::Format format) {
     loop.bindingExpr.clear();
     loop.iterator = {};
     loop.block = {};
-    loop.merge.strategy = loop.mergeStrategy;
+    loop.merge.strategy = strategy;
     loop.merge.terms.clear();
 
-    for (const auto& tensorName : loop.mergedTensors) {
+    for (const auto& tensorName : mergedTensors) {
         scheduled::MergeTermEmission term;
         term.tensorName = tensorName;
         term.pointerVar = "p" + tensorName;
         term.endVar = "end" + tensorName;
-        term.beginExpr = tensorName + "->" + ptrArray + "[" + loop.parentIndexOverride + "]";
-        term.endExpr = tensorName + "->" + ptrArray + "[" + loop.parentIndexOverride + " + 1]";
+        term.beginExpr = tensorName + "->" + ptrArray + "[" + parentIndex + "]";
+        term.endExpr = tensorName + "->" + ptrArray + "[" + parentIndex + " + 1]";
         term.candidateExpr = tensorName + "->" + indexArray + "[" + term.pointerVar + "]";
         term.boundIndexVar = loop.indexName + tensorName;
         term.matchExpr = term.candidateExpr + " == " + loop.indexName;
@@ -1078,17 +1080,24 @@ std::unique_ptr<scheduled::Loop> buildGenericLoopNest(
 
     std::unique_ptr<scheduled::Loop> loop;
     if (spec.kind == scheduled::LoopKind::Sparse) {
-        loop = makeSparseLoop(indexName, spec.upper, spec.driverTensor, spec.parentIndex);
-        loop->mergeStrategy = spec.mergeStrategy;
-        loop->mergedTensors = spec.mergedTensors;
+        loop = makeSparseLoop(indexName, spec.upper);
         if (spec.mergeStrategy == ir::MergeStrategy::Union ||
             spec.mergeStrategy == ir::MergeStrategy::Intersection) {
             const std::string formatTensor = !spec.mergedTensors.empty()
                 ? spec.mergedTensors.front()
                 : spec.driverTensor;
-            configureSparseMergeEmission(*loop, findScheduledTensorFormat(compute, formatTensor));
+            configureSparseMergeEmission(
+                *loop,
+                spec.mergeStrategy,
+                spec.mergedTensors,
+                spec.parentIndex,
+                findScheduledTensorFormat(compute, formatTensor));
         } else {
-            configureSparseIteratorEmission(*loop, findScheduledTensorFormat(compute, spec.driverTensor));
+            configureSparseIteratorEmission(
+                *loop,
+                spec.driverTensor,
+                spec.parentIndex,
+                findScheduledTensorFormat(compute, spec.driverTensor));
         }
         if (spec.mergeStrategy == ir::MergeStrategy::Intersection) {
             for (const auto& tensorName : spec.mergedTensors) {
@@ -1563,12 +1572,7 @@ std::unique_ptr<Loop> Loop::clone() const {
     cloned->iterator = iterator;
     cloned->merge = merge;
     cloned->block = block;
-    cloned->driverTensor = driverTensor;
-    cloned->parentIndexOverride = parentIndexOverride;
-    cloned->mergeStrategy = mergeStrategy;
-    cloned->mergedTensors = mergedTensors;
     cloned->isExternallyBound = isExternallyBound;
-    cloned->tileBlockSize = tileBlockSize;
     for (const auto& stmt : preStmts) {
         cloned->preStmts.push_back(stmt->clone());
     }
