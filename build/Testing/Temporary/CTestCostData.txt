@@ -15,10 +15,10 @@ IRVisitorTests 68 4.83346e-05
 OptConfigTests 112 0.00114611
 FormatAnalyzerTests 111 0.00114023
 ReorderingPassTests 107 0.00121802
-BlockingPassTests 118 0.00162433
+BlockingPassTests 119 0.00110132
 PassIntegrationTests 110 0.00118332
 OptSchedulingTests 115 0.00111443
-CodegenFrameworkTests 124 4.16374e-05
+CodegenFrameworkTests 125 0.00103753
 BlockingCodegenTests 112 0.00167328
 SpMVCodegenTests 114 0.00108159
 DenseLoopsTests 100 0.00141869
@@ -29,7 +29,7 @@ SanityCheckTests 116 0.00125084
 ScheduledOptimizationsCorrectnessTests 110 0.11638
 SpMMIRLoweringTests 110 0.00115483
 SpMMParsingTests 107 0.00119042
-SpMMCodegenTests 130 4.08833e-05
+SpMMCodegenTests 131 0.00103118
 LoopInterchangeTests 115 0.00119457
 BenchmarkPipelineOursOnly 10 0
 BenchmarkPipelineTACO 10 0
@@ -37,7 +37,7 @@ BenchmarkPipelineSpMMOursOnly 15 9.82342
 BenchmarkPipelineSpMMTACO 14 13.94
 BenchmarkScheduleSanitySpMM 8 0
 NewKernelDetectionTests 43 6.77645e-05
-NewKernelLoweringTests 89 0.00141999
+NewKernelLoweringTests 90 0.00203983
 SpAddCodegenTests 91 0.00146186
 SpElMulCodegenTests 91 0.00148099
 SpGEMMCodegenTests 91 0.00144637
@@ -48,15 +48,15 @@ OutputFormatTests 87 0.0014683
 SpGEMMHashOutputTests 82 0.0015633
 RealisticInputsTests 78 0.00196029
 IRExprTests 73 0.00172789
-GeneralLoweringTests 63 0.00210868
+GeneralLoweringTests 64 0.00198804
 GeneralCodegenTests 70 0.00186787
 IRNodesTests 24 0.000125278
 BenchmarkUnifiedOurs 42 0.0745407
 BenchmarkUnifiedTACO 40 0.245931
 BenchmarkAllOrchestrator 58 0.00992732
-SparseOutputConfigEffectsTests 53 0.00243819
-SparseOutputCodegenTests 67 7.46629e-05
+SparseOutputConfigEffectsTests 54 0.00233612
+SparseOutputCodegenTests 68 0.00205252
 Analyze2DBlockingUnit 50 0.00298512
-SemanticIRTests 52 5.49335e-05
-KernelGoldenTests 5 0.000772583
+SemanticIRTests 53 0.00253981
+KernelGoldenTests 6 0.0217195
 ---

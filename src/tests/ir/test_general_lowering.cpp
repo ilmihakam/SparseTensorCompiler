@@ -176,8 +176,9 @@ TEST(GeneralLoweringTest, ThreeTensorAdd_HasUnionMergeLoop) {
     EXPECT_EQ(outerLoop->kind, sparseir::scheduled::LoopKind::Dense);
     ASSERT_EQ(outerLoop->children.size(), 1u);
     EXPECT_EQ(outerLoop->children[0]->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(outerLoop->children[0]->mergeStrategy, ir::MergeStrategy::Union);
-    EXPECT_EQ(outerLoop->children[0]->mergedTensors.size(), 3u);
+    EXPECT_EQ(outerLoop->children[0]->headerKind, sparseir::scheduled::LoopHeaderKind::SparseMerge);
+    EXPECT_EQ(outerLoop->children[0]->merge.strategy, ir::MergeStrategy::Union);
+    EXPECT_EQ(outerLoop->children[0]->merge.terms.size(), 3u);
 }
 
 // ============================================================================
@@ -238,7 +239,8 @@ TEST(GeneralLoweringTest, IntersectionMerge_HasMergeStrategy) {
     // The inner sparse loop should have Intersection merge strategy
     auto* innerLoop = compute->rootLoop->children[0].get();
     EXPECT_EQ(innerLoop->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(innerLoop->mergeStrategy, ir::MergeStrategy::Intersection);
+    EXPECT_EQ(innerLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseMerge);
+    EXPECT_EQ(innerLoop->merge.strategy, ir::MergeStrategy::Intersection);
 }
 
 // ============================================================================
@@ -286,8 +288,10 @@ TEST(GeneralLoweringTest, CSCFormatReversesOrder) {
     auto* sparseLoop = findLoopByIndex(compute->rootLoop.get(), "i");
     ASSERT_NE(sparseLoop, nullptr);
     EXPECT_EQ(sparseLoop->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(sparseLoop->driverTensor, "A");
-    EXPECT_EQ(sparseLoop->parentIndexOverride, "j");
+    EXPECT_EQ(sparseLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(sparseLoop->iterator.beginExpr, "A->col_ptr[j]");
+    EXPECT_EQ(sparseLoop->iterator.endExpr, "A->col_ptr[j + 1]");
+    EXPECT_EQ(sparseLoop->bindingExpr, "A->row_idx[pA]");
 }
 
 // ============================================================================
@@ -342,8 +346,10 @@ TEST(GeneralLoweringTest, SparseIteratorsPopulated) {
 
     auto* sparseLoop = compute->rootLoop->children[0].get();
     EXPECT_EQ(sparseLoop->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(sparseLoop->driverTensor, "A");
-    EXPECT_EQ(sparseLoop->parentIndexOverride, "i");
+    EXPECT_EQ(sparseLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(sparseLoop->iterator.beginExpr, "A->row_ptr[i]");
+    EXPECT_EQ(sparseLoop->iterator.endExpr, "A->row_ptr[i + 1]");
+    EXPECT_EQ(sparseLoop->bindingExpr, "A->col_idx[pA]");
 }
 
 // ============================================================================

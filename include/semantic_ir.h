@@ -229,15 +229,10 @@ struct Loop {
     SparseIteratorEmission iterator;
     MergeEmission merge;
     BlockEmission block;
-    std::string driverTensor;
-    std::string parentIndexOverride;
-    ir::MergeStrategy mergeStrategy = ir::MergeStrategy::None;
-    std::vector<std::string> mergedTensors;
     std::vector<std::unique_ptr<Loop>> children;
     std::vector<std::unique_ptr<ir::IRStmt>> preStmts;
     std::vector<std::unique_ptr<ir::IRStmt>> postStmts;
     bool isExternallyBound = false;
-    int tileBlockSize = 0;
 
     std::unique_ptr<Loop> clone() const;
 };

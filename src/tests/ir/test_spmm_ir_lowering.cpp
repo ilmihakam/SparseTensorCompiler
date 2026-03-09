@@ -99,7 +99,9 @@ TEST_F(IRSpMMTest, BuildSpMMLoopNest_CSR) {
     auto* middleLoop = outerLoop->children[0].get();
     EXPECT_EQ(middleLoop->indexName, "k");
     EXPECT_EQ(middleLoop->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(middleLoop->driverTensor, "A");
+    EXPECT_EQ(middleLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(middleLoop->iterator.beginExpr, "A->row_ptr[i]");
+    EXPECT_EQ(middleLoop->iterator.endExpr, "A->row_ptr[i + 1]");
 
     // Verify inner loop (j)
     ASSERT_FALSE(middleLoop->children.empty());
@@ -138,7 +140,9 @@ TEST_F(IRSpMMTest, BuildSpMMLoopNest_CSC) {
     auto* middleLoop = outerLoop->children[0].get();
     EXPECT_EQ(middleLoop->indexName, "i");
     EXPECT_EQ(middleLoop->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(middleLoop->driverTensor, "A");
+    EXPECT_EQ(middleLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(middleLoop->iterator.beginExpr, "A->col_ptr[k]");
+    EXPECT_EQ(middleLoop->iterator.endExpr, "A->col_ptr[k + 1]");
 
     // Verify inner loop (j)
     ASSERT_FALSE(middleLoop->children.empty());

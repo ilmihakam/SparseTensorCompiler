@@ -63,7 +63,8 @@ TEST(SpAddLoweringTest, OuterDenseWithUnionMergeChild) {
 
     ASSERT_EQ(outerLoop->children.size(), 1);
     EXPECT_EQ(outerLoop->children[0]->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(outerLoop->children[0]->mergeStrategy, ir::MergeStrategy::Union);
+    EXPECT_EQ(outerLoop->children[0]->headerKind, sparseir::scheduled::LoopHeaderKind::SparseMerge);
+    EXPECT_EQ(outerLoop->children[0]->merge.strategy, ir::MergeStrategy::Union);
 }
 
 TEST(SpAddLoweringTest, UnionMergeLoopTagsBothInputs) {
@@ -76,10 +77,11 @@ TEST(SpAddLoweringTest, UnionMergeLoopTagsBothInputs) {
 
     auto* mergeLoop = compute->rootLoop->children[0].get();
     EXPECT_EQ(mergeLoop->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(mergeLoop->mergeStrategy, ir::MergeStrategy::Union);
-    ASSERT_EQ(mergeLoop->mergedTensors.size(), 2);
-    EXPECT_EQ(mergeLoop->mergedTensors[0], "A");
-    EXPECT_EQ(mergeLoop->mergedTensors[1], "B");
+    EXPECT_EQ(mergeLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseMerge);
+    EXPECT_EQ(mergeLoop->merge.strategy, ir::MergeStrategy::Union);
+    ASSERT_EQ(mergeLoop->merge.terms.size(), 2u);
+    EXPECT_EQ(mergeLoop->merge.terms[0].tensorName, "A");
+    EXPECT_EQ(mergeLoop->merge.terms[1].tensorName, "B");
 }
 
 TEST(SpAddLoweringTest, ExpressionInfoRootOpIsAdd) {
@@ -135,7 +137,8 @@ TEST(SpElMulLoweringTest, InnerLoopHasIntersectionMerge) {
 
     auto* innerLoop = compute->rootLoop->children[0].get();
     EXPECT_EQ(innerLoop->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(innerLoop->mergeStrategy, ir::MergeStrategy::Intersection);
+    EXPECT_EQ(innerLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseMerge);
+    EXPECT_EQ(innerLoop->merge.strategy, ir::MergeStrategy::Intersection);
 }
 
 TEST(SpElMulLoweringTest, MergeLoopTagsBothTensors) {
@@ -147,9 +150,9 @@ TEST(SpElMulLoweringTest, MergeLoopTagsBothTensors) {
     ASSERT_EQ(compute->rootLoop->children.size(), 1);
 
     auto* innerLoop = compute->rootLoop->children[0].get();
-    EXPECT_EQ(innerLoop->mergedTensors.size(), 2u);
-    EXPECT_EQ(innerLoop->mergedTensors[0], "A");
-    EXPECT_EQ(innerLoop->mergedTensors[1], "B");
+    ASSERT_EQ(innerLoop->merge.terms.size(), 2u);
+    EXPECT_EQ(innerLoop->merge.terms[0].tensorName, "A");
+    EXPECT_EQ(innerLoop->merge.terms[1].tensorName, "B");
 }
 
 // ============================================================================
@@ -202,14 +205,18 @@ TEST(SpGEMMLoweringTest, ThreeLevelNestDenseSparseASparseB) {
     auto* kLoop = iLoop->children[0].get();
     EXPECT_EQ(kLoop->indexName, "k");
     EXPECT_EQ(kLoop->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(kLoop->driverTensor, "A");
+    EXPECT_EQ(kLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(kLoop->iterator.beginExpr, "A->row_ptr[i]");
+    EXPECT_EQ(kLoop->iterator.endExpr, "A->row_ptr[i + 1]");
 
     // Level 3: sparse j (B's iteration)
     ASSERT_EQ(kLoop->children.size(), 1);
     auto* jLoop = kLoop->children[0].get();
     EXPECT_EQ(jLoop->indexName, "j");
     EXPECT_EQ(jLoop->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(jLoop->driverTensor, "B");
+    EXPECT_EQ(jLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(jLoop->iterator.beginExpr, "B->row_ptr[k]");
+    EXPECT_EQ(jLoop->iterator.endExpr, "B->row_ptr[k + 1]");
 
     EXPECT_FALSE(jLoop->postStmts.empty());
 }
@@ -283,7 +290,9 @@ TEST(SDDMMLoweringTest, SparseSamplingLoopWithDenseChild) {
     auto* jLoop = iLoop->children[0].get();
     EXPECT_EQ(jLoop->indexName, "j");
     EXPECT_EQ(jLoop->kind, sparseir::scheduled::LoopKind::Sparse);
-    EXPECT_EQ(jLoop->driverTensor, "S");
+    EXPECT_EQ(jLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(jLoop->iterator.beginExpr, "S->row_ptr[i]");
+    EXPECT_EQ(jLoop->iterator.endExpr, "S->row_ptr[i + 1]");
 
     // Level 3: dense k (contraction)
     ASSERT_EQ(jLoop->children.size(), 1);
@@ -385,7 +394,9 @@ TEST(BackwardCompatTest, SpMVStillLowersThroughScheduledPath) {
     ASSERT_NE(compute, nullptr);
     ASSERT_NE(compute->rootLoop, nullptr);
     ASSERT_EQ(compute->rootLoop->children.size(), 1);
-    EXPECT_EQ(compute->rootLoop->children[0]->driverTensor, "A");
+    EXPECT_EQ(compute->rootLoop->children[0]->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(compute->rootLoop->children[0]->iterator.beginExpr, "A->row_ptr[i]");
+    EXPECT_EQ(compute->rootLoop->children[0]->iterator.endExpr, "A->row_ptr[i + 1]");
 }
 
 TEST(BackwardCompatTest, SpMMStillLowersThroughScheduledPath) {
@@ -410,5 +421,7 @@ TEST(BackwardCompatTest, SpMMStillLowersThroughScheduledPath) {
     ASSERT_NE(compute->rootLoop, nullptr);
     ASSERT_EQ(compute->rootLoop->children.size(), 1);
     auto* sparseLoop = compute->rootLoop->children[0].get();
-    EXPECT_EQ(sparseLoop->driverTensor, "A");
+    EXPECT_EQ(sparseLoop->headerKind, sparseir::scheduled::LoopHeaderKind::SparseIterator);
+    EXPECT_EQ(sparseLoop->iterator.beginExpr, "A->row_ptr[i]");
+    EXPECT_EQ(sparseLoop->iterator.endExpr, "A->row_ptr[i + 1]");
 }

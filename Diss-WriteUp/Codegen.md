@@ -1,356 +1,361 @@
 # Codegen (C/CPU Backend)
 
-This document describes the code generator in this repository with a split between:
+This document describes the current code generation architecture for the CPU backend.
+It is split into:
 
-- **Design**: what the code generator produces and why it is structured that way.
-- **Implementation**: where and how the repository implements those choices.
+- **Design**: the intended boundary between kernel emission and surrounding generated C.
+- **Implementation**: how that boundary is represented in the repository.
+- **Harness Functionality**: what the non-kernel emitters provide around the generated compute kernel.
 
-Scope: **targeting CPU backends via portable C** (generated `.c` files).
+Scope: **portable C code generation for CPU execution**.
 
 Primary sources:
 
-- `include/codegen.h`, `src/codegen.cpp`
-- `include/ir.h`, `src/ir.cpp` (IR shapes referenced below)
-- `include/optimizations.h`, `src/optimizations.cpp` (how scheduling transforms appear in emitted code)
-- `src/tests/codegen/*` (behavioral expectations)
+- `include/codegen.h`
+- `include/semantic_ir.h`
+- `src/codegen.cpp`
+- `src/codegen/runtime_emitter.cpp`
+- `src/codegen/reference_emitter.cpp`
+- `src/codegen/output_assembly_emitter.cpp`
+- `src/codegen/output_assembly_shared.cpp`
+- `src/codegen/program_emitter.cpp`
+- `src/tests/codegen/*`, `src/tests/ir/*`, `src/tests/optimizations/*`
 
 ## Design
 
-### What We Generate
+### Core Architectural Boundary
 
-The kernel-mode generator (`codegen::CodeGenerator`) emits a **standalone C program** rather than only a kernel function. The generated C file is structured as:
+The code generation architecture is now split by responsibility.
 
-1. Header comment block and `#include`s
-2. Runtime struct definitions (`SparseMatrix`)
-3. Matrix Market loader (COO parse + canonicalization + conversion to CSR/CSC)
-4. Timing utilities
-5. Matrix feature extraction (`compute_features`)
-6. Optional sparse-output helpers (for kernels that output sparse matrices)
-7. Optimized kernel function
-8. Reference kernel function(s) (for correctness checks)
-9. `main()` (argument parsing, loading, allocation, timing loop, verification, cleanup)
+The central rule is:
 
-Why this choice:
+- if a piece of emitted C is **derivable from scheduled compute IR**, it belongs in `codegen.cpp`
+- if it is **not derivable from scheduled compute IR**, it belongs in a separate emitter
 
-- Keeps experiments reproducible: one artifact includes runtime + kernel + measurement harness.
-- Makes kernels easy to run with `gcc/clang` without additional runtime dependencies.
-- Centralizes format-correct sparse traversal in one place (codegen), while letting IR passes focus on loop structure.
+Concretely, `codegen.cpp` is now responsible only for **IR-derivable compute emission**:
 
-In addition, a program-mode generator (`generateProgramToFile`) emits a standalone C program for a full `.tc` program containing multiple statements and `for` blocks.
+- the compute kernel signature
+- compute prologue and epilogue statements
+- traversal of the scheduled loop tree
+- emission of loop-local bindings
+- emission of structured `IRStmt` / `IRExpr` inside the compute body
 
-### Output Model: Kernel-mode vs Program-mode
-
-There are two materially different emission contexts:
-
-- **Kernel-mode**: emit from one `ir::Operation`.
-  - Produced by `CodeGenerator::generate` and used by `generateCode(...)` / `generateToFile(...)`.
-  - Dense 2D operands are typically passed as `double**` for some kernels (notably `spmm`).
-  - The loop nest is emitted by traversing the `ir::Loop` tree via the `ir::IRVisitor` interface.
-
-- **Program-mode**: emit from `SparseTensorCompiler::IRProgram`.
-  - Produced by `generateProgramToFile(...)`.
-  - Dense tensors are allocated as flat `double*` buffers; 2D indexing is emitted as `A[i * A_ncols + j]`.
-  - Sparse tensor element reads in AST-walk fallback are emitted via runtime helpers `sp_csr_get/sp_csc_get`.
-  - If an `IRCompute` has a lowered `ir::Operation`, program-mode embeds the operation-level loop tree with a separate recursive emitter.
-
-This split exists because:
-
-- Program-mode needs to support arbitrary user code structure (`for` blocks, calls), not only one kernel.
-- Program-mode uses flat dense buffers for simpler memory management and uniform indexing in mixed statement streams.
-
-### Mapping IR Constructs to C
-
-Operation-level IR is a loop tree (`ir::Loop`) plus bodies; codegen maps it into C using a small set of emission patterns.
-
-#### Tensors and Types
-
-- `ir::Tensor` with `Format::Dense`:
-  - kernel-mode: emitted as pointers (`double*` for 1D, `double**` for some 2D kernels).
-  - program-mode: emitted as `double*` always; for 2D, codegen also declares `<name>_ncols` and uses flat indexing.
-
-- `ir::Tensor` with `Format::CSR` or `Format::CSC`:
-  - emitted as `SparseMatrix*`.
-  - format controls which pointer arrays are used in sparse iteration.
-
-#### Dense Loops
-
-`LoopKind::Dense` maps to:
+This means the core backend emits a fragment of the form:
 
 ```c
-for (int i = lower; i < upper; i++) {
-  ...
-}
-```
-
-Upper bounds are often derived at runtime:
-
-- `A->rows`, `A->cols` for sparse input dimensions
-- `C_cols`, `B_cols` for dense matrix dimensions passed into the kernel
-- `K` for contraction dimensions in SDDMM
-
-#### Sparse Loops (CSR/CSC)
-
-`LoopKind::Sparse` maps to pointer iteration over one “parent” coordinate, extracting a coordinate index from an index array.
-
-CSR:
-
-```c
-for (int pA = A->row_ptr[parent]; pA < A->row_ptr[parent + 1]; pA++) {
-  int j = A->col_idx[pA];
-  ...
-}
-```
-
-CSC:
-
-```c
-for (int pA = A->col_ptr[parent]; pA < A->col_ptr[parent + 1]; pA++) {
-  int i = A->row_idx[pA];
-  ...
-}
-```
-
-The “parent” variable is format-dependent and must be chosen correctly for correctness. The generator maintains a notion of the active outer loop variable (see “Handling Sparse Iteration” below).
-
-#### Intersection Merge (SpElMul and General IR)
-
-If a sparse loop has `mergeStrategy == Intersection`, codegen emits a “two-pointer merge” that advances pointers in both tensors and executes the body only when the extracted coordinates match. There are CSR and CSC variants.
-
-#### Block / Tiling Wrappers
-
-Blocking is represented in IR by inserting a wrapper loop whose index variable name contains `"_block"` and an optional `tileBlockSize`. Codegen maps this to strip-mining:
-
-```c
-for (int i_block = 0; i_block < (UB + B - 1) / B; i_block++) {
-  int i_start = i_block * B;
-  int i_end = (i_start + B < UB) ? i_start + B : UB;
-  for (int i = i_start; i < i_end; i++) {
+void compute(...) {
     ...
-  }
 }
 ```
 
-If a sparse loop sits directly under a block wrapper (possible under some schedules), the generator keeps the outer block loop but enforces the bounded dense range via a bounds override, rather than rewriting sparse pointer bounds.
+rather than owning the whole standalone C file.
 
-#### Loop Bodies
+### Compute Emission Contract
 
-Loop bodies exist in two forms:
+The compute emitter consumes:
 
-- **Structured** (`IRStmt`/`IRExpr`) for some lowering paths:
-  - codegen emits final C syntax directly from the nodes.
-  - used when `Loop::hasStructuredBody()` is true.
+- `scheduled::Compute`
+- `scheduled::Loop`
+- attached `IRStmt`
+- attached `IRExpr`
 
-- **String bodies** (legacy, common in kernel-specific builders):
-  - the loop body is a C-like snippet stored in `Loop::body` (and setup code in `Loop::preBody`).
-  - codegen does placeholder rewriting for sparse values: `{tensor}_vals[` becomes `{tensor}->vals[`.
+The loop contract is explicit. `scheduled::Loop` no longer exposes legacy codegen-policy fields such as driver tensor names or merge tensor lists as part of the active emission interface. Instead, emission is guided by:
 
-### Memory Layout Translation
+- `LoopHeaderKind`
+- `lowerExpr` / `upperExpr`
+- `bindingVarName` / `bindingExpr`
+- `SparseIteratorEmission`
+- `MergeEmission`
+- `BlockEmission`
 
-#### SparseMatrix Runtime Layout
+The current loop header forms are:
 
-Generated C defines:
+- `DenseFor`
+- `SparseIterator`
+- `SparseMerge`
+- `Block`
+
+This moves the responsibility split to the correct place:
+
+- lowering/scheduling decides traversal semantics
+- `scheduled::Loop` stores those semantics explicitly
+- `codegen.cpp` renders them as C
+
+### Loop Forms in Generated C
+
+Dense loops are emitted from explicit bound expressions:
 
 ```c
-typedef struct {
-  int rows, cols, nnz;
-  int* row_ptr; int* col_idx;  // CSR
-  int* col_ptr; int* row_idx;  // CSC (same memory, different interpretation)
-  double* vals;
-} SparseMatrix;
+for (int j = lower; j < upper; j++) {
+    ...
+}
 ```
 
-The loader and converters populate these fields such that:
+Sparse iterator loops are emitted from explicit pointer-begin, pointer-end, and binding expressions:
 
-- CSR interpretation uses `row_ptr/col_idx/vals`.
-- CSC interpretation uses `col_ptr/row_idx/vals`.
+```c
+for (int pA = A->col_ptr[k]; pA < A->col_ptr[k + 1]; pA++) {
+    int i = A->row_idx[pA];
+    ...
+}
+```
 
-Many generic helpers (feature extraction, some loops) use `row_ptr/col_idx` and rely on the convention that for CSC, `row_ptr == col_ptr` and `col_idx == row_idx`.
+Sparse merge loops use an explicit merge descriptor:
 
-#### MatrixMarket Loader: COO → CSR/CSC
+- union and intersection are represented in scheduled IR via `merge.strategy`
+- each merged tensor contributes explicit pointer and candidate-index expressions in `merge.terms`
 
-The loader:
+Block loops use explicit strip-mining metadata:
 
-- Parses Matrix Market coordinate files, supports `real`, `integer`, and `pattern`.
-- Expands symmetric / skew-symmetric entries as needed.
-- Sorts entries in a canonical order:
-  - CSR target: `(row, col)`
-  - CSC target: `(col, row)`
-- Merges duplicate coordinates by summing values.
-- Converts to the target sparse format (emits either CSR or CSC conversion code).
+```c
+for (int j_block = 0; j_block < (N_j + 31) / 32; j_block++) {
+    int j_start = j_block * 32;
+    int j_end = (j_start + 32 < N_j) ? j_start + 32 : N_j;
+    ...
+}
+```
 
-This makes baselines deterministic and keeps sparse iteration stable across runs.
+The bounded inner dense loop uses the block descriptor rather than a codegen-side override map.
 
-#### Dense Layout Choices
+### Full-Program Generation
 
-Two dense representations show up depending on emission mode:
+Standalone `.c` generation still exists, but it is no longer conceptually owned by `codegen.cpp`.
 
-- kernel-mode: some kernels (e.g. SpMM) use `double**` for 2D dense operands and output to keep the code close to textbook formulations.
-- program-mode: dense 2D tensors are always flat `double*`; indexing is rewritten to `A[i * A_ncols + j]`.
+Instead, a full generated C file is composed from multiple emitters:
 
-### Handling Sparse Iteration Correctly
+- compute kernel emitter
+- runtime/harness emitter
+- reference emitter
+- sparse-output assembly emitter
+- scheduled-program emitter
 
-Sparse loops require a correct “parent” coordinate for pointer bounds (`row_ptr[parent]` in CSR, `col_ptr[parent]` in CSC). Codegen manages this with:
+This keeps the kernel path structurally tied to scheduled IR while still supporting benchmarkable standalone artifacts.
 
-- `currentOuterLoopVar_`: tracks which outer coordinate is currently binding the sparse dimension.
-- `parentVarOverride`: optional per-loop override when a nested sparse loop must use a specific parent variable (used by certain SpGEMM variants).
-- `loopBoundsOverride_`: a map of dense index names to `(start,end)` strings to enforce bounded iteration ranges under block wrappers and certain schedules.
+### What Is Still Transitional
 
-This design keeps sparse pointer bounds format-correct even under interchange and blocking transformations.
+The main architecture is now in place:
 
-### Code Emission Strategy and Traversal
+- compute emission is driven by explicit scheduled-loop metadata
+- non-kernel responsibilities are separated into dedicated emitters
 
-#### Kernel-mode traversal (visitor)
+Some auxiliary abstractions are still transitional:
 
-`CodeGenerator` implements `ir::IRVisitor` and emits a loop tree by calling `rootLoop->accept(*this)`. `visitLoop(...)` dispatches:
+- access-expression metadata in `IRTensorAccess` is still somewhat codegen-oriented
+- some runtime/signature metadata is still derived in `EmissionContext`
+- program and runtime emitters remain more string-oriented than the compute emitter
 
-- `*_block` loop wrapper: `emitBlockLoop`
-- dense loop: `emitDenseLoop`
-- sparse loop with intersection merge: `emitMergeIntersectionCSR/CSC`
-- sparse loop without merge: `emitSparseLoopCSR/emitSparseLoopCSC` (format chosen from tensor metadata)
-
-#### Program-mode traversal (recursive emitter)
-
-Program-mode has a separate recursive emitter (e.g. `emitLoopTree`) that:
-
-- emits `ir::Loop` trees inside a program statement stream,
-- respects `Loop::isExternallyBound` so loops already bound by an enclosing program-level `for` are not re-emitted,
-- provides program-mode runtime bounds and dense indexing rules.
-
-### Variable Management and Naming Conventions
-
-Generated code uses predictable naming, which is relied upon by both string-body templates and codegen transformations:
-
-- sparse pointers: `p<tensorName>` (e.g. `pA`, `pB`, `pS`, `pC`)
-- block wrappers:
-  - wrapper var: `<idx>_block`
-  - bounds vars: `<idx>_start`, `<idx>_end`
-- extracted coordinates:
-  - the loop’s index variable name is emitted directly (e.g. `int j = A->col_idx[pA];`)
-
-Kernel-specific temporaries also use stable names:
-
-- SpMM blocked variants: `acc[...]`, `btile[...]`, `jj`, `w`, `t`
-- SpGEMM hash-per-row: `acc`, `marked`, `touched`, `touched_count`, plus hash structures
-
-### Kernel Generation and CPU Backend Targeting
-
-The generated code targets CPU execution:
-
-- Uses standard C library facilities (`malloc/calloc/free`, `memcpy/memset`, `qsort`, `<math.h>`).
-- Uses `clock_gettime(CLOCK_MONOTONIC)` for timing.
-- No threading, SIMD-specific intrinsics, or GPU runtime in current codegen.
-
-Optimizations are expressed as loop-structure changes and kernel-local temporaries rather than backend-specific instructions.
+These do not invalidate the core architecture, but they are remaining cleanup areas rather than unresolved architectural questions.
 
 ## Implementation
 
-### High-level API and Entry Points
+### Public Entry Points
 
-Declared in `include/codegen.h`, implemented in `src/codegen.cpp`:
+The public API is declared in `include/codegen.h`.
 
-- `codegen::generateCode(const ir::Operation&, const opt::OptConfig&) -> std::string`
-- `codegen::generateToFile(const ir::Operation&, const opt::OptConfig&, filename) -> bool`
-- `codegen::generateProgramToFile(const SparseTensorCompiler::IRProgram&, ...) -> bool`
-- `codegen::CodeGenerator::generate(...)`: emits the full C program for a single operation.
+The main entry points are:
 
-### Kernel-mode emission pipeline (`CodeGenerator::generate`)
+- `generateCode(...)`
+- `generateKernelCode(...)`
+- `generateToFile(...)`
+- `generateKernelToFile(...)`
+- `generateProgramToFile(...)`
 
-`CodeGenerator::generate(...)` emits sections in order:
+The intended use is:
 
-1. `emitHeader()`
-2. `emitStructDefinitions()` (`SparseMatrix`)
-3. `emitMatrixMarketLoader()` (COO parser + calls `emitCSRConversion`/`emitCSCConversion`)
-4. `emitTimingHarness()`
-5. `emitFeatureExtraction()` (`compute_features`)
-6. Sparse-output helpers if needed:
-   - `emitSparseOutputHelpers()` when `isSparseOutputMode()`
-   - legacy hash helpers for hash-per-row path (mostly for SpGEMM)
-7. `emitKernel()` (optimized kernel function)
-8. `emitReferenceKernel()` (naive reference implementation; used by verification in `main`)
-9. `emitMain()` (argument parsing, allocation, timing loop, reporting, verification, cleanup)
+- `generateKernelCode(...)`: emit only the compute kernel function
+- `generateCode(...)`: emit a full standalone C program for one scheduled compute
+- `generateProgramToFile(...)`: emit a standalone C program for a scheduled multi-statement program
 
-### Kernel function emission (`emitKernel`)
+### `src/codegen.cpp`: Compute Kernel Emitter
 
-`emitKernel()`:
+`src/codegen.cpp` now holds the compute-emission core.
 
-- optionally emits sparse assembly functions first via `emitSparseAssemblyForKernel()` when output is sparse.
-- emits `void <kernelSignature> { ... }`, where the signature comes from `getKernelSignature()`.
-- prints comments indicating which optimizations were applied (reordering, interchange, blocking).
-- emits any `currentOp_->prologueLines` (workspace alloc) and `epilogueLines` (workspace free).
-- traverses the loop tree via the IR visitor:
-  - `currentOp_->rootLoop->accept(*this)`
+Key responsibilities:
 
-Note: there are legacy/specialized SpMM blocked emitters (`emitSpMMBlockedCSR/emitSpMMBlockedCSC`). The current unified pipeline emits SpMM via the loop-tree visitor path; these functions remain as alternative emission patterns.
+- compute emission setup/reset for `scheduled::Compute`
+- `generateKernel(...)`
+- `emitInlineScheduledCompute(...)`
+- recursive loop-tree emission from `scheduled::Loop`
+- `emitIRStmt(...)` / `emitIRExpr(...)`
+- structural compute-signature generation
 
-### Loop emission details (kernel-mode)
+The compute loop emitter reads explicit loop metadata:
 
-Key loop emitters in `src/codegen.cpp`:
+- `headerKind`
+- `lowerExpr`
+- `upperExpr`
+- `iterator`
+- `merge`
+- `block`
 
-- `emitDenseLoop(const ir::Loop&)`
-  - chooses runtime upper bounds based on `currentOp_->kernelType` and the loop variable name.
-  - uses `loopBoundsOverride_` when a block wrapper needs to constrain iteration.
-  - maintains `currentOuterLoopVar_` to keep sparse loops correctly parented.
+The old codegen-side loop-policy state has been removed from the compute path. In particular, loop rendering no longer relies on mutable outer-variable tracking or dense-bound override maps stored on the generator object.
 
-- `emitSparseLoopCSR(const ir::Loop&)` and `emitSparseLoopCSC(const ir::Loop&)`
-  - decide `tensorName` from `loop.sparseTensorName`
-  - select parent variable from `parentVarOverride` or `currentOuterLoopVar_`
-  - emit pointer loop and extracted coordinate assignment
-  - emit `preBody/preStmts`, then children, then `body/postStmts`
+### `src/codegen/runtime_emitter.cpp`: Full-Program Wrapper for Single Computes
 
-- `emitMergeIntersectionCSR/emitMergeIntersectionCSC(const ir::Loop&)`
-  - used when `loop.mergeStrategy == Intersection`
-  - emits two-pointer merge logic over two sparse inputs
+`runtime_emitter.cpp` now owns the full-program path for a single `scheduled::Compute`.
 
-- `emitBlockLoop(const ir::Loop&)`
-  - recognizes wrapper loops by `"_block"` suffix in the index name
-  - supports per-wrapper block sizes via `loop.tileBlockSize`
-  - binds bounded iteration ranges and interacts with sparse children via `loopBoundsOverride_`
+Responsibilities:
 
-- `emitLoopBody(const ir::Loop&)`
-  - structured path emits `IRStmt` nodes via `emitIRStmt`
-  - string path rewrites `{tensor}_vals[` to `tensor->vals[` and emits the result
+- `CodeGenerator::generate(...)`
+- `generateCode(...)`
+- `generateToFile(...)`
+- header emission
+- `SparseMatrix` definition
+- Matrix Market loader and conversions
+- timing/statistics helpers
+- feature extraction
+- `main()`
 
-### Structured statement/expression emission
+This module orchestrates standalone C generation around the kernel emitter, but it does not define compute-loop structure itself.
 
-Declared in `include/codegen.h` and implemented in `src/codegen.cpp`:
+### `src/codegen/reference_emitter.cpp`: Reference Kernels
 
-- `IRExprEmitter` (visitor) emits final, codegen-ready C expressions from `ir::IRExpr`.
-- `CodeGenerator::emitIRExpr` and `CodeGenerator::emitIRStmt` emit `IRStmt` nodes (`IRScalarDecl`, `IRAssign`, `IRCallStmt`).
+`reference_emitter.cpp` contains the non-optimized/reference-kernel path.
 
-This path avoids placeholder rewriting and is the intended end-state for general kernels and more structured lowering.
+Responsibilities:
 
-### Sparse-output support
+- `emitReferenceKernel()`
+- scheduled reference traversal for dense-output cases
+- sparse-output-aware reference implementations for:
+  - union
+  - intersection
+  - sampled output
+  - dynamic-row accumulation
 
-When `isSparseOutputMode()` is true, codegen emits:
+This keeps correctness-checking logic separate from optimized kernel emission.
 
-- assembly helpers (`emitSparseAssemblyForKernel` dispatches to `emitSpAddSparseAssemble`, `emitSpElMulSparseAssemble`, `emitSpGEMMSparseAssemble`, `emitSDDMMSparseAssemble`)
-- runtime helpers (`emitSparseOutputHelpers`), such as:
-  - `zero_sparse_values(C)` to reset `C->vals`
-  - sparse error metrics helpers
+### `src/codegen/output_assembly_emitter.cpp` and `output_assembly_shared.cpp`
 
-### Reference kernels and verification
+Sparse-output support is split into:
 
-`emitReferenceKernel()` emits naive/reference implementations that follow the sparse format (CSR vs CSC) for correctness checking. `emitMain()` uses these for error measurement (for kernels that include verification in main).
+- `output_assembly_emitter.cpp`
+  - standalone wrapper emission for sparse-output helpers
+- `output_assembly_shared.cpp`
+  - shared assembly-body logic reused by both standalone and program-mode paths
 
-### Program-mode codegen (`generateProgramToFile`)
+This subsystem handles sparse-output assembly concerns such as:
 
-Program-mode codegen is implemented as a separate path in `src/codegen.cpp` (anonymous-namespace helpers):
+- output structure assembly
+- zeroing/reset helpers
+- sparse helper routines used by standalone generated programs
 
-- `emitProgExpr(...)` emits expressions from AST nodes:
-  - sparse 2D access uses `sp_csr_get(A,row,col)` or `sp_csc_get(A,row,col)`
-  - dense 2D access uses flat indexing with `<name>_ncols`
-- `emitForLoopC(...)` emits `IRForLoop` headers and body recursively.
-- When an `IRCompute` has a lowered `ir::Operation`:
-  - `emitKernelFromOperation` and `emitLoopTree` emit the operation-level loop tree in program-mode, honoring `Loop::isExternallyBound`.
+It is intentionally outside the compute-kernel emitter boundary.
 
-This path is the bridge between “DSL programs” and “operation-level optimized kernels”.
+### `src/codegen/program_emitter.cpp`: Scheduled Program Emission
 
-### Tests as spec
+`program_emitter.cpp` handles full scheduled programs rather than one compute kernel.
 
-The following tests in `src/tests/codegen/` encode expectations about generated output and are a good reference for what must stay stable:
+Responsibilities:
 
-- kernel identification and signatures: `test_spmv_codegen.cpp`, `test_spmm_codegen.cpp`, `test_sddmm_codegen.cpp`, `test_spadd_codegen.cpp`, `test_spelmul_codegen.cpp`, `test_spgemm_codegen.cpp`
-- loop transformation emission and correctness: `test_blocking_codegen.cpp`, `test_scheduled_optimizations_correctness.cpp`, `test_reordering_correctness.cpp`
-- sparse-output emission: `test_sparse_output_codegen.cpp`, `test_spgemm_hash_output.cpp`
-- unified visitor path coverage: `test_visitor_unification.cpp`
+- `generateProgramToFile(...)`
+- emission of regions, calls, and mixed program statements
+- embedding scheduled compute regions through `emitInlineScheduledCompute(...)`
+- program-mode expression emission and top-level orchestration
 
+This path supports full `.tc` programs with multiple statements and user-level control structure, rather than only one kernel-shaped computation.
+
+### Scheduled Loop Contract in the Repository
+
+The explicit emission contract is represented in `include/semantic_ir.h`.
+
+Important types:
+
+- `LoopHeaderKind`
+- `SparseIteratorEmission`
+- `MergeTermEmission`
+- `MergeEmission`
+- `BlockEmission`
+
+Lowering populates these descriptors in `src/semantic_ir.cpp`.
+Optimization passes that rewrite loop trees preserve them in `src/scheduled_optimizations.cpp`.
+
+That gives the compute emitter a clear contract:
+
+- lowering computes loop semantics once
+- scheduling/optimization preserves those semantics through loop-tree rewrites
+- codegen renders them without re-deriving format-specific mechanics
+
+### Tests as Specification
+
+The current architecture is backed by tests at multiple levels:
+
+- kernel text and parity:
+  - `src/tests/codegen/test_kernel_golden.cpp`
+  - `src/tests/codegen/test_codegen_framework.cpp`
+- scheduled-loop contract:
+  - `src/tests/ir/test_semantic_ir.cpp`
+  - `src/tests/ir/test_general_lowering.cpp`
+  - `src/tests/ir/test_new_kernel_lowering.cpp`
+  - `src/tests/ir/test_spmm_ir_lowering.cpp`
+- optimization preservation of loop metadata:
+  - `src/tests/optimizations/test_blocking_pass.cpp`
+  - `src/tests/optimizations/test_new_kernel_optimizations.cpp`
+  - `src/tests/optimizations/test_sparse_output_config_effects.cpp`
+
+These tests verify both emitted C and the scheduled-loop metadata consumed by the kernel emitter.
+
+## Harness Functionality
+
+### Runtime Support
+
+The non-kernel emitters provide the runtime environment needed to compile and execute standalone generated C files.
+
+This includes:
+
+- the `SparseMatrix` runtime struct
+- Matrix Market parsing
+- COO canonicalization and CSR/CSC conversion
+- dense and sparse allocation helpers used by the generated program
+- timing and statistics reporting
+- matrix feature extraction
+
+These are experiment-facing concerns, not IR-derived compute concerns.
+
+### Reference and Verification
+
+Standalone generated programs can include reference kernels and verification support.
+
+This functionality exists so generated kernels can be:
+
+- timed
+- compared against a reference implementation
+- checked for correctness in the same generated artifact
+
+That logic is intentionally split from optimized compute emission so that the compute emitter remains tied only to scheduled IR.
+
+### Sparse-Output Support
+
+Sparse-output kernels need additional helper functionality beyond the compute kernel body.
+
+Examples:
+
+- sparse pattern assembly
+- value reset helpers
+- dynamic-row or hash-based accumulation support
+- sparse-output verification helpers
+
+These helpers are not derivable from the compute loop tree alone, so they live in the output-assembly subsystem rather than in `codegen.cpp`.
+
+### Program-Level Orchestration
+
+For full DSL programs, the harness layer also includes:
+
+- statement-level orchestration
+- scheduled regions
+- emitted calls
+- allocation and cleanup around multiple compute regions
+
+This is why `program_emitter.cpp` exists as a separate layer: it composes compute emission into a larger generated program without turning the compute emitter into a second program frontend.
+
+### Practical Role of the Harness Layer
+
+The harness emitters serve three main purposes:
+
+- make generated kernels runnable as standalone C artifacts
+- support benchmarking and correctness evaluation
+- keep non-IR-derived concerns out of the compute-kernel emitter
+
+This split is the key architectural outcome of the refactor:
+
+- `codegen.cpp` handles IR-derived compute emission
+- the harness layers handle execution, measurement, verification, and full-file composition
