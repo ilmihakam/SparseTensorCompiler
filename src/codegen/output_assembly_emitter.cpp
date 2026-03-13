@@ -124,22 +124,7 @@ ir::Format CodeGenerator::getPrimarySparseFormat() const {
     return context_.primarySparseFormat;
 }
 
-void CodeGenerator::emitSparseOutputHelpers() {
-    emitLine("static int cmp_int_asc(const void* a, const void* b) {");
-    increaseIndent();
-    emitLine("int ai = *(const int*)a;");
-    emitLine("int bi = *(const int*)b;");
-    emitLine("return (ai > bi) - (ai < bi);");
-    decreaseIndent();
-    emitLine("}");
-    emitLine();
-    emitLine("static void zero_sparse_values(SparseMatrix* C) {");
-    increaseIndent();
-    emitLine("if (C && C->vals && C->nnz > 0) memset(C->vals, 0, (size_t)C->nnz * sizeof(double));");
-    decreaseIndent();
-    emitLine("}");
-    emitLine();
-
+void CodeGenerator::emitSparseAccessHelpers() {
     const auto& inputs = getActiveInputs();
     const bool needsCSRGet = std::any_of(
         inputs.begin(), inputs.end(),
@@ -175,6 +160,25 @@ void CodeGenerator::emitSparseOutputHelpers() {
         emitLine("}");
         emitLine();
     }
+}
+
+void CodeGenerator::emitSparseOutputHelpers() {
+    emitLine("static int cmp_int_asc(const void* a, const void* b) {");
+    increaseIndent();
+    emitLine("int ai = *(const int*)a;");
+    emitLine("int bi = *(const int*)b;");
+    emitLine("return (ai > bi) - (ai < bi);");
+    decreaseIndent();
+    emitLine("}");
+    emitLine();
+    emitLine("static void zero_sparse_values(SparseMatrix* C) {");
+    increaseIndent();
+    emitLine("if (C && C->vals && C->nnz > 0) memset(C->vals, 0, (size_t)C->nnz * sizeof(double));");
+    decreaseIndent();
+    emitLine("}");
+    emitLine();
+
+    emitSparseAccessHelpers();
 
     emitLine("static double max_abs_error_sparse(const double* actual, const double* expected, int nnz) {");
     increaseIndent();

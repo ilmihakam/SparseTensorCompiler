@@ -61,12 +61,26 @@ std::unique_ptr<IRExpr> IRCompareExpr::clone() const {
     return std::make_unique<IRCompareExpr>(op, lhs->clone(), rhs->clone());
 }
 
+void IRAccumulatorRef::accept(IRExprVisitor& v) const { v.visit(*this); }
+
+std::unique_ptr<IRExpr> IRAccumulatorRef::clone() const {
+    return std::make_unique<IRAccumulatorRef>(name);
+}
+
 std::unique_ptr<IRStmt> IRScalarDecl::clone() const {
     return std::make_unique<IRScalarDecl>(varName, initValue);
 }
 
+std::unique_ptr<IRStmt> IRAccumulatorInit::clone() const {
+    return std::make_unique<IRAccumulatorInit>(accumulatorName, initValue);
+}
+
 std::unique_ptr<IRStmt> IRAssign::clone() const {
     return std::make_unique<IRAssign>(lhs->clone(), rhs->clone(), accumulate);
+}
+
+std::unique_ptr<IRStmt> IRAccumulatorUpdate::clone() const {
+    return std::make_unique<IRAccumulatorUpdate>(accumulatorName, rhs ? rhs->clone() : nullptr);
 }
 
 std::unique_ptr<IRStmt> IRCallStmt::clone() const {
@@ -75,6 +89,12 @@ std::unique_ptr<IRStmt> IRCallStmt::clone() const {
         copy->args.push_back(arg->clone());
     }
     return copy;
+}
+
+std::unique_ptr<IRStmt> IRAccumulatorFinalize::clone() const {
+    return std::make_unique<IRAccumulatorFinalize>(
+        lhs ? lhs->clone() : nullptr,
+        rhs ? rhs->clone() : nullptr);
 }
 
 std::unique_ptr<IRStmt> IRRawStmt::clone() const {
@@ -188,6 +208,10 @@ public:
         const char* op = (n.op == IRCompareExpr::EQ) ? " == " : " < ";
         result = lhsRenderer.result + op + rhsRenderer.result;
     }
+
+    void visit(const IRAccumulatorRef& n) override {
+        result = n.name;
+    }
 };
 
 } // namespace
@@ -215,6 +239,20 @@ std::string renderStmt(const IRStmt& stmt) {
                (assign->accumulate ? " += " : " = ") +
                renderExpr(*assign->rhs) + ";";
     }
+    if (auto* init = dynamic_cast<const IRAccumulatorInit*>(&stmt)) {
+        std::ostringstream oss;
+        oss << "double " << init->accumulatorName << " = ";
+        if (init->initValue == 0.0) {
+            oss << "0.0";
+        } else {
+            oss << init->initValue;
+        }
+        oss << ";";
+        return oss.str();
+    }
+    if (auto* update = dynamic_cast<const IRAccumulatorUpdate*>(&stmt)) {
+        return update->accumulatorName + " += " + renderExpr(*update->rhs) + ";";
+    }
     if (auto* call = dynamic_cast<const IRCallStmt*>(&stmt)) {
         std::string rendered = call->functionName + "(";
         for (size_t i = 0; i < call->args.size(); ++i) {
@@ -225,6 +263,9 @@ std::string renderStmt(const IRStmt& stmt) {
         }
         rendered += ");";
         return rendered;
+    }
+    if (auto* finalize = dynamic_cast<const IRAccumulatorFinalize*>(&stmt)) {
+        return renderExpr(*finalize->lhs) + " = " + renderExpr(*finalize->rhs) + ";";
     }
     if (auto* raw = dynamic_cast<const IRRawStmt*>(&stmt)) {
         return raw->code;

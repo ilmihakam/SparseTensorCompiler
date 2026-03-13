@@ -62,6 +62,7 @@ public:
     void visit(const ir::IRFuncCall& n) override;
     void visit(const ir::IRIndexedAccess& n) override;
     void visit(const ir::IRCompareExpr& n) override;
+    void visit(const ir::IRAccumulatorRef& n) override;
 };
 
 /**
@@ -148,6 +149,7 @@ private:
     // Sparse-output support — dispatched by outputPattern / outputStrategy
     bool isSparseOutputMode() const;
     ir::Format getPrimarySparseFormat() const;
+    void emitSparseAccessHelpers();
     void emitSparseOutputHelpers();
     // Assembly helpers (behavior-oriented names)
     void emitUnionAssembly();

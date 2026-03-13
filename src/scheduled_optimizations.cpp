@@ -1,6 +1,7 @@
 #include "scheduled_optimizations.h"
 
 #include <algorithm>
+#include <unordered_map>
 
 namespace opt {
 namespace {
@@ -83,37 +84,6 @@ std::vector<std::string> computeNaturalOrder(const ir::Tensor& tensor) {
     return {idx0, idx1};
 }
 
-bool canSwapLoops(Loop* root) {
-    if (!root || root->children.empty()) {
-        return false;
-    }
-    auto* child = root->children[0].get();
-    if (!child) {
-        return false;
-    }
-    if (child->kind == LoopKind::Sparse) {
-        return false;
-    }
-    return root->kind != LoopKind::Sparse && child->kind != LoopKind::Sparse;
-}
-
-void swapLoopHeaders(Loop& lhs, Loop& rhs) {
-    std::swap(lhs.indexName, rhs.indexName);
-    std::swap(lhs.lower, rhs.lower);
-    std::swap(lhs.upper, rhs.upper);
-    std::swap(lhs.runtimeBound, rhs.runtimeBound);
-    std::swap(lhs.kind, rhs.kind);
-    std::swap(lhs.headerKind, rhs.headerKind);
-    std::swap(lhs.lowerExpr, rhs.lowerExpr);
-    std::swap(lhs.upperExpr, rhs.upperExpr);
-    std::swap(lhs.bindingVarName, rhs.bindingVarName);
-    std::swap(lhs.bindingExpr, rhs.bindingExpr);
-    std::swap(lhs.iterator, rhs.iterator);
-    std::swap(lhs.merge, rhs.merge);
-    std::swap(lhs.block, rhs.block);
-    std::swap(lhs.isExternallyBound, rhs.isExternallyBound);
-}
-
 void copyLoopHeader(const Loop& src, Loop& dst) {
     dst.indexName = src.indexName;
     dst.lower = src.lower;
@@ -128,7 +98,17 @@ void copyLoopHeader(const Loop& src, Loop& dst) {
     dst.iterator = src.iterator;
     dst.merge = src.merge;
     dst.block = src.block;
+    dst.requiredOuterLoops = src.requiredOuterLoops;
     dst.isExternallyBound = src.isExternallyBound;
+}
+
+void appendUnique(std::vector<std::string>& values, const std::string& value) {
+    if (value.empty()) {
+        return;
+    }
+    if (std::find(values.begin(), values.end(), value) == values.end()) {
+        values.push_back(value);
+    }
 }
 
 void configureBlockLoopEmission(Loop& blockLoop, const Loop& denseLoop) {
@@ -142,8 +122,11 @@ void configureBlockLoopEmission(Loop& blockLoop, const Loop& denseLoop) {
         : blockLoop.runtimeBound;
 
     blockLoop.headerKind = sparseir::scheduled::LoopHeaderKind::Block;
+    blockLoop.block.targetKind = sparseir::scheduled::BlockTargetKind::DenseIndex;
     blockLoop.block.blockVar = blockVar;
     blockLoop.block.blockSize = blockSize;
+    blockLoop.block.baseIndexName = originalIdx;
+    blockLoop.block.tileLevel = denseLoop.kind == LoopKind::Block ? denseLoop.block.tileLevel + 1 : 1;
     blockLoop.block.tripCountExpr =
         "(" + runtimeUpperBound + " + " + std::to_string(blockSize - 1) + ") / " +
         std::to_string(blockSize);
@@ -154,16 +137,55 @@ void configureBlockLoopEmission(Loop& blockLoop, const Loop& denseLoop) {
     blockLoop.block.innerUpperExpr = endVar;
 }
 
-bool swapRootChildLoops(Loop* root) {
-    if (!canSwapLoops(root)) {
-        return false;
-    }
-    swapLoopHeaders(*root, *root->children[0]);
-    return true;
+void configureSparseIteratorBlockEmission(Loop& blockLoop, const Loop& sparseLoop) {
+    const std::string pointerVar = sparseLoop.iterator.pointerVar;
+    const int blockSize = blockLoop.block.blockSize;
+
+    blockLoop.headerKind = sparseir::scheduled::LoopHeaderKind::Block;
+    blockLoop.block.targetKind = sparseir::scheduled::BlockTargetKind::SparseIteratorPosition;
+    blockLoop.block.blockVar = pointerVar + "_block";
+    blockLoop.block.blockSize = blockSize;
+    blockLoop.block.baseIndexName = sparseLoop.indexName;
+    blockLoop.block.tileLevel = sparseLoop.kind == LoopKind::Block ? sparseLoop.block.tileLevel + 1 : 1;
+    blockLoop.block.startVar = pointerVar + "_start";
+    blockLoop.block.endVar = pointerVar + "_end";
+    blockLoop.block.innerIndexName = sparseLoop.indexName;
+    blockLoop.block.innerLowerExpr = blockLoop.block.startVar;
+    blockLoop.block.innerUpperExpr = blockLoop.block.endVar;
+    blockLoop.block.sparseBeginExpr = sparseLoop.iterator.beginExpr;
+    blockLoop.block.sparseEndExpr = sparseLoop.iterator.endExpr;
+    blockLoop.block.tripCountExpr =
+        "(((" + sparseLoop.iterator.endExpr + ") - (" + sparseLoop.iterator.beginExpr + ")) + " +
+        std::to_string(blockSize - 1) + ") / " + std::to_string(blockSize);
+}
+
+void configureSparseMergeBlockEmission(Loop& blockLoop, const Loop& sparseLoop) {
+    blockLoop.headerKind = sparseir::scheduled::LoopHeaderKind::Block;
+    blockLoop.block.targetKind = sparseir::scheduled::BlockTargetKind::SparseMergeSteps;
+    blockLoop.block.blockVar = sparseLoop.indexName + "_merge_block";
+    blockLoop.block.blockSize = blockLoop.block.blockSize;
+    blockLoop.block.baseIndexName = sparseLoop.indexName;
+    blockLoop.block.tileLevel = sparseLoop.kind == LoopKind::Block ? sparseLoop.block.tileLevel + 1 : 1;
+    blockLoop.block.innerIndexName = sparseLoop.indexName;
 }
 
 bool isBlockLoopIndex(const std::string& indexName) {
     return indexName.find("_block") != std::string::npos;
+}
+
+const Loop* findLoopByName(const Loop* root, const std::string& indexName) {
+    if (!root) {
+        return nullptr;
+    }
+    if (root->indexName == indexName) {
+        return root;
+    }
+    for (const auto& child : root->children) {
+        if (const Loop* found = findLoopByName(child.get(), indexName)) {
+            return found;
+        }
+    }
+    return nullptr;
 }
 
 std::unique_ptr<Loop>* findLoopSlotByName(std::unique_ptr<Loop>* rootSlot,
@@ -180,6 +202,20 @@ std::unique_ptr<Loop>* findLoopSlotByName(std::unique_ptr<Loop>* rootSlot,
         }
     }
     return nullptr;
+}
+
+bool isBlockableTarget(const Loop* loop, bool allowSparseTargets) {
+    if (!loop) {
+        return false;
+    }
+    if (loop->kind == LoopKind::Dense) {
+        return true;
+    }
+    if (!allowSparseTargets) {
+        return false;
+    }
+    return loop->headerKind == sparseir::scheduled::LoopHeaderKind::SparseIterator ||
+           loop->headerKind == sparseir::scheduled::LoopHeaderKind::SparseMerge;
 }
 
 bool blockLoopByIndex(Compute& compute, int blockSize, const std::string& targetIndex) {
@@ -207,18 +243,128 @@ bool blockLoopByIndex(Compute& compute, int blockSize, const std::string& target
     blockLoop->block.blockSize = blockSize;
     configureBlockLoopEmission(*blockLoop, *target);
     blockLoop->children.push_back(std::move(target));
+    appendUnique(blockLoop->children[0]->requiredOuterLoops, blockLoop->indexName);
 
     target = std::move(blockLoop);
     return true;
 }
 
-bool isInterchangeLegal(Loop* middle, Loop* inner) {
-    return !(middle->kind == LoopKind::Sparse && inner->kind == LoopKind::Sparse);
+bool blockSparseIteratorLoopByIndex(Compute& compute, int blockSize, const std::string& targetIndex) {
+    auto* targetSlot = findLoopSlotByName(&compute.rootLoop, targetIndex);
+    if (!targetSlot || !targetSlot->get()) {
+        return false;
+    }
+
+    auto& target = *targetSlot;
+    if (target->headerKind != sparseir::scheduled::LoopHeaderKind::SparseIterator) {
+        return false;
+    }
+
+    auto blockLoop = std::make_unique<Loop>();
+    blockLoop->indexName = target->indexName + "_pos_block";
+    blockLoop->kind = LoopKind::Block;
+    blockLoop->block.blockSize = blockSize;
+    configureSparseIteratorBlockEmission(*blockLoop, *target);
+    blockLoop->children.push_back(std::move(target));
+    appendUnique(blockLoop->children[0]->requiredOuterLoops, blockLoop->indexName);
+    target = std::move(blockLoop);
+    return true;
 }
 
-std::unique_ptr<ir::IRExpr> substituteScalarVar(const ir::IRExpr& expr,
-                                                const std::string& varName,
-                                                const ir::IRExpr& replacement) {
+bool blockSparseMergeLoopByIndex(Compute& compute, int blockSize, const std::string& targetIndex) {
+    auto* targetSlot = findLoopSlotByName(&compute.rootLoop, targetIndex);
+    if (!targetSlot || !targetSlot->get()) {
+        return false;
+    }
+
+    auto& target = *targetSlot;
+    if (target->headerKind != sparseir::scheduled::LoopHeaderKind::SparseMerge) {
+        return false;
+    }
+
+    auto blockLoop = std::make_unique<Loop>();
+    blockLoop->indexName = target->indexName + "_pos_block";
+    blockLoop->kind = LoopKind::Block;
+    blockLoop->block.blockSize = blockSize;
+    configureSparseMergeBlockEmission(*blockLoop, *target);
+    blockLoop->children.push_back(std::move(target));
+    appendUnique(blockLoop->children[0]->requiredOuterLoops, blockLoop->indexName);
+    target = std::move(blockLoop);
+    return true;
+}
+
+bool blockTargetByIndex(Compute& compute,
+                        int blockSize,
+                        const std::string& targetIndex,
+                        bool allowSparseTargets) {
+    auto* targetSlot = findLoopSlotByName(&compute.rootLoop, targetIndex);
+    if (!targetSlot || !targetSlot->get()) {
+        return false;
+    }
+
+    const auto& target = *targetSlot->get();
+    if (target.kind == LoopKind::Dense) {
+        return blockLoopByIndex(compute, blockSize, targetIndex);
+    }
+    if (!allowSparseTargets) {
+        return false;
+    }
+    if (target.headerKind == sparseir::scheduled::LoopHeaderKind::SparseIterator) {
+        return blockSparseIteratorLoopByIndex(compute, blockSize, targetIndex);
+    }
+    if (target.headerKind == sparseir::scheduled::LoopHeaderKind::SparseMerge) {
+        return blockSparseMergeLoopByIndex(compute, blockSize, targetIndex);
+    }
+    return false;
+}
+
+bool blockPositionTargetByIndex(Compute& compute, int blockSize, const std::string& targetIndex) {
+    auto* targetSlot = findLoopSlotByName(&compute.rootLoop, targetIndex);
+    if (!targetSlot || !targetSlot->get()) {
+        return false;
+    }
+
+    const auto& target = *targetSlot->get();
+    if (target.headerKind == sparseir::scheduled::LoopHeaderKind::SparseIterator) {
+        return blockSparseIteratorLoopByIndex(compute, blockSize, targetIndex);
+    }
+    if (target.headerKind == sparseir::scheduled::LoopHeaderKind::SparseMerge) {
+        return blockSparseMergeLoopByIndex(compute, blockSize, targetIndex);
+    }
+    return false;
+}
+
+void collectSparseLoopNames(const Loop* loop, std::vector<std::string>& names) {
+    if (!loop) {
+        return;
+    }
+    if (loop->headerKind == sparseir::scheduled::LoopHeaderKind::SparseIterator ||
+        loop->headerKind == sparseir::scheduled::LoopHeaderKind::SparseMerge) {
+        names.push_back(loop->indexName);
+    }
+    for (const auto& child : loop->children) {
+        collectSparseLoopNames(child.get(), names);
+    }
+}
+
+bool loopRequiresOuter(const Loop& loop, const std::string& outerIndex) {
+    return std::find(loop.requiredOuterLoops.begin(), loop.requiredOuterLoops.end(), outerIndex) !=
+           loop.requiredOuterLoops.end();
+}
+
+bool isAdjacentInterchangeLegal(const Loop& outer, const Loop& inner) {
+    if (loopRequiresOuter(inner, outer.indexName)) {
+        return false;
+    }
+    if (outer.kind == LoopKind::Sparse && inner.kind == LoopKind::Sparse) {
+        return false;
+    }
+    return true;
+}
+
+std::unique_ptr<ir::IRExpr> substituteAccumulatorRef(const ir::IRExpr& expr,
+                                                     const std::string& accumulatorName,
+                                                     const ir::IRExpr& replacement) {
     if (auto* access = dynamic_cast<const ir::IRTensorAccess*>(&expr)) {
         return access->clone();
     }
@@ -226,24 +372,43 @@ std::unique_ptr<ir::IRExpr> substituteScalarVar(const ir::IRExpr& expr,
         return constant->clone();
     }
     if (auto* scalar = dynamic_cast<const ir::IRScalarVar*>(&expr)) {
-        if (scalar->name == varName) {
+        if (scalar->name == accumulatorName) {
             return replacement.clone();
         }
         return scalar->clone();
     }
+    if (auto* accumRef = dynamic_cast<const ir::IRAccumulatorRef*>(&expr)) {
+        if (accumRef->name == accumulatorName) {
+            return replacement.clone();
+        }
+        return accumRef->clone();
+    }
     if (auto* binary = dynamic_cast<const ir::IRBinaryOp*>(&expr)) {
         auto lowered = std::make_unique<ir::IRBinaryOp>();
         lowered->op = binary->op;
-        lowered->lhs = substituteScalarVar(*binary->lhs, varName, replacement);
-        lowered->rhs = substituteScalarVar(*binary->rhs, varName, replacement);
+        lowered->lhs = substituteAccumulatorRef(*binary->lhs, accumulatorName, replacement);
+        lowered->rhs = substituteAccumulatorRef(*binary->rhs, accumulatorName, replacement);
         return lowered;
     }
     if (auto* call = dynamic_cast<const ir::IRFuncCall*>(&expr)) {
         auto lowered = std::make_unique<ir::IRFuncCall>(call->name);
         for (const auto& arg : call->args) {
-            lowered->args.push_back(substituteScalarVar(*arg, varName, replacement));
+            lowered->args.push_back(substituteAccumulatorRef(*arg, accumulatorName, replacement));
         }
         return lowered;
+    }
+    if (auto* indexed = dynamic_cast<const ir::IRIndexedAccess*>(&expr)) {
+        auto lowered = std::make_unique<ir::IRIndexedAccess>(indexed->baseName);
+        for (const auto& index : indexed->indices) {
+            lowered->indices.push_back(substituteAccumulatorRef(*index, accumulatorName, replacement));
+        }
+        return lowered;
+    }
+    if (auto* compare = dynamic_cast<const ir::IRCompareExpr*>(&expr)) {
+        return std::make_unique<ir::IRCompareExpr>(
+            compare->op,
+            substituteAccumulatorRef(*compare->lhs, accumulatorName, replacement),
+            substituteAccumulatorRef(*compare->rhs, accumulatorName, replacement));
     }
     return expr.clone();
 }
@@ -256,69 +421,141 @@ bool fuseStructuredAccumulatorPattern(const Loop& sparseLoop,
         return false;
     }
 
-    auto* decl = dynamic_cast<const ir::IRScalarDecl*>(sparseLoop.preStmts[0].get());
-    auto* accum = dynamic_cast<const ir::IRAssign*>(denseLoop.postStmts[0].get());
-    auto* finalize = dynamic_cast<const ir::IRAssign*>(sparseLoop.postStmts[0].get());
-    if (!decl || !accum || !finalize || !accum->accumulate) {
+    auto* init = dynamic_cast<const ir::IRAccumulatorInit*>(sparseLoop.preStmts[0].get());
+    auto* update = dynamic_cast<const ir::IRAccumulatorUpdate*>(denseLoop.postStmts[0].get());
+    auto* finalize = dynamic_cast<const ir::IRAccumulatorFinalize*>(sparseLoop.postStmts[0].get());
+    if (!init || !update || !finalize || !update->rhs) {
         return false;
     }
 
-    auto* accumLhs = dynamic_cast<const ir::IRScalarVar*>(accum->lhs.get());
-    if (!accumLhs || accumLhs->name != decl->varName) {
+    if (update->accumulatorName != init->accumulatorName) {
         return false;
     }
 
-    auto substituted = substituteScalarVar(*finalize->rhs, decl->varName, *accum->rhs);
+    auto substituted = substituteAccumulatorRef(*finalize->rhs, init->accumulatorName, *update->rhs);
     fusedStmt = std::make_unique<ir::IRAssign>(finalize->lhs->clone(),
                                                std::move(substituted),
                                                true);
     return true;
 }
 
-void renderLoopStmts(const Loop& loop, std::string& preBody, std::string& body) {
-    ir::renderStmtsToStrings(loop.preStmts, loop.postStmts, preBody, body);
+void moveStmtList(std::vector<std::unique_ptr<ir::IRStmt>>& dst,
+                  std::vector<std::unique_ptr<ir::IRStmt>>& src) {
+    for (auto& stmt : src) {
+        dst.push_back(std::move(stmt));
+    }
+    src.clear();
 }
 
-bool fuseAccumulatorPattern(
-    const std::string& preBody,
-    const std::string& innerBody,
-    const std::string& postBody,
-    std::string& fusedBody
-) {
-    if (preBody.find("double sum = 0.0;") == std::string::npos) return false;
-    auto sumPos = innerBody.find("sum += ");
-    if (sumPos == std::string::npos) return false;
-    if (postBody.find("sum") == std::string::npos) return false;
+bool interchangeSparseWithDense(std::unique_ptr<Loop>* outerSlot) {
+    auto outer = std::move(*outerSlot);
+    auto inner = std::move(outer->children[0]);
 
-    std::string innerExpr = innerBody.substr(sumPos + 7);
-    auto semiPos = innerExpr.rfind(';');
-    if (semiPos != std::string::npos) innerExpr = innerExpr.substr(0, semiPos);
-    while (!innerExpr.empty() && innerExpr.back() == ' ') innerExpr.pop_back();
-    while (!innerExpr.empty() && innerExpr.front() == ' ') innerExpr = innerExpr.substr(1);
+    std::unique_ptr<ir::IRStmt> fusedStmt;
+    const bool fused = fuseStructuredAccumulatorPattern(*outer, *inner, fusedStmt);
 
-    fusedBody = postBody;
-    auto eqPos = fusedBody.find("= ");
-    if (eqPos != std::string::npos && eqPos > 0 && fusedBody[eqPos - 1] != '+' &&
-        fusedBody[eqPos - 1] != '!' && fusedBody[eqPos - 1] != '=' &&
-        fusedBody[eqPos - 1] != '<' && fusedBody[eqPos - 1] != '>') {
-        fusedBody.replace(eqPos, 2, "+= ");
-    }
-    auto fusedSumPos = fusedBody.find("sum");
-    if (fusedSumPos != std::string::npos) {
-        fusedBody.replace(fusedSumPos, 3, innerExpr);
+    outer->children = std::move(inner->children);
+    if (fused) {
+        outer->preStmts.clear();
+        outer->postStmts.clear();
+        outer->postStmts.push_back(std::move(fusedStmt));
+    } else {
+        moveStmtList(outer->postStmts, inner->postStmts);
     }
 
+    inner->preStmts.clear();
+    inner->postStmts.clear();
+    inner->children.clear();
+    inner->children.push_back(std::move(outer));
+    *outerSlot = std::move(inner);
     return true;
 }
 
-bool tryInterchangeAtDenseNode(Loop* node, bool allowBlockWrappedDenseInner) {
-    if (!node || node->kind == LoopKind::Sparse || node->children.empty()) {
-        return false;
-    }
-    if (isBlockLoopIndex(node->indexName)) {
+bool interchangeSparseWithBlock(std::unique_ptr<Loop>* outerSlot) {
+    auto outer = std::move(*outerSlot);
+    auto blockLoop = std::move(outer->children[0]);
+    if (blockLoop->children.empty()) {
         return false;
     }
 
+    auto payload = std::move(blockLoop->children[0]);
+    std::unique_ptr<ir::IRStmt> fusedStmt;
+    const bool canFuse = payload->kind != LoopKind::Sparse &&
+                         fuseStructuredAccumulatorPattern(*outer, *payload, fusedStmt);
+
+    if (canFuse) {
+        outer->children = std::move(payload->children);
+        outer->preStmts.clear();
+        outer->postStmts.clear();
+        outer->postStmts.push_back(std::move(fusedStmt));
+        payload->preStmts.clear();
+        payload->postStmts.clear();
+        payload->children.clear();
+        payload->children.push_back(std::move(outer));
+        blockLoop->children.clear();
+        blockLoop->children.push_back(std::move(payload));
+        *outerSlot = std::move(blockLoop);
+        return true;
+    }
+
+    outer->children.clear();
+    outer->children.push_back(std::move(payload));
+    blockLoop->children.clear();
+    blockLoop->children.push_back(std::move(outer));
+    *outerSlot = std::move(blockLoop);
+    return true;
+}
+
+bool interchangeDenseWithSparse(std::unique_ptr<Loop>* outerSlot) {
+    auto outer = std::move(*outerSlot);
+    auto inner = std::move(outer->children[0]);
+
+    outer->children = std::move(inner->children);
+    moveStmtList(outer->postStmts, inner->postStmts);
+
+    inner->children.clear();
+    inner->children.push_back(std::move(outer));
+    *outerSlot = std::move(inner);
+    return true;
+}
+
+bool interchangeGenericPair(std::unique_ptr<Loop>* outerSlot) {
+    auto outer = std::move(*outerSlot);
+    auto inner = std::move(outer->children[0]);
+    outer->children = std::move(inner->children);
+    inner->children.clear();
+    inner->children.push_back(std::move(outer));
+    *outerSlot = std::move(inner);
+    return true;
+}
+
+bool interchangeAdjacentPair(std::unique_ptr<Loop>* outerSlot) {
+    if (!outerSlot || !outerSlot->get() || (*outerSlot)->children.empty()) {
+        return false;
+    }
+
+    Loop* outer = outerSlot->get();
+    Loop* inner = outer->children[0].get();
+    if (!inner || !isAdjacentInterchangeLegal(*outer, *inner)) {
+        return false;
+    }
+
+    if (outer->kind == LoopKind::Sparse && inner->kind == LoopKind::Block) {
+        return interchangeSparseWithBlock(outerSlot);
+    }
+    if (outer->kind == LoopKind::Sparse && inner->kind != LoopKind::Sparse) {
+        return interchangeSparseWithDense(outerSlot);
+    }
+    if (outer->kind != LoopKind::Sparse && inner->kind == LoopKind::Sparse) {
+        return interchangeDenseWithSparse(outerSlot);
+    }
+    return interchangeGenericPair(outerSlot);
+}
+
+bool tryInterchangeAtDenseNode(Loop* node, bool allowBlockWrappedDenseInner) {
+    if (!node || node->kind != LoopKind::Dense || node->children.empty()) {
+        return false;
+    }
     auto* middle = node->children[0].get();
     if (!middle || middle->children.empty()) {
         return false;
@@ -327,117 +564,12 @@ bool tryInterchangeAtDenseNode(Loop* node, bool allowBlockWrappedDenseInner) {
     if (!inner) {
         return false;
     }
-
-    if (!isInterchangeLegal(middle, inner)) {
+    if (!allowBlockWrappedDenseInner &&
+        middle->kind == LoopKind::Sparse &&
+        inner->kind == LoopKind::Block) {
         return false;
     }
-
-    if (middle->kind == LoopKind::Sparse && inner->kind != LoopKind::Sparse) {
-        if (!allowBlockWrappedDenseInner && isBlockLoopIndex(inner->indexName)) {
-            return false;
-        }
-
-        std::string middlePre, middlePost, innerPre, innerPost;
-        renderLoopStmts(*middle, middlePre, middlePost);
-        renderLoopStmts(*inner, innerPre, innerPost);
-
-        if (allowBlockWrappedDenseInner && isBlockLoopIndex(inner->indexName) &&
-            innerPost.empty() && !inner->children.empty() &&
-            !middlePre.empty() && !middlePost.empty()) {
-            auto* innerPayload = inner->children[0].get();
-            if (innerPayload && innerPayload->kind != LoopKind::Sparse) {
-                std::string payloadPre, payloadPost, fusedBody;
-                std::unique_ptr<ir::IRStmt> fusedStmt;
-                renderLoopStmts(*innerPayload, payloadPre, payloadPost);
-                if (fuseStructuredAccumulatorPattern(*middle, *innerPayload, fusedStmt) ||
-                    fuseAccumulatorPattern(middlePre, payloadPost, middlePost, fusedBody)) {
-                    auto sparseLoop = std::move(node->children[0]);
-                    auto blockLoop = std::move(sparseLoop->children[0]);
-                    auto denseLoop = std::move(blockLoop->children[0]);
-
-                    auto newSparse = std::make_unique<Loop>();
-                    copyLoopHeader(*sparseLoop, *newSparse);
-                    if (fusedStmt) {
-                        newSparse->postStmts.push_back(std::move(fusedStmt));
-                    } else {
-                        newSparse->postStmts.push_back(std::make_unique<ir::IRRawStmt>(fusedBody));
-                    }
-
-                    denseLoop->preStmts.clear();
-                    denseLoop->postStmts.clear();
-                    denseLoop->children.clear();
-                    denseLoop->children.push_back(std::move(newSparse));
-                    blockLoop->children.clear();
-                    blockLoop->children.push_back(std::move(denseLoop));
-                    node->children.clear();
-                    node->children.push_back(std::move(blockLoop));
-                    return true;
-                }
-            }
-        }
-
-        auto sparseLoop = std::move(node->children[0]);
-        auto denseLoop = std::move(sparseLoop->children[0]);
-
-        std::string densePre, densePost, fusedBody;
-        std::unique_ptr<ir::IRStmt> fusedStmt;
-        renderLoopStmts(*denseLoop, densePre, densePost);
-        bool fusedStructured = fuseStructuredAccumulatorPattern(*sparseLoop, *denseLoop, fusedStmt);
-        bool fusedString = !middlePre.empty() && !middlePost.empty() &&
-            fuseAccumulatorPattern(middlePre, densePost, middlePost, fusedBody);
-        bool fused = fusedStructured || fusedString;
-
-        auto newSparse = std::make_unique<Loop>();
-        copyLoopHeader(*sparseLoop, *newSparse);
-        newSparse->children = std::move(denseLoop->children);
-        if (fused) {
-            if (fusedStmt) {
-                newSparse->postStmts.push_back(std::move(fusedStmt));
-            } else {
-                newSparse->postStmts.push_back(std::make_unique<ir::IRRawStmt>(fusedBody));
-            }
-        } else {
-            for (auto& stmt : sparseLoop->preStmts) {
-                newSparse->preStmts.push_back(std::move(stmt));
-            }
-            for (auto& stmt : denseLoop->postStmts) {
-                newSparse->postStmts.push_back(std::move(stmt));
-            }
-        }
-
-        auto newDense = std::make_unique<Loop>();
-        copyLoopHeader(*denseLoop, *newDense);
-        newDense->children.push_back(std::move(newSparse));
-
-        node->children.clear();
-        node->children.push_back(std::move(newDense));
-        return true;
-    }
-
-    if (middle->kind != LoopKind::Sparse && inner->kind == LoopKind::Sparse) {
-        auto denseLoop = std::move(node->children[0]);
-        auto sparseLoop = std::move(denseLoop->children[0]);
-
-        auto newDense = std::make_unique<Loop>();
-        copyLoopHeader(*denseLoop, *newDense);
-        newDense->children = std::move(sparseLoop->children);
-        for (auto& stmt : sparseLoop->postStmts) {
-            newDense->postStmts.push_back(std::move(stmt));
-        }
-
-        auto newSparse = std::make_unique<Loop>();
-        copyLoopHeader(*sparseLoop, *newSparse);
-        newSparse->children.push_back(std::move(newDense));
-        for (auto& stmt : sparseLoop->preStmts) {
-            newSparse->preStmts.push_back(std::move(stmt));
-        }
-
-        node->children.clear();
-        node->children.push_back(std::move(newSparse));
-        return true;
-    }
-
-    return false;
+    return interchangeAdjacentPair(&node->children[0]);
 }
 
 bool applyOneInterchangeDFS(Loop* node, bool allowBlockWrappedDenseInner) {
@@ -453,6 +585,89 @@ bool applyOneInterchangeDFS(Loop* node, bool allowBlockWrappedDenseInner) {
         }
     }
     return false;
+}
+
+bool flattenPerfectNestSlots(std::unique_ptr<Loop>* rootSlot,
+                             std::vector<std::unique_ptr<Loop>*>& slots) {
+    if (!rootSlot || !rootSlot->get()) {
+        return false;
+    }
+    slots.clear();
+    std::unique_ptr<Loop>* current = rootSlot;
+    while (current && current->get()) {
+        slots.push_back(current);
+        if ((*current)->children.size() > 1) {
+            return false;
+        }
+        current = (*current)->children.empty() ? nullptr : &(*current)->children[0];
+    }
+    return !slots.empty();
+}
+
+bool isValidTargetOrder(const std::vector<std::string>& currentOrder,
+                        const std::vector<std::string>& targetOrder) {
+    if (currentOrder.size() != targetOrder.size()) {
+        return false;
+    }
+
+    std::vector<std::string> lhs = currentOrder;
+    std::vector<std::string> rhs = targetOrder;
+    std::sort(lhs.begin(), lhs.end());
+    std::sort(rhs.begin(), rhs.end());
+    if (lhs != rhs) {
+        return false;
+    }
+    return std::adjacent_find(rhs.begin(), rhs.end()) == rhs.end();
+}
+
+bool reorderTowardTarget(Compute& compute, const std::vector<std::string>& targetOrder) {
+    if (!compute.rootLoop || targetOrder.empty()) {
+        return false;
+    }
+
+    const std::vector<std::string> initialOrder = collectLoopOrder(compute.rootLoop.get());
+    if (!isValidTargetOrder(initialOrder, targetOrder)) {
+        return false;
+    }
+    if (initialOrder == targetOrder) {
+        compute.optimizations.interchangeRequestedOrder = targetOrder;
+        compute.optimizations.interchangeOriginalOrder = initialOrder;
+        compute.optimizations.interchangeFinalOrder = initialOrder;
+        return false;
+    }
+
+    std::unordered_map<std::string, size_t> targetPositions;
+    for (size_t i = 0; i < targetOrder.size(); ++i) {
+        targetPositions[targetOrder[i]] = i;
+    }
+
+    bool changed = false;
+    bool progress = true;
+    while (progress) {
+        progress = false;
+        std::vector<std::unique_ptr<Loop>*> slots;
+        if (!flattenPerfectNestSlots(&compute.rootLoop, slots)) {
+            break;
+        }
+
+        std::vector<std::string> currentOrder = collectLoopOrder(compute.rootLoop.get());
+        for (size_t i = 0; i + 1 < currentOrder.size(); ++i) {
+            if (targetPositions[currentOrder[i]] <= targetPositions[currentOrder[i + 1]]) {
+                continue;
+            }
+            if (!interchangeAdjacentPair(slots[i])) {
+                continue;
+            }
+            changed = true;
+            progress = true;
+            break;
+        }
+    }
+
+    compute.optimizations.interchangeOriginalOrder = initialOrder;
+    compute.optimizations.interchangeRequestedOrder = targetOrder;
+    compute.optimizations.interchangeFinalOrder = collectLoopOrder(compute.rootLoop.get());
+    return changed && compute.optimizations.interchangeFinalOrder == targetOrder;
 }
 
 std::string chooseBlockingIndex(const Compute& compute, const OptConfig& config) {
@@ -518,7 +733,7 @@ void applyReordering(Compute& compute) {
     if (currentOrder.size() == 2 &&
         currentOrder[0] == naturalOrder[1] &&
         currentOrder[1] == naturalOrder[0] &&
-        swapRootChildLoops(compute.rootLoop.get())) {
+        interchangeAdjacentPair(&compute.rootLoop)) {
         compute.optimizations.reorderingApplied = true;
         compute.optimizations.originalOrder = currentOrder;
         compute.optimizations.newOrder = collectLoopOrder(compute.rootLoop.get());
@@ -534,6 +749,26 @@ void applyBlocking(Compute& compute, const OptConfig& config) {
     int bs2 = (config.blockSize2 > 0) ? config.blockSize2 : blockSize;
     const int sparseInputs = countSparseInputs(compute);
     const int denseInputs = countDenseInputs(compute);
+
+    if (config.enable2DBlocking && config.block2DTargets.size() == 2) {
+        if (config.block2DTargets[0] == config.block2DTargets[1]) {
+            return;
+        }
+        const Loop* firstTarget = findLoopByName(compute.rootLoop.get(), config.block2DTargets[0]);
+        const Loop* secondTarget = findLoopByName(compute.rootLoop.get(), config.block2DTargets[1]);
+        if (!isBlockableTarget(firstTarget, true) || !isBlockableTarget(secondTarget, true)) {
+            return;
+        }
+        if (!blockTargetByIndex(compute, blockSize, config.block2DTargets[0], true)) return;
+        if (!blockTargetByIndex(compute, bs2, config.block2DTargets[1], true)) return;
+        compute.optimizations.blockingApplied = true;
+        compute.optimizations.blocking2DApplied = true;
+        compute.optimizations.blockSize = blockSize;
+        compute.optimizations.tiledIndex = config.block2DTargets[0];
+        compute.optimizations.tiledIndices = config.block2DTargets;
+        compute.optimizations.blockSizes = {blockSize, bs2};
+        return;
+    }
 
     if (compute.outputStrategy == ir::OutputStrategy::DenseArray &&
         sparseInputs == 1 &&
@@ -588,21 +823,62 @@ void applyBlocking(Compute& compute, const OptConfig& config) {
     compute.optimizations.tiledIndex = target;
 }
 
+void applyPositionBlocking(Compute& compute, const OptConfig& config) {
+    if (!config.enablePositionBlocking || compute.optimizations.positionBlockingApplied || !compute.rootLoop) {
+        return;
+    }
+
+    std::vector<std::string> targets = config.positionBlockTargets;
+    if (targets.empty()) {
+        collectSparseLoopNames(compute.rootLoop.get(), targets);
+    }
+
+    const std::vector<std::string>& explicit2DTargets = config.block2DTargets;
+    std::vector<std::string> appliedTargets;
+    for (const auto& target : targets) {
+        if (std::find(appliedTargets.begin(), appliedTargets.end(), target) != appliedTargets.end()) {
+            continue;
+        }
+        if (std::find(explicit2DTargets.begin(), explicit2DTargets.end(), target) != explicit2DTargets.end()) {
+            continue;
+        }
+        if (blockPositionTargetByIndex(compute, config.positionBlockSize, target)) {
+            appliedTargets.push_back(target);
+        }
+    }
+
+    if (!appliedTargets.empty()) {
+        compute.optimizations.positionBlockingApplied = true;
+        compute.optimizations.positionBlockSize = config.positionBlockSize;
+        compute.optimizations.positionTiledIndices = std::move(appliedTargets);
+    }
+}
+
 void applyLoopInterchange(Compute& compute, const OptConfig& config) {
     if (!config.enableInterchange || !compute.rootLoop || compute.rootLoop->children.empty()) {
         return;
     }
+    if (!config.interchangeTargetOrder.empty()) {
+        if (reorderTowardTarget(compute, config.interchangeTargetOrder)) {
+            compute.optimizations.interchangeApplied = true;
+        }
+        return;
+    }
+
+    compute.optimizations.interchangeOriginalOrder = collectLoopOrder(compute.rootLoop.get());
+    compute.optimizations.interchangeRequestedOrder.clear();
     const bool allowBlockWrappedDenseInner =
         (config.order == OptOrder::B_THEN_I && config.enableBlocking);
     if (applyOneInterchangeDFS(compute.rootLoop.get(), allowBlockWrappedDenseInner)) {
         compute.optimizations.interchangeApplied = true;
+        compute.optimizations.interchangeFinalOrder = collectLoopOrder(compute.rootLoop.get());
     }
 }
 
 void applyOptimizations(Compute& compute, const OptConfig& config) {
     applyReordering(compute);
 
-    if (!config.enableInterchange && !config.enableBlocking) {
+    if (!config.enableInterchange && !config.enableBlocking && !config.enablePositionBlocking) {
         return;
     }
 
@@ -624,6 +900,10 @@ void applyOptimizations(Compute& compute, const OptConfig& config) {
             if (config.enableInterchange) applyLoopInterchange(compute, config);
             if (config.enableBlocking) applyBlocking(compute, config);
             break;
+    }
+
+    if (config.enablePositionBlocking) {
+        applyPositionBlocking(compute, config);
     }
 }
 

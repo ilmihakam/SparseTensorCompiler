@@ -675,6 +675,31 @@ TEST_F(ScheduledOptimizationsTest, BlockingOnly_MultipleBlockSizes) {
                     "/tmp/test_100x100.mtx", "Blocking only B=64");
 }
 
+TEST_F(ScheduledOptimizationsTest, SpMV_PositionBlockingOnly_BlockSize16) {
+    const char* dsl = R"(
+        tensor y : Dense<100>;
+        tensor A : CSR<100, 100>;
+        tensor x : Dense<100>;
+        compute y[i] = A[i, j] * x[j];
+    )";
+
+    testCorrectness(dsl, opt::OptConfig::positionBlockingOnly(16),
+                    "/tmp/test_100x100.mtx", "SpMV position blocking B=16");
+}
+
+TEST_F(ScheduledOptimizationsTest, SpAdd_PositionBlockingOnly_BlockSize8) {
+    const char* dsl = R"(
+        tensor C : Dense<100, 100>;
+        tensor A : CSR<100, 100>;
+        tensor B : CSR<100, 100>;
+        compute C[i, j] = A[i, j] + B[i, j];
+    )";
+
+    double e = runAndVerifyTwoMatrices(dsl, opt::OptConfig::positionBlockingOnly(8),
+                                       "/tmp/test_100x100.mtx", "/tmp/test_100x100.mtx");
+    EXPECT_LT(e, 1e-10) << "SpAdd position blocking failed: max_error=" << e;
+}
+
 // ============================================================================
 // SpMM Blocking (j-tiling) Tests
 // ============================================================================

@@ -188,6 +188,8 @@ EmissionContext buildEmissionContext(const sparseir::scheduled::Compute& compute
 
 struct LoopEmissionState {
     std::unordered_map<std::string, std::pair<std::string, std::string>> denseBounds;
+    std::unordered_map<std::string, std::pair<std::string, std::string>> sparseIteratorBounds;
+    std::unordered_map<std::string, int> mergeChunkSizes;
 };
 
 } // namespace
@@ -343,31 +345,64 @@ void CodeGenerator::emitScheduledLoop(const sparseir::scheduled::Loop& loop) {
 
             if (current.headerKind == sparseir::scheduled::LoopHeaderKind::Block) {
                 const auto& block = current.block;
-                const std::string& blockVar = block.blockVar;
-                const std::string& startVar = block.startVar;
-                const std::string& endVar = block.endVar;
-                const int blockSize = block.blockSize;
+                if (block.targetKind == sparseir::scheduled::BlockTargetKind::DenseIndex) {
+                    const std::string& blockVar = block.blockVar;
+                    const std::string& startVar = block.startVar;
+                    const std::string& endVar = block.endVar;
+                    const int blockSize = block.blockSize;
 
-                emitIndent();
-                out_ << "for (int " << blockVar << " = 0; " << blockVar
-                     << " < " << block.tripCountExpr << "; " << blockVar << "++) {" << std::endl;
-                increaseIndent();
+                    emitIndent();
+                    out_ << "for (int " << blockVar << " = 0; " << blockVar
+                         << " < " << block.tripCountExpr << "; " << blockVar << "++) {" << std::endl;
+                    increaseIndent();
 
-                emitLine("int " + startVar + " = " + blockVar + " * " + std::to_string(blockSize) + ";");
-                emitLine("int " + endVar + " = (" + startVar + " + " + std::to_string(blockSize) +
-                         " < " + current.runtimeBound + ") ? " + startVar + " + " +
-                         std::to_string(blockSize) + " : " + current.runtimeBound + ";");
+                    emitLine("int " + startVar + " = " + blockVar + " * " + std::to_string(blockSize) + ";");
+                    emitLine("int " + endVar + " = (" + startVar + " + " + std::to_string(blockSize) +
+                             " < " + current.runtimeBound + ") ? " + startVar + " + " +
+                             std::to_string(blockSize) + " : " + current.runtimeBound + ";");
 
-                LoopEmissionState childState = state;
-                childState.denseBounds[block.innerIndexName] = {
-                    block.innerLowerExpr,
-                    block.innerUpperExpr,
-                };
-                emitLoopBody(childState);
+                    LoopEmissionState childState = state;
+                    childState.denseBounds[block.innerIndexName] = {
+                        block.innerLowerExpr,
+                        block.innerUpperExpr,
+                    };
+                    emitLoopBody(childState);
 
-                decreaseIndent();
-                emitIndent();
-                out_ << "}" << std::endl;
+                    decreaseIndent();
+                    emitIndent();
+                    out_ << "}" << std::endl;
+                } else if (block.targetKind == sparseir::scheduled::BlockTargetKind::SparseIteratorPosition) {
+                    const std::string& blockVar = block.blockVar;
+                    const std::string& startVar = block.startVar;
+                    const std::string& endVar = block.endVar;
+                    const int blockSize = block.blockSize;
+
+                    emitIndent();
+                    out_ << "for (int " << blockVar << " = 0; " << blockVar
+                         << " < " << block.tripCountExpr << "; " << blockVar << "++) {" << std::endl;
+                    increaseIndent();
+
+                    emitLine("int " + startVar + " = (" + block.sparseBeginExpr + ") + " + blockVar + " * " +
+                             std::to_string(blockSize) + ";");
+                    emitLine("int " + endVar + " = (" + startVar + " + " + std::to_string(blockSize) +
+                             " < " + block.sparseEndExpr + ") ? " + startVar + " + " +
+                             std::to_string(blockSize) + " : " + block.sparseEndExpr + ";");
+
+                    LoopEmissionState childState = state;
+                    childState.sparseIteratorBounds[block.innerIndexName] = {
+                        block.innerLowerExpr,
+                        block.innerUpperExpr,
+                    };
+                    emitLoopBody(childState);
+
+                    decreaseIndent();
+                    emitIndent();
+                    out_ << "}" << std::endl;
+                } else {
+                    LoopEmissionState childState = state;
+                    childState.mergeChunkSizes[block.innerIndexName] = block.blockSize;
+                    emitLoopBody(childState);
+                }
                 return;
             }
 
@@ -419,8 +454,17 @@ void CodeGenerator::emitScheduledLoop(const sparseir::scheduled::Loop& loop) {
                     if (i > 0) cond += join;
                     cond += current.merge.terms[i].pointerVar + " < " + current.merge.terms[i].endVar;
                 }
+                const auto chunkIt = state.mergeChunkSizes.find(current.indexName);
+                const bool chunked = chunkIt != state.mergeChunkSizes.end();
+                const std::string chunkCounter = current.indexName + "_chunk_steps";
                 emitLine("while (" + cond + ") {");
                 increaseIndent();
+                if (chunked) {
+                    emitLine("int " + chunkCounter + " = 0;");
+                    emitLine("while ((" + cond + ") && " + chunkCounter + " < " +
+                             std::to_string(chunkIt->second) + ") {");
+                    increaseIndent();
+                }
 
                 if (current.merge.strategy == ir::MergeStrategy::Intersection) {
                     for (const auto& term : current.merge.terms) {
@@ -472,16 +516,29 @@ void CodeGenerator::emitScheduledLoop(const sparseir::scheduled::Loop& loop) {
                     }
                 }
 
+                if (chunked) {
+                    emitLine(chunkCounter + "++;");
+                    decreaseIndent();
+                    emitLine("}");
+                }
+
                 decreaseIndent();
                 emitLine("}");
                 return;
             }
 
             const std::string ptrVar = current.iterator.pointerVar;
+            std::string beginExpr = current.iterator.beginExpr;
+            std::string endExpr = current.iterator.endExpr;
+            auto sparseBoundsIt = state.sparseIteratorBounds.find(current.indexName);
+            if (sparseBoundsIt != state.sparseIteratorBounds.end()) {
+                beginExpr = sparseBoundsIt->second.first;
+                endExpr = sparseBoundsIt->second.second;
+            }
 
             emitIndent();
-            out_ << "for (int " << ptrVar << " = " << current.iterator.beginExpr << "; "
-                 << ptrVar << " < " << current.iterator.endExpr << "; " << ptrVar
+            out_ << "for (int " << ptrVar << " = " << beginExpr << "; "
+                 << ptrVar << " < " << endExpr << "; " << ptrVar
                  << "++) {" << std::endl;
             increaseIndent();
 
@@ -673,6 +730,10 @@ void CodeGenerator::emitScheduledComputeBody(const sparseir::scheduled::Compute&
             emitLine("// Optimization: loop blocking (block_size=" +
                      std::to_string(optimizations.blockSize) + ")");
         }
+        if (optimizations.positionBlockingApplied) {
+            emitLine("// Optimization: sparse position blocking (block_size=" +
+                     std::to_string(optimizations.positionBlockSize) + ")");
+        }
     }
 
     for (const auto& stmt : compute.prologueStmts) {
@@ -783,6 +844,10 @@ void IRExprEmitter::visit(const ir::IRCompareExpr& n) {
     result = lhsE.result + op + rhsE.result;
 }
 
+void IRExprEmitter::visit(const ir::IRAccumulatorRef& n) {
+    result = n.name;
+}
+
 // ============================================================================
 // Structured IR Statement Emission
 // ============================================================================
@@ -806,11 +871,27 @@ void CodeGenerator::emitIRStmt(const ir::IRStmt& stmt) {
         emitLine(oss.str());
         return;
     }
+    if (auto* init = dynamic_cast<const ir::IRAccumulatorInit*>(&stmt)) {
+        std::ostringstream oss;
+        oss << "double " << init->accumulatorName << " = ";
+        if (init->initValue == 0.0) {
+            oss << "0.0";
+        } else {
+            oss << init->initValue;
+        }
+        oss << ";";
+        emitLine(oss.str());
+        return;
+    }
     if (auto* assign = dynamic_cast<const ir::IRAssign*>(&stmt)) {
         std::string lhsStr = emitIRExpr(*assign->lhs);
         std::string rhsStr = emitIRExpr(*assign->rhs);
         std::string op = assign->accumulate ? " += " : " = ";
         emitLine(lhsStr + op + rhsStr + ";");
+        return;
+    }
+    if (auto* update = dynamic_cast<const ir::IRAccumulatorUpdate*>(&stmt)) {
+        emitLine(update->accumulatorName + " += " + emitIRExpr(*update->rhs) + ";");
         return;
     }
     if (auto* call = dynamic_cast<const ir::IRCallStmt*>(&stmt)) {
@@ -821,6 +902,10 @@ void CodeGenerator::emitIRStmt(const ir::IRStmt& stmt) {
         }
         result += ");";
         emitLine(result);
+        return;
+    }
+    if (auto* finalize = dynamic_cast<const ir::IRAccumulatorFinalize*>(&stmt)) {
+        emitLine(emitIRExpr(*finalize->lhs) + " = " + emitIRExpr(*finalize->rhs) + ";");
         return;
     }
     if (auto* raw = dynamic_cast<const ir::IRRawStmt*>(&stmt)) {

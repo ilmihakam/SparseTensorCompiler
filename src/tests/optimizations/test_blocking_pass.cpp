@@ -547,6 +547,129 @@ TEST(BlockingPassTest, SDDMM_2DBlocking_TilesIAndK) {
     }
 }
 
+TEST(BlockingPassTest, Explicit2DBlocking_AllowsDenseAndSparseTargetsOnSpMV) {
+    auto op = parseAndLowerForBlocking(R"(
+        tensor y : Dense<100>;
+        tensor A : CSR<100, 100>;
+        tensor x : Dense<100>;
+        compute y[i] = A[i, j] * x[j];
+    )");
+    ASSERT_NE(op, nullptr);
+
+    opt::OptConfig config;
+    config.enableBlocking = true;
+    config.enable2DBlocking = true;
+    config.blockSize = 32;
+    config.blockSize2 = 16;
+    config.block2DTargets = {"i", "j"};
+    opt::applyBlocking(*op, config);
+
+    EXPECT_TRUE(op->optimizations.blockingApplied);
+    EXPECT_TRUE(op->optimizations.blocking2DApplied);
+    ASSERT_EQ(op->optimizations.tiledIndices.size(), 2u);
+    EXPECT_EQ(op->optimizations.tiledIndices[0], "i");
+    EXPECT_EQ(op->optimizations.tiledIndices[1], "j");
+    EXPECT_NE(findLoop(op->rootLoop.get(), "i_block"), nullptr);
+    const auto* jBlock = findLoop(op->rootLoop.get(), "j_pos_block");
+    ASSERT_NE(jBlock, nullptr);
+    EXPECT_EQ(jBlock->headerKind, sparseir::scheduled::LoopHeaderKind::Block);
+    EXPECT_EQ(jBlock->block.targetKind, sparseir::scheduled::BlockTargetKind::SparseIteratorPosition);
+    EXPECT_EQ(jBlock->block.blockSize, 16);
+}
+
+TEST(BlockingPassTest, Explicit2DBlocking_AllowsDenseAndMergeTargetsOnSpAdd) {
+    auto op = parseAndLowerForBlocking(R"(
+        tensor C : Dense<100, 100>;
+        tensor A : CSR<100, 100>;
+        tensor B : CSR<100, 100>;
+        compute C[i, j] = A[i, j] + B[i, j];
+    )");
+    ASSERT_NE(op, nullptr);
+
+    opt::OptConfig config;
+    config.enableBlocking = true;
+    config.enable2DBlocking = true;
+    config.blockSize = 32;
+    config.blockSize2 = 8;
+    config.block2DTargets = {"i", "j"};
+    opt::applyBlocking(*op, config);
+
+    EXPECT_TRUE(op->optimizations.blockingApplied);
+    EXPECT_TRUE(op->optimizations.blocking2DApplied);
+    EXPECT_NE(findLoop(op->rootLoop.get(), "i_block"), nullptr);
+    const auto* jBlock = findLoop(op->rootLoop.get(), "j_pos_block");
+    ASSERT_NE(jBlock, nullptr);
+    EXPECT_EQ(jBlock->block.targetKind, sparseir::scheduled::BlockTargetKind::SparseMergeSteps);
+    EXPECT_EQ(jBlock->block.blockSize, 8);
+}
+
+TEST(BlockingPassTest, Explicit2DBlockingRejectsDuplicateTargets) {
+    auto op = parseAndLowerForBlocking(R"(
+        tensor y : Dense<100>;
+        tensor A : CSR<100, 100>;
+        tensor x : Dense<100>;
+        compute y[i] = A[i, j] * x[j];
+    )");
+    ASSERT_NE(op, nullptr);
+
+    int originalLoopCount = countLoops(op->rootLoop.get());
+
+    opt::OptConfig config;
+    config.enableBlocking = true;
+    config.enable2DBlocking = true;
+    config.blockSize = 32;
+    config.block2DTargets = {"i", "i"};
+    opt::applyBlocking(*op, config);
+
+    EXPECT_FALSE(op->optimizations.blockingApplied);
+    EXPECT_EQ(countLoops(op->rootLoop.get()), originalLoopCount);
+    EXPECT_EQ(findLoop(op->rootLoop.get(), "i_block"), nullptr);
+}
+
+TEST(BlockingPassTest, PositionBlockingBlocksSparseIteratorLoop) {
+    auto op = parseAndLowerForBlocking(R"(
+        tensor y : Dense<100>;
+        tensor A : CSR<100, 100>;
+        tensor x : Dense<100>;
+        compute y[i] = A[i, j] * x[j];
+    )");
+    ASSERT_NE(op, nullptr);
+
+    opt::applyPositionBlocking(*op, opt::OptConfig::positionBlockingOnly(16));
+
+    EXPECT_TRUE(op->optimizations.positionBlockingApplied);
+    EXPECT_EQ(op->optimizations.positionBlockSize, 16);
+    ASSERT_EQ(op->optimizations.positionTiledIndices.size(), 1u);
+    EXPECT_EQ(op->optimizations.positionTiledIndices[0], "j");
+    const auto* jBlock = findLoop(op->rootLoop.get(), "j_pos_block");
+    ASSERT_NE(jBlock, nullptr);
+    EXPECT_EQ(jBlock->headerKind, sparseir::scheduled::LoopHeaderKind::Block);
+    EXPECT_EQ(jBlock->block.targetKind, sparseir::scheduled::BlockTargetKind::SparseIteratorPosition);
+    EXPECT_EQ(jBlock->block.innerIndexName, "j");
+}
+
+TEST(BlockingPassTest, PositionBlockingBlocksSparseMergeLoop) {
+    auto op = parseAndLowerForBlocking(R"(
+        tensor C : Dense<100, 100>;
+        tensor A : CSR<100, 100>;
+        tensor B : CSR<100, 100>;
+        compute C[i, j] = A[i, j] + B[i, j];
+    )");
+    ASSERT_NE(op, nullptr);
+
+    opt::applyPositionBlocking(*op, opt::OptConfig::positionBlockingOnly(8));
+
+    EXPECT_TRUE(op->optimizations.positionBlockingApplied);
+    EXPECT_EQ(op->optimizations.positionBlockSize, 8);
+    ASSERT_EQ(op->optimizations.positionTiledIndices.size(), 1u);
+    EXPECT_EQ(op->optimizations.positionTiledIndices[0], "j");
+    const auto* jBlock = findLoop(op->rootLoop.get(), "j_pos_block");
+    ASSERT_NE(jBlock, nullptr);
+    EXPECT_EQ(jBlock->headerKind, sparseir::scheduled::LoopHeaderKind::Block);
+    EXPECT_EQ(jBlock->block.targetKind, sparseir::scheduled::BlockTargetKind::SparseMergeSteps);
+    EXPECT_EQ(jBlock->block.innerIndexName, "j");
+}
+
 /**
  * Test: Blocking is idempotent - applying twice doesn't double-block.
  */

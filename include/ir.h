@@ -84,6 +84,9 @@ struct LoopOptimizations {
     std::vector<std::string> newOrder;
 
     bool interchangeApplied = false;
+    std::vector<std::string> interchangeOriginalOrder;
+    std::vector<std::string> interchangeRequestedOrder;
+    std::vector<std::string> interchangeFinalOrder;
 
     bool blockingApplied = false;
     int blockSize = 32;
@@ -92,6 +95,10 @@ struct LoopOptimizations {
     bool blocking2DApplied = false;
     std::vector<std::string> tiledIndices;
     std::vector<int> blockSizes;
+
+    bool positionBlockingApplied = false;
+    int positionBlockSize = 32;
+    std::vector<std::string> positionTiledIndices;
 };
 
 class IRExprVisitor;
@@ -190,6 +197,16 @@ struct IRCompareExpr : IRExpr {
     std::unique_ptr<IRExpr> clone() const override;
 };
 
+struct IRAccumulatorRef : IRExpr {
+    std::string name;
+
+    IRAccumulatorRef() = default;
+    explicit IRAccumulatorRef(const std::string& n) : name(n) {}
+
+    void accept(IRExprVisitor& v) const override;
+    std::unique_ptr<IRExpr> clone() const override;
+};
+
 class IRExprVisitor {
 public:
     virtual ~IRExprVisitor() = default;
@@ -201,6 +218,7 @@ public:
     virtual void visit(const IRFuncCall&) = 0;
     virtual void visit(const IRIndexedAccess&) = 0;
     virtual void visit(const IRCompareExpr&) = 0;
+    virtual void visit(const IRAccumulatorRef&) = 0;
 };
 
 struct IRStmt {
@@ -219,6 +237,17 @@ struct IRScalarDecl : IRStmt {
     std::unique_ptr<IRStmt> clone() const override;
 };
 
+struct IRAccumulatorInit : IRStmt {
+    std::string accumulatorName;
+    double initValue = 0.0;
+
+    IRAccumulatorInit() = default;
+    IRAccumulatorInit(const std::string& name, double init)
+        : accumulatorName(name), initValue(init) {}
+
+    std::unique_ptr<IRStmt> clone() const override;
+};
+
 struct IRAssign : IRStmt {
     std::unique_ptr<IRExpr> lhs;
     std::unique_ptr<IRExpr> rhs;
@@ -231,12 +260,34 @@ struct IRAssign : IRStmt {
     std::unique_ptr<IRStmt> clone() const override;
 };
 
+struct IRAccumulatorUpdate : IRStmt {
+    std::string accumulatorName;
+    std::unique_ptr<IRExpr> rhs;
+
+    IRAccumulatorUpdate() = default;
+    IRAccumulatorUpdate(const std::string& name, std::unique_ptr<IRExpr> expr)
+        : accumulatorName(name), rhs(std::move(expr)) {}
+
+    std::unique_ptr<IRStmt> clone() const override;
+};
+
 struct IRCallStmt : IRStmt {
     std::string functionName;
     std::vector<std::unique_ptr<IRExpr>> args;
 
     IRCallStmt() = default;
     explicit IRCallStmt(const std::string& name) : functionName(name) {}
+
+    std::unique_ptr<IRStmt> clone() const override;
+};
+
+struct IRAccumulatorFinalize : IRStmt {
+    std::unique_ptr<IRExpr> lhs;
+    std::unique_ptr<IRExpr> rhs;
+
+    IRAccumulatorFinalize() = default;
+    IRAccumulatorFinalize(std::unique_ptr<IRExpr> out, std::unique_ptr<IRExpr> expr)
+        : lhs(std::move(out)), rhs(std::move(expr)) {}
 
     std::unique_ptr<IRStmt> clone() const override;
 };

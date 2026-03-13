@@ -61,7 +61,29 @@ class ConfigSweepsUnitTest(unittest.TestCase):
                 sweep_block2d_sizes=[(16, 16)],
             )
 
+    def test_dynamic_position_and_explicit_2d_configs(self) -> None:
+        specs = build_config_specs(
+            "spmv",
+            ["posblock_p32", "block2d_i_j_b16x32", "full_i_j_p8_b16x32"],
+        )
+        self.assertEqual(
+            [spec.name for spec in specs],
+            ["posblock_p32", "block2d_i_j_b16x32", "full_i_j_p8_b16x32"],
+        )
+        self.assertEqual(specs[0].flags, ["--opt-block-pos=32"])
+        self.assertEqual(
+            specs[1].flags,
+            ["--opt-block-2d=16x32", "--opt-block-2d-targets=i,j"],
+        )
+        self.assertEqual(
+            specs[2].flags,
+            [
+                "--opt-block-2d=16x32",
+                "--opt-block-2d-targets=i,j",
+                "--opt-block-pos=8",
+            ],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
-

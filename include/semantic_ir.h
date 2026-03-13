@@ -178,6 +178,7 @@ namespace scheduled {
 
 enum class LoopKind { Dense, Sparse, Block };
 enum class LoopHeaderKind { DenseFor, SparseIterator, SparseMerge, Block };
+enum class BlockTargetKind { DenseIndex, SparseIteratorPosition, SparseMergeSteps };
 
 struct SparseIteratorEmission {
     std::string pointerVar;
@@ -205,14 +206,19 @@ struct MergeEmission {
 };
 
 struct BlockEmission {
+    BlockTargetKind targetKind = BlockTargetKind::DenseIndex;
     std::string blockVar;
     int blockSize = 0;
+    std::string baseIndexName;
+    int tileLevel = 1;
     std::string tripCountExpr;
     std::string startVar;
     std::string endVar;
     std::string innerIndexName;
     std::string innerLowerExpr;
     std::string innerUpperExpr;
+    std::string sparseBeginExpr;
+    std::string sparseEndExpr;
 };
 
 struct Loop {
@@ -229,6 +235,7 @@ struct Loop {
     SparseIteratorEmission iterator;
     MergeEmission merge;
     BlockEmission block;
+    std::vector<std::string> requiredOuterLoops;
     std::vector<std::unique_ptr<Loop>> children;
     std::vector<std::unique_ptr<ir::IRStmt>> preStmts;
     std::vector<std::unique_ptr<ir::IRStmt>> postStmts;

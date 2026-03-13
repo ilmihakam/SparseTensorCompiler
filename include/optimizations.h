@@ -47,11 +47,16 @@ struct OptConfig {
     // Optimization toggles (format-correctness reordering is automatic)
     bool enableBlocking = false;     // [OPTIMIZATION] Loop blocking/tiling for cache locality
     bool enableInterchange = false;  // [OPTIMIZATION] Loop interchange for cache locality (i,k,j ↔ i,j,k)
+    bool enablePositionBlocking = false;  // [OPTIMIZATION] Sparse position chunking
 
     // Optimization parameters
     int blockSize = 32;              // Block size for tiling (fits in L1 cache)
     bool enable2DBlocking = false;   // 2D tiling for SpMM/SDDMM (tiles both dense loops)
     int blockSize2 = 0;              // Second dimension block size (0 = same as blockSize)
+    int positionBlockSize = 32;      // Chunk size for sparse position blocking
+    std::vector<std::string> block2DTargets;        // Optional explicit 2D targets
+    std::vector<std::string> positionBlockTargets;  // Optional sparse loop targets
+    std::vector<std::string> interchangeTargetOrder;  // Optional explicit scheduled loop order
 
     // Scheduling order (controls order of optimization passes)
     OptOrder order = OptOrder::I_THEN_B;  // Default: interchange first, then block
@@ -80,6 +85,14 @@ struct OptConfig {
         return config;
     }
 
+    static OptConfig targetOrderInterchange(const std::vector<std::string>& order) {
+        OptConfig config;
+        config.enableBlocking = false;
+        config.enableInterchange = true;
+        config.interchangeTargetOrder = order;
+        return config;
+    }
+
     static OptConfig allOptimizations(int blockSize = 32, OptOrder order = OptOrder::I_THEN_B) {
         OptConfig config;
         config.enableBlocking = true;        // Tiling optimization
@@ -100,6 +113,13 @@ struct OptConfig {
         config.enable2DBlocking = true;
         config.blockSize = bs1;
         config.blockSize2 = bs2;
+        return config;
+    }
+
+    static OptConfig positionBlockingOnly(int blockSize = 32) {
+        OptConfig config;
+        config.enablePositionBlocking = true;
+        config.positionBlockSize = blockSize;
         return config;
     }
 };
