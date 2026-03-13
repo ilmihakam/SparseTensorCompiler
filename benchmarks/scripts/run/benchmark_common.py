@@ -53,6 +53,19 @@ DEFAULT_CONFIG_ORDER = [
     "i_b_i",
 ]
 
+POSBLOCK_RE = re.compile(r"^posblock_p(?P<p>\d+)$")
+BLOCKPOS_RE = re.compile(r"^blockpos_b(?P<b>\d+)_p(?P<p>\d+)$")
+ALLPOS_RE = re.compile(r"^allpos_(?P<order>[A-Z_]+)_b(?P<b>\d+)_p(?P<p>\d+)$")
+BLOCK2D_TARGET_RE = re.compile(
+    r"^block2d_(?P<t1>[A-Za-z0-9_]+)_(?P<t2>[A-Za-z0-9_]+)_b(?P<b1>\d+)x(?P<b2>\d+)$"
+)
+ALL2D_TARGET_RE = re.compile(
+    r"^all2d_(?P<t1>[A-Za-z0-9_]+)_(?P<t2>[A-Za-z0-9_]+)_(?P<order>[A-Z_]+)_b(?P<b1>\d+)x(?P<b2>\d+)$"
+)
+FULL_TARGET_RE = re.compile(
+    r"^full_(?P<t1>[A-Za-z0-9_]+)_(?P<t2>[A-Za-z0-9_]+)_p(?P<p>\d+)_b(?P<b1>\d+)x(?P<b2>\d+)$"
+)
+
 
 @dataclass(frozen=True)
 class ConfigSpec:
@@ -767,6 +780,73 @@ def parse_block2d_csv(raw: str) -> List[Tuple[int, int]]:
     return sizes
 
 
+def parse_dynamic_config_spec(name: str) -> ConfigSpec:
+    if match := POSBLOCK_RE.match(name):
+        p = match.group("p")
+        return ConfigSpec(name=name, flags=[f"--opt-block-pos={p}"], kind="static")
+
+    if match := BLOCKPOS_RE.match(name):
+        b = match.group("b")
+        p = match.group("p")
+        return ConfigSpec(name=name, flags=[f"--opt-block={b}", f"--opt-block-pos={p}"], kind="static")
+
+    if match := ALLPOS_RE.match(name):
+        order = match.group("order")
+        b = match.group("b")
+        p = match.group("p")
+        return ConfigSpec(
+            name=name,
+            flags=[f"--opt-all={b}", f"--opt-order={order}", f"--opt-block-pos={p}"],
+            kind="static",
+        )
+
+    if match := BLOCK2D_TARGET_RE.match(name):
+        t1 = match.group("t1")
+        t2 = match.group("t2")
+        b1 = match.group("b1")
+        b2 = match.group("b2")
+        return ConfigSpec(
+            name=name,
+            flags=[f"--opt-block-2d={b1}x{b2}", f"--opt-block-2d-targets={t1},{t2}"],
+            kind="static",
+        )
+
+    if match := ALL2D_TARGET_RE.match(name):
+        t1 = match.group("t1")
+        t2 = match.group("t2")
+        order = match.group("order")
+        b1 = match.group("b1")
+        b2 = match.group("b2")
+        return ConfigSpec(
+            name=name,
+            flags=[
+                "--opt-interchange",
+                f"--opt-block-2d={b1}x{b2}",
+                f"--opt-block-2d-targets={t1},{t2}",
+                f"--opt-order={order}",
+            ],
+            kind="static",
+        )
+
+    if match := FULL_TARGET_RE.match(name):
+        t1 = match.group("t1")
+        t2 = match.group("t2")
+        p = match.group("p")
+        b1 = match.group("b1")
+        b2 = match.group("b2")
+        return ConfigSpec(
+            name=name,
+            flags=[
+                f"--opt-block-2d={b1}x{b2}",
+                f"--opt-block-2d-targets={t1},{t2}",
+                f"--opt-block-pos={p}",
+            ],
+            kind="static",
+        )
+
+    raise ValueError(f"Unknown benchmark config '{name}'")
+
+
 def build_config_specs(
     kernel: str,
     static_names: Sequence[str],
@@ -777,7 +857,10 @@ def build_config_specs(
 ) -> List[ConfigSpec]:
     specs: List[ConfigSpec] = []
     for name in static_names:
-        specs.append(ConfigSpec(name=name, flags=list(CONFIGS[name]), kind="static"))
+        if name in CONFIGS:
+            specs.append(ConfigSpec(name=name, flags=list(CONFIGS[name]), kind="static"))
+        else:
+            specs.append(parse_dynamic_config_spec(name))
 
     orders = list(sweep_orders) if sweep_orders else list(DEFAULT_SWEEP_ORDERS)
 

@@ -22,6 +22,7 @@ TEST(OptConfigTest, DefaultsToNoOptimizations) {
 
     EXPECT_FALSE(config.enableBlocking);
     EXPECT_FALSE(config.enableInterchange);
+    EXPECT_FALSE(config.enablePositionBlocking);
 }
 
 /**
@@ -174,6 +175,31 @@ TEST(OptConfigTest, AllDefaultsTogether) {
 
     EXPECT_FALSE(config.enableBlocking);
     EXPECT_FALSE(config.enableInterchange);
+    EXPECT_FALSE(config.enablePositionBlocking);
     EXPECT_EQ(config.blockSize, 32);
+    EXPECT_EQ(config.positionBlockSize, 32);
+    EXPECT_TRUE(config.block2DTargets.empty());
+    EXPECT_TRUE(config.positionBlockTargets.empty());
+    EXPECT_TRUE(config.interchangeTargetOrder.empty());
     EXPECT_EQ(config.outputFile, "output.c");
+}
+
+TEST(OptConfigTest, PositionBlockingOnlyConfiguration) {
+    opt::OptConfig config = opt::OptConfig::positionBlockingOnly(16);
+
+    EXPECT_FALSE(config.enableBlocking);
+    EXPECT_FALSE(config.enableInterchange);
+    EXPECT_TRUE(config.enablePositionBlocking);
+    EXPECT_EQ(config.positionBlockSize, 16);
+}
+
+TEST(OptConfigTest, TargetOrderInterchangeConfiguration) {
+    opt::OptConfig config = opt::OptConfig::targetOrderInterchange({"i", "j", "k"});
+
+    EXPECT_FALSE(config.enableBlocking);
+    EXPECT_TRUE(config.enableInterchange);
+    ASSERT_EQ(config.interchangeTargetOrder.size(), 3u);
+    EXPECT_EQ(config.interchangeTargetOrder[0], "i");
+    EXPECT_EQ(config.interchangeTargetOrder[1], "j");
+    EXPECT_EQ(config.interchangeTargetOrder[2], "k");
 }

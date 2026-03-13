@@ -16,6 +16,9 @@ void CodeGenerator::generate(const sparseir::scheduled::Compute& compute,
     emitMatrixMarketLoader();
     emitTimingHarness();
     emitFeatureExtraction();
+    if (usesPairwiseSparseInputFlow() && !isSparseOutputMode()) {
+        emitSparseAccessHelpers();
+    }
     if (isSparseOutputMode()) {
         emitSparseOutputHelpers();
     }
@@ -58,6 +61,7 @@ void CodeGenerator::emitHeader() {
     bool reorderingApplied = optimizations.reorderingApplied;
     bool interchangeApplied = optimizations.interchangeApplied;
     bool blockingApplied = optimizations.blockingApplied;
+    bool positionBlockingApplied = optimizations.positionBlockingApplied;
 
     emitLine("// Format-correctness reordering: " +
              std::string(reorderingApplied ? "APPLIED" : "not needed"));
@@ -78,6 +82,10 @@ void CodeGenerator::emitHeader() {
     } else {
         emitLine("// Optimization: blocking=OFF");
     }
+    emitLine("// Optimization: position_blocking=" +
+             std::string(positionBlockingApplied
+                             ? "ON (size=" + std::to_string(optimizations.positionBlockSize) + ")"
+                             : "OFF"));
 
     if (config_->enableInterchange && config_->enableBlocking) {
         std::string orderStr;

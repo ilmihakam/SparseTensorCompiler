@@ -154,6 +154,34 @@ TEST_F(LoopInterchangeTest, InterchangePreservesBody) {
     EXPECT_EQ(renderFirstPostStmt(kLoop), originalBody);
 }
 
+TEST_F(LoopInterchangeTest, TargetOrderInterchange_ReachesRequestedOrder) {
+    auto op = createSpMMOperation();
+    ASSERT_NE(op, nullptr);
+
+    opt::applyOptimizations(*op, opt::OptConfig::targetOrderInterchange({"i", "j", "k"}));
+
+    ASSERT_NE(op->rootLoop, nullptr);
+    ASSERT_EQ(op->optimizations.interchangeRequestedOrder.size(), 3u);
+    EXPECT_EQ(op->optimizations.interchangeRequestedOrder[0], "i");
+    EXPECT_EQ(op->optimizations.interchangeRequestedOrder[1], "j");
+    EXPECT_EQ(op->optimizations.interchangeRequestedOrder[2], "k");
+    EXPECT_EQ(op->optimizations.interchangeFinalOrder,
+              (std::vector<std::string>{"i", "j", "k"}));
+    EXPECT_TRUE(op->optimizations.interchangeApplied);
+}
+
+TEST_F(LoopInterchangeTest, TargetOrderInterchange_RejectsUnknownLoopName) {
+    auto op = createSpMMOperation();
+    ASSERT_NE(op, nullptr);
+
+    opt::applyOptimizations(*op, opt::OptConfig::targetOrderInterchange({"i", "x", "k"}));
+
+    ASSERT_NE(op->rootLoop, nullptr);
+    EXPECT_EQ(op->rootLoop->indexName, "i");
+    EXPECT_EQ(op->rootLoop->children[0]->indexName, "k");
+    EXPECT_FALSE(op->optimizations.interchangeApplied);
+}
+
 TEST_F(LoopInterchangeTest, CannotMoveSparseToOutermost) {
     GTEST_SKIP() << "Interchange validation not yet implemented";
 }

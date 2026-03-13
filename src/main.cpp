@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <stdexcept>
 #include <cstring>
 #include <vector>
 #include <unistd.h>  // for isatty()
@@ -47,6 +48,10 @@ struct CompilerConfig {
     int blockSize = 32;
     bool enable2DBlocking = false;   // 2D tiling (SpMM/SDDMM)
     int blockSize2 = 0;             // Second dimension block size (0 = same as blockSize)
+    bool enablePositionBlocking = false;  // Sparse-position chunking
+    int positionBlockSize = 32;
+    std::vector<std::string> block2DTargets;
+    std::vector<std::string> positionBlockTargets;
     opt::OptOrder order = opt::OptOrder::I_THEN_B;  // Default: interchange then block
     bool verbose = false;
     bool showVersion = false;
@@ -96,6 +101,9 @@ void printUsage(const char* prog) {
     std::cout << "  --opt-block=SIZE         Enable loop blocking with block size\n";
     std::cout << "  --opt-block-2d=SIZE      Enable 2D blocking (SpMM/SDDMM)\n";
     std::cout << "                           SIZE or SIZExSIZE (e.g., 32 or 32x64)\n";
+    std::cout << "  --opt-block-2d-targets=A,B  Explicit 2D blocking targets\n";
+    std::cout << "  --opt-block-pos=SIZE     Enable sparse-position blocking\n";
+    std::cout << "  --opt-block-pos-targets=A[,B]  Restrict sparse-position targets\n";
     std::cout << "  --opt-all=SIZE           Enable all optimizations (default order)\n";
     std::cout << "  --opt-order=ORDER        Optimization scheduling order\n";
     std::cout << "                           (I_THEN_B, B_THEN_I, I_B_I)\n";
@@ -164,6 +172,24 @@ void printStep(const std::string& msg) {
     std::cout << Color::CYAN << "→ " << Color::RESET << msg << "\n";
 }
 
+std::vector<std::string> parseTargetList(const std::string& raw) {
+    std::vector<std::string> result;
+    size_t start = 0;
+    while (start <= raw.size()) {
+        const size_t end = raw.find(',', start);
+        std::string token = raw.substr(start, end == std::string::npos ? std::string::npos : end - start);
+        if (token.empty()) {
+            throw std::invalid_argument("empty target");
+        }
+        result.push_back(token);
+        if (end == std::string::npos) {
+            break;
+        }
+        start = end + 1;
+    }
+    return result;
+}
+
 // ============================================================================
 // Argument Parser
 // ============================================================================
@@ -217,6 +243,41 @@ bool parseArguments(int argc, char** argv, CompilerConfig& config) {
                 }
             } catch (...) {
                 printError("Invalid 2D block size: " + sizeStr);
+                return false;
+            }
+        } else if (arg.rfind("--opt-block-2d-targets=", 0) == 0) {
+            try {
+                config.block2DTargets = parseTargetList(arg.substr(23));
+                if (config.block2DTargets.size() != 2) {
+                    printError("2D blocking targets must contain exactly two indices");
+                    return false;
+                }
+                if (config.block2DTargets[0] == config.block2DTargets[1]) {
+                    printError("2D blocking targets must be distinct");
+                    return false;
+                }
+            } catch (...) {
+                printError("Invalid 2D blocking targets");
+                return false;
+            }
+        } else if (arg.rfind("--opt-block-pos=", 0) == 0) {
+            config.enablePositionBlocking = true;
+            try {
+                config.positionBlockSize = std::stoi(arg.substr(16));
+                if (config.positionBlockSize <= 0) {
+                    printError("Position block size must be positive");
+                    return false;
+                }
+            } catch (...) {
+                printError("Invalid position block size: " + arg.substr(16));
+                return false;
+            }
+        } else if (arg.rfind("--opt-block-pos-targets=", 0) == 0) {
+            try {
+                config.positionBlockTargets = parseTargetList(arg.substr(24));
+                config.enablePositionBlocking = true;
+            } catch (...) {
+                printError("Invalid position blocking targets");
                 return false;
             }
         } else if (arg.rfind("--opt-all=", 0) == 0) {
@@ -347,6 +408,10 @@ bool compileFile(const CompilerConfig& config) {
         optConfig.blockSize = config.blockSize;
         optConfig.enable2DBlocking = config.enable2DBlocking;
         optConfig.blockSize2 = config.blockSize2;
+        optConfig.enablePositionBlocking = config.enablePositionBlocking;
+        optConfig.positionBlockSize = config.positionBlockSize;
+        optConfig.block2DTargets = config.block2DTargets;
+        optConfig.positionBlockTargets = config.positionBlockTargets;
         optConfig.order = config.order;
         optConfig.outputFile = config.outputFile;
 
@@ -393,6 +458,10 @@ bool compileFile(const CompilerConfig& config) {
     optConfig.blockSize = config.blockSize;
     optConfig.enable2DBlocking = config.enable2DBlocking;
     optConfig.blockSize2 = config.blockSize2;
+    optConfig.enablePositionBlocking = config.enablePositionBlocking;
+    optConfig.positionBlockSize = config.positionBlockSize;
+    optConfig.block2DTargets = config.block2DTargets;
+    optConfig.positionBlockTargets = config.positionBlockTargets;
     optConfig.order = config.order;
     optConfig.outputFile = config.outputFile;
 
@@ -421,8 +490,23 @@ bool compileFile(const CompilerConfig& config) {
         if (config.enable2DBlocking) {
             int bs2 = config.blockSize2 > 0 ? config.blockSize2 : config.blockSize;
             std::cout << "  Blocking: ON 2D (" << config.blockSize << "x" << bs2 << ")\n";
+            if (!config.block2DTargets.empty()) {
+                std::cout << "  2D targets: " << config.block2DTargets[0]
+                          << "," << config.block2DTargets[1] << "\n";
+            }
         } else {
             std::cout << "  Blocking: " << (config.enableBlocking ? "ON (size=" + std::to_string(config.blockSize) + ")" : "OFF") << "\n";
+        }
+        if (config.enablePositionBlocking) {
+            std::cout << "  Position blocking: ON (size=" << config.positionBlockSize << ")\n";
+            if (!config.positionBlockTargets.empty()) {
+                std::cout << "  Position targets: ";
+                for (size_t i = 0; i < config.positionBlockTargets.size(); ++i) {
+                    if (i > 0) std::cout << ",";
+                    std::cout << config.positionBlockTargets[i];
+                }
+                std::cout << "\n";
+            }
         }
 
         if (config.enableInterchange && config.enableBlocking) {
@@ -451,6 +535,10 @@ bool compileFile(const CompilerConfig& config) {
         }
         if (scheduled->optimizations.blockingApplied) {
             std::cout << "  ✓ Blocking applied (size=" << scheduled->optimizations.blockSize << ")\n";
+        }
+        if (scheduled->optimizations.positionBlockingApplied) {
+            std::cout << "  ✓ Position blocking applied (size="
+                      << scheduled->optimizations.positionBlockSize << ")\n";
         }
     }
 

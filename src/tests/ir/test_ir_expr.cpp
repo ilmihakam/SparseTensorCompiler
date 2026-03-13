@@ -89,6 +89,15 @@ TEST(IRStmtTest, ScalarDeclClone) {
     EXPECT_DOUBLE_EQ(c->initValue, 0.0);
 }
 
+TEST(IRStmtTest, AccumulatorInitClone) {
+    IRAccumulatorInit init("sum", 0.0);
+    auto cloned = init.clone();
+    auto* c = dynamic_cast<IRAccumulatorInit*>(cloned.get());
+    ASSERT_NE(c, nullptr);
+    EXPECT_EQ(c->accumulatorName, "sum");
+    EXPECT_DOUBLE_EQ(c->initValue, 0.0);
+}
+
 TEST(IRStmtTest, AssignClone) {
     auto lhs = std::make_unique<IRTensorAccess>("y", std::vector<std::string>{"i"});
     auto rhs = std::make_unique<IRConstant>(1.0);
@@ -98,6 +107,15 @@ TEST(IRStmtTest, AssignClone) {
     ASSERT_NE(c, nullptr);
     EXPECT_TRUE(c->accumulate);
     ASSERT_NE(c->lhs, nullptr);
+    ASSERT_NE(c->rhs, nullptr);
+}
+
+TEST(IRStmtTest, AccumulatorUpdateClone) {
+    IRAccumulatorUpdate update("sum", std::make_unique<IRConstant>(2.0));
+    auto cloned = update.clone();
+    auto* c = dynamic_cast<IRAccumulatorUpdate*>(cloned.get());
+    ASSERT_NE(c, nullptr);
+    EXPECT_EQ(c->accumulatorName, "sum");
     ASSERT_NE(c->rhs, nullptr);
 }
 
@@ -166,6 +184,12 @@ TEST(RenderExprTest, ScalarVar) {
     EXPECT_EQ(result, "sum");
 }
 
+TEST(RenderExprTest, AccumulatorRef) {
+    IRAccumulatorRef ref("sum");
+    std::string result = renderExpr(ref);
+    EXPECT_EQ(result, "sum");
+}
+
 TEST(RenderExprTest, FuncCall) {
     IRFuncCall fc("relu");
     fc.args.push_back(std::make_unique<IRScalarVar>("x"));
@@ -191,12 +215,26 @@ TEST(RenderStmtTest, AssignAccumulate) {
     EXPECT_EQ(result, "y[i] += 1;");
 }
 
+TEST(RenderStmtTest, AccumulatorUpdate) {
+    IRAccumulatorUpdate update("sum", std::make_unique<IRConstant>(1.0));
+    std::string result = renderStmt(update);
+    EXPECT_EQ(result, "sum += 1;");
+}
+
 TEST(RenderStmtTest, AssignDirect) {
     auto lhs = std::make_unique<IRTensorAccess>("y", std::vector<std::string>{"i"});
     auto rhs = std::make_unique<IRConstant>(0.0);
     IRAssign assign(std::move(lhs), std::move(rhs), false);
     std::string result = renderStmt(assign);
     EXPECT_EQ(result, "y[i] = 0;");
+}
+
+TEST(RenderStmtTest, AccumulatorFinalize) {
+    auto lhs = std::make_unique<IRTensorAccess>("y", std::vector<std::string>{"i"});
+    auto rhs = std::make_unique<IRAccumulatorRef>("sum");
+    IRAccumulatorFinalize finalize(std::move(lhs), std::move(rhs));
+    std::string result = renderStmt(finalize);
+    EXPECT_EQ(result, "y[i] = sum;");
 }
 
 // ============================================================================
@@ -253,6 +291,7 @@ public:
         c.lhs->accept(*this);
         c.rhs->accept(*this);
     }
+    void visit(const IRAccumulatorRef&) override { scalarVars++; }
 };
 }  // namespace
 

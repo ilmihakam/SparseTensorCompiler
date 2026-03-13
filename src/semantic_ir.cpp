@@ -476,6 +476,7 @@ void configureDenseLoopEmission(scheduled::Loop& loop) {
     loop.iterator = {};
     loop.merge = {};
     loop.block = {};
+    loop.requiredOuterLoops.clear();
 }
 
 void configureSparseIteratorEmission(scheduled::Loop& loop,
@@ -497,6 +498,10 @@ void configureSparseIteratorEmission(scheduled::Loop& loop,
     loop.iterator.indexExpr = loop.bindingExpr;
     loop.merge = {};
     loop.block = {};
+    loop.requiredOuterLoops.clear();
+    if (!parentIndex.empty()) {
+        loop.requiredOuterLoops.push_back(parentIndex);
+    }
 }
 
 void configureSparseMergeEmission(scheduled::Loop& loop,
@@ -516,6 +521,10 @@ void configureSparseMergeEmission(scheduled::Loop& loop,
     loop.block = {};
     loop.merge.strategy = strategy;
     loop.merge.terms.clear();
+    loop.requiredOuterLoops.clear();
+    if (!parentIndex.empty()) {
+        loop.requiredOuterLoops.push_back(parentIndex);
+    }
 
     for (const auto& tensorName : mergedTensors) {
         scheduled::MergeTermEmission term;
@@ -1136,7 +1145,7 @@ std::unique_ptr<scheduled::Loop> buildGenericLoopNest(
         }
 
         // preStmt: double sum = 0.0;
-        loop->preStmts.push_back(std::make_unique<ir::IRScalarDecl>("sum", 0.0));
+        loop->preStmts.push_back(std::make_unique<ir::IRAccumulatorInit>("sum", 0.0));
 
         // Build children (the reduction loop subtree).
         auto children = loopChildrenFor(ordered, specs, indexName);
@@ -1158,10 +1167,9 @@ std::unique_ptr<scheduled::Loop> buildGenericLoopNest(
         if (!loop->children.empty()) {
             scheduled::Loop* leaf = findLeaf(loop->children.back().get());
             leaf->postStmts.clear();
-            leaf->postStmts.push_back(std::make_unique<ir::IRAssign>(
-                std::make_unique<ir::IRScalarVar>("sum"),
-                lowerToOutputFillExpr(*reductionExpr, tensorMap),
-                true));
+            leaf->postStmts.push_back(std::make_unique<ir::IRAccumulatorUpdate>(
+                "sum",
+                lowerToOutputFillExpr(*reductionExpr, tensorMap)));
         }
 
         // postStmt: output = sparse_vals * sum [* invariant]
@@ -1178,7 +1186,7 @@ std::unique_ptr<scheduled::Loop> buildGenericLoopNest(
         std::unique_ptr<ir::IRExpr> rhsExpr = std::make_unique<ir::IRBinaryOp>(
             ir::IRBinaryOp::MUL,
             std::move(sparseVals),
-            std::make_unique<ir::IRScalarVar>("sum"));
+            std::make_unique<ir::IRAccumulatorRef>("sum"));
         if (invariantExpr) {
             rhsExpr = std::make_unique<ir::IRBinaryOp>(
                 ir::IRBinaryOp::MUL,
@@ -1191,13 +1199,13 @@ std::unique_ptr<scheduled::Loop> buildGenericLoopNest(
             outVals->tensorName = compute.output.name;
             outVals->isSparseVals = true;
             outVals->pointerVar = "p" + compute.output.name;
-            loop->postStmts.push_back(std::make_unique<ir::IRAssign>(
-                std::move(outVals), std::move(rhsExpr), false));
+            loop->postStmts.push_back(std::make_unique<ir::IRAccumulatorFinalize>(
+                std::move(outVals), std::move(rhsExpr)));
         } else {
             auto outAccess = std::make_unique<ir::IRTensorAccess>(
                 compute.lhs.tensorName, compute.lhs.indices);
-            loop->postStmts.push_back(std::make_unique<ir::IRAssign>(
-                std::move(outAccess), std::move(rhsExpr), false));
+            loop->postStmts.push_back(std::make_unique<ir::IRAccumulatorFinalize>(
+                std::move(outAccess), std::move(rhsExpr)));
         }
 
         return loop;
@@ -1572,6 +1580,7 @@ std::unique_ptr<Loop> Loop::clone() const {
     cloned->iterator = iterator;
     cloned->merge = merge;
     cloned->block = block;
+    cloned->requiredOuterLoops = requiredOuterLoops;
     cloned->isExternallyBound = isExternallyBound;
     for (const auto& stmt : preStmts) {
         cloned->preStmts.push_back(stmt->clone());
@@ -1920,6 +1929,11 @@ std::string renderScheduledCompute(const scheduled::Compute& compute) {
             << ", block_size=" << opts.blockSize << "\n";
     } else {
         out << "  Blocking: not applied\n";
+    }
+    if (opts.positionBlockingApplied) {
+        out << "  Position blocking: size=" << opts.positionBlockSize << "\n";
+    } else {
+        out << "  Position blocking: not applied\n";
     }
 
     return out.str();

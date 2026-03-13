@@ -392,3 +392,39 @@ TEST(BlockingCodegenTest, BlockingPreservesBody) {
     EXPECT_NE(output.find("y["), std::string::npos);
     EXPECT_NE(output.find("x["), std::string::npos);
 }
+
+TEST(BlockingCodegenTest, PositionBlockingIteratorEmitsPointerChunks) {
+    auto op = parseForBlockingCodegen(R"(
+        tensor y : Dense<100>;
+        tensor A : CSR<100, 100>;
+        tensor x : Dense<100>;
+        compute y[i] = A[i, j] * x[j];
+    )");
+    ASSERT_NE(op, nullptr);
+
+    opt::OptConfig config = opt::OptConfig::positionBlockingOnly(16);
+    opt::applyOptimizations(*op, config);
+    std::string output = codegen::generateCode(*op, config);
+
+    EXPECT_NE(output.find("sparse position blocking"), std::string::npos);
+    EXPECT_NE(output.find("for (int pA_block = 0;"), std::string::npos);
+    EXPECT_NE(output.find("for (int pA = pA_start; pA < pA_end; pA++)"), std::string::npos);
+}
+
+TEST(BlockingCodegenTest, PositionBlockingMergeEmitsChunkCounter) {
+    auto op = parseForBlockingCodegen(R"(
+        tensor C : Dense<100, 100>;
+        tensor A : CSR<100, 100>;
+        tensor B : CSR<100, 100>;
+        compute C[i, j] = A[i, j] + B[i, j];
+    )");
+    ASSERT_NE(op, nullptr);
+
+    opt::OptConfig config = opt::OptConfig::positionBlockingOnly(8);
+    opt::applyOptimizations(*op, config);
+    std::string output = codegen::generateCode(*op, config);
+
+    EXPECT_NE(output.find("sparse position blocking"), std::string::npos);
+    EXPECT_NE(output.find("j_chunk_steps"), std::string::npos);
+    EXPECT_NE(output.find("while ((pA < endA || pB < endB) && j_chunk_steps < 8)"), std::string::npos);
+}
